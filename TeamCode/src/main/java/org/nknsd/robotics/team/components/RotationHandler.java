@@ -31,7 +31,7 @@ public class RotationHandler implements NKNComponent {
     private ExtensionHandler extensionHandler;
 
     public enum RotationPositions {
-        PICKUP(1.2),
+        PICKUP(1.15),
         PREPICKUP(1.47),
         HIGH(2.4),
         RESTING(3.3);

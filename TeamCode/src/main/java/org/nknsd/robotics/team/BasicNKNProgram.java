@@ -33,7 +33,7 @@ public class BasicNKNProgram extends NKNProgram {
 
 
         // Arm
-        RotationHandler rotationHandler = new RotationHandler ("motorArmRotate", 0.05, 0.38, 0.005, 10, true);
+        RotationHandler rotationHandler = new RotationHandler ("motorArmRotate", 0.05, 0.5, 0.005, 10, true);
         components.add(rotationHandler);
 
         ExtensionHandler extensionHandler = new ExtensionHandler("motorArmExtend", true, 0.35);
