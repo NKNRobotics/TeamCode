@@ -14,6 +14,8 @@ import java.util.List;
 @TeleOp(name = "StateMachine Test", group = "Tests")
 public class StateMachineTest extends NKNProgramTrue {
 
+    private int myCounter = 0;
+
     class State1 extends StateMachine.State {
 
 
@@ -36,7 +38,7 @@ public class StateMachineTest extends NKNProgramTrue {
         }
     }
 
-    class State2 extends StateMachine.State {
+    static class State2 extends StateMachine.State {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
@@ -55,7 +57,7 @@ public class StateMachineTest extends NKNProgramTrue {
         }
     }
 
-    class State1ExtTimer extends StateMachine.State {
+    static class State1ExtTimer extends StateMachine.State {
 
 
         @Override
@@ -74,7 +76,7 @@ public class StateMachineTest extends NKNProgramTrue {
         }
     }
 
-    class State2ExtTimer extends StateMachine.State {
+    static class State2ExtTimer extends StateMachine.State {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {

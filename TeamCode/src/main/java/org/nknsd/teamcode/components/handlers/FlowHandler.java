@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class FlowHandler implements NKNComponent {
@@ -19,8 +18,8 @@ public class FlowHandler implements NKNComponent {
     private SparkFunOTOS.Pose2D pos1 = new SparkFunOTOS.Pose2D(0, 0, 0);
     private SparkFunOTOS.Pose2D pos2 = new SparkFunOTOS.Pose2D(0, 0, 0);
     private SparkFunOTOS.Pose2D avPos = new SparkFunOTOS.Pose2D(0, 0, 0);
-    private SparkFunOTOS.Pose2D offset1 = new SparkFunOTOS.Pose2D(0, 0, Math.PI / 2);
-    private SparkFunOTOS.Pose2D offset2 = new SparkFunOTOS.Pose2D(0, 0, Math.PI / 2);
+    final private SparkFunOTOS.Pose2D offset1 = new SparkFunOTOS.Pose2D(0, 0, Math.PI / 2);
+    final private SparkFunOTOS.Pose2D offset2 = new SparkFunOTOS.Pose2D(0, 0, Math.PI / 2);
 
     private void configureSensors() {
         odometry1.setLinearUnit(DistanceUnit.INCH);

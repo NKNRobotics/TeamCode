@@ -10,10 +10,6 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class HappyDancer implements NKNComponent {
 
-    // We set
-    double targetX;
-    double targetY;
-    double targetH;
 
     double startTime;
     double currentTime;

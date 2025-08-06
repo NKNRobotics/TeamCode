@@ -1,7 +1,5 @@
 package org.nknsd.teamcode.components.handlers;
 
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-
 public class SimplePController implements ControlLoop {
 
     final double multiplier;
