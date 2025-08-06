@@ -1,7 +1,4 @@
 package org.nknsd.teamcode.components.handlers;
-
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-
 public class PidController implements ControlLoop {
 
     final double pMultiplier;
