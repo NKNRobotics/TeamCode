@@ -10,11 +10,15 @@ import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
 public class DriveToPosState extends StateMachine.State {
 
     private final MotorDriver motorDriver;
-    private final SparkFunOTOS.Pose2D target;
+    private SparkFunOTOS.Pose2D target;
 
     public DriveToPosState(SparkFunOTOS.Pose2D target, MotorDriver motorDriver) {
         this.target = target;
         this.motorDriver = motorDriver;
+    }
+
+    public void setTarget(SparkFunOTOS.Pose2D target){
+        this.target = target;
     }
 
     @Override

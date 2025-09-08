@@ -62,7 +62,7 @@ public class FlowHandler implements NKNComponent {
         }
         //   Heading/X flipped because... it works?
         avPos.h = -avPos.h;
-        avPos.x = -(pos1.x + pos2.x) / 2;
+        avPos.x = (pos1.x + pos2.x) / 2;
         avPos.y = (pos1.y + pos2.y) / 2;
 
         return avPos;

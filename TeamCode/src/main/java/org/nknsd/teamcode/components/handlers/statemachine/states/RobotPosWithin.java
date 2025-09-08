@@ -13,22 +13,17 @@ public class RobotPosWithin extends StateMachine.State {
 
     Logger logger = Logger.getLogger(RobotPosWithin.class.getName());
 
-    SparkFunOTOS.Pose2D target;
-    MotorDriver motorDriver;
-    double distError;
-    double angleError;
-    double speedError;
-    double xError;
-    double yError;
+    final MotorDriver motorDriver;
+    final double angleError;
+    final double speedError;
+    final double xError;
+    final double yError;
     String[] toStop;
     String[] toStart;
 
     // If one of the errors is not necessary (like separate x and y errors), just set as a very large number.
-    public RobotPosWithin(SparkFunOTOS.Pose2D target, MotorDriver motorDriver, double distError, double angleError, double speedError, double xError, double yError, String[] toStart, String[] toStop) {
-
-        this.target = target;
+    public RobotPosWithin(MotorDriver motorDriver,  double angleError, double speedError, double xError, double yError, String[] toStart, String[] toStop) {
         this.motorDriver = motorDriver;
-        this.distError = distError;
         this.angleError = angleError;
         this.speedError = speedError;
         this.xError = xError;
@@ -49,12 +44,12 @@ public class RobotPosWithin extends StateMachine.State {
         SparkFunOTOS.Pose2D vel = motorDriver.getVelocity();
 
 
-        boolean distCheck = false;
+        boolean angleCheck = false;
         boolean speedCheck = false;
         boolean xyCheck = false;
 
-        if (isWithin(delta.x, distError) && isWithin(delta.y, distError) && isWithin(delta.h, angleError)) {
-            distCheck = true;
+        if (isWithin(delta.h, angleError)) {
+            angleCheck = true;
         }
         if (isWithin(vel.x, speedError) && isWithin(vel.y, speedError) && isWithin(vel.h, speedError)) {
             speedCheck = true;
@@ -63,9 +58,9 @@ public class RobotPosWithin extends StateMachine.State {
             xyCheck = true;
         }
 
-        logger.info("DC:" + distCheck + " SC:" + speedCheck);
+//        logger.info("DC:" + distCheck + " SC:" + speedCheck);
 
-        if (distCheck && speedCheck && xyCheck) {
+        if (angleCheck && speedCheck && xyCheck) {
             stateMachine.stopAnonymous(this);
         }
     }

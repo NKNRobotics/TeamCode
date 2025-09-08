@@ -2,37 +2,69 @@ package org.nknsd.teamcode.components.handlers;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class VisionHandler implements NKNComponent {
 
-    Limelight3A limelight;
 
-    public SparkFunOTOS.Pose2D findObjectPos() {
-        LLResult result = limelight.getLatestResult();
-        SparkFunOTOS.Pose2D objectPos = new SparkFunOTOS.Pose2D(0, 0, 0);
-        if (limelight.getLatestResult().isValid()) {
-            objectPos.x = result.getTx(); // How far left or right the target is (degrees)
-            objectPos.y = result.getTy(); // How far up or down the target is (degrees)
-            objectPos.h = result.getTa(); // using h to hold the area of the object
+    public VisionHandler(int pipeline) {
+        this.pipeline = pipeline;
+    }
 
+    public static class VisionResult {
+        public final double xAngle, yAngle, size;
+
+        public VisionResult(double xAngle, double yAngle, double size) {
+            this.xAngle = xAngle;
+            this.yAngle = yAngle;
+            this.size = size;
         }
-        return objectPos;
+    }
+
+    private Limelight3A limelight;
+
+    private int pipeline;
+
+    private Rev2mDistanceSensor distSensor;
+
+
+    private VisionResult lastResult;
+    private double dist;
+
+    public VisionResult findObjectPos() {
+        LLResult result = limelight.getLatestResult();
+        if (limelight.getLatestResult().isValid()) {
+            lastResult = new VisionResult(result.getTx(), result.getTy(), result.getTa());
+        } else {
+            lastResult = null;
+        }
+        return lastResult;
+    }
+
+    public double findDist(){
+        dist = distSensor.getDistance(DistanceUnit.INCH);
+        return dist;
     }
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        if (limelight == null){
+            throw new NullPointerException("No Limelight Camera Detected");
+        }
         limelight.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
-        limelight.start(); // This tells Limelight to start looking!
-        limelight.pipelineSwitch(0); // Switch to pipeline number 0
-        return true;
+        limelight.start(); // This tells Limelight to start looking!distSensor = hardwareMap.get(Rev2mDistanceSensor.class,"distanceSensor");
+        distSensor = hardwareMap.get(Rev2mDistanceSensor.class,"distanceSensor");
+        distSensor.initialize();
+
+        return limelight.pipelineSwitch(pipeline); // Switch pipeline
     }
 
     @Override
@@ -52,7 +84,7 @@ public class VisionHandler implements NKNComponent {
 
     @Override
     public String getName() {
-        return null;
+        return "VisionHandler";
     }
 
     @Override
@@ -62,9 +94,16 @@ public class VisionHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        SparkFunOTOS.Pose2D objectPos = findObjectPos();
-        telemetry.addData("object x", objectPos.x);
-        telemetry.addData("object y", objectPos.y);
-        telemetry.addData("object size", objectPos.h);
+        if (lastResult == null) {
+            telemetry.addData("object x","none");
+            telemetry.addData("object y", "none");
+            telemetry.addData("object size", "none");
+        } else {
+            telemetry.addData("object x", lastResult.xAngle);
+            telemetry.addData("object y", lastResult.yAngle);
+            telemetry.addData("object size", lastResult.size);
+        }
+        dist = findDist();
+        telemetry.addData("distance",dist);
     }
 }

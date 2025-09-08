@@ -20,17 +20,19 @@ public class MoveToPosTest extends NKNProgramTrue {
         MotorHandler motorHandler = new MotorHandler();
 //        SimplePController pControllerX = pControllerY = new SimplePController(0.1,.75);
 //        SimplePController pControllerH = new SimplePController(0.5,.75);
-        PidController pControllerX = new PidController(0.1,.75,0.1,.5,true, 0.02,0.2);
-        PidController pControllerY = new PidController(0.1,.75,0.1,.5,true,0.02,0.2);
-        PidController pControllerH = new PidController(0.5,.75,0.1,.5,true,0.05,0.2);
+        PidController pControllerX = new PidController(0.2, .3, 0.1, .2, true, 0.01, 0.2);
+        PidController pControllerY = new PidController(0.2, .3, 0.1, .2, true, 0.01, 0.2);
+        PidController pControllerH = new PidController(0.6, .5, 0.1, .25, true, 0.2, 0.3);
         MotorDriver motorDriver = new MotorDriver(flowHandler,motorHandler,pControllerX,pControllerY,pControllerH);
         components.add(motorHandler);
         telemetryEnabled.add(motorHandler);
+
+        motorHandler.setEnabled(true);
 
         components.add(flowHandler);
         telemetryEnabled.add(flowHandler);
         components.add(motorDriver);
         telemetryEnabled.add(motorDriver);
-        motorDriver.setTarget(new SparkFunOTOS.Pose2D(0,0,0));
+        motorDriver.setTarget(new SparkFunOTOS.Pose2D(10,0,0));
     }
 }

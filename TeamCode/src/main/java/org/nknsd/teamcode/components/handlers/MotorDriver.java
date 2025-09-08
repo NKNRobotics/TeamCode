@@ -12,9 +12,22 @@ public class MotorDriver implements NKNComponent {
 
     private final FlowHandler flowHandler;
     private final MotorHandler motorHandler;
-    private final ControlLoop xControlLoop;
-    private final ControlLoop yControlLoop;
-    private final ControlLoop hControlLoop;
+
+    private  ControlLoop xControlLoop;
+    public void setxControlLoop(ControlLoop xControlLoop) {
+        this.xControlLoop = xControlLoop;
+    }
+
+    private  ControlLoop yControlLoop;
+    public void setyControlLoop(ControlLoop yControlLoop) {
+        this.yControlLoop = yControlLoop;
+    }
+
+    private  ControlLoop hControlLoop;
+    public void sethControlLoop(ControlLoop hControlLoop) {
+        this.hControlLoop = hControlLoop;
+    }
+
     private SparkFunOTOS.Pose2D target = new SparkFunOTOS.Pose2D(0, 0, 0);
     private SparkFunOTOS.Pose2D lastPos = new SparkFunOTOS.Pose2D(0, 0, 0);
 
@@ -45,6 +58,7 @@ public class MotorDriver implements NKNComponent {
         this.yControlLoop = yControlLoop;
         this.hControlLoop = hControlLoop;
     }
+
 
 
     public void setTarget(SparkFunOTOS.Pose2D target) {
@@ -78,9 +92,9 @@ public class MotorDriver implements NKNComponent {
     }
 
     private void getRelativeSpeeds(SparkFunOTOS.Pose2D speeds, double theta) {
-        double a1 = Math.cos(theta) * -speeds.x;
+        double a1 = Math.cos(theta) * speeds.x;
         double a2 = Math.sin(theta) * -speeds.y;
-        double o1 = Math.sin(theta) * -speeds.x;
+        double o1 = Math.sin(theta) * speeds.x;
         double o2 = Math.cos(theta) * speeds.y;
 
 
@@ -90,7 +104,7 @@ public class MotorDriver implements NKNComponent {
 
     private SparkFunOTOS.Pose2D calcDelta(SparkFunOTOS.Pose2D target,SparkFunOTOS.Pose2D current){
         return new SparkFunOTOS.Pose2D(
-                target.x - current.x ,
+                target.x - current.x,
                 target.y - current.y,
                 (target.h - current.h + 3 * Math.PI) % (2 * Math.PI) - Math.PI
         );
@@ -130,7 +144,9 @@ public class MotorDriver implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-
+        telemetry.addData("target x", target.x);
+        telemetry.addData("target y", target.y);
+        telemetry.addData("target h", target.h);
     }
 
 

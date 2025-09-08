@@ -11,10 +11,15 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MotorHandler implements NKNComponent {
 
-    DcMotor flMotor;
-    DcMotor frMotor;
-    DcMotor blMotor;
-    DcMotor brMotor;
+    private DcMotor flMotor;
+    private DcMotor frMotor;
+    private DcMotor blMotor;
+    private DcMotor brMotor;
+    private boolean enabled;
+    private double blPower;
+    private double flPower;
+    private double frPower;
+    private double brPower;
 
 
     public void setPowers(double x, double y, double theta) {
@@ -25,15 +30,22 @@ public class MotorHandler implements NKNComponent {
             x = x / magnitude;
             theta = theta / magnitude;
         }
-        double flPower = y - x + theta;
-        double frPower = y + x - theta;
-        double blPower = y + x + theta;
-        double brPower = y - x - theta;
+         flPower = y - x + theta;
+         frPower = y + x - theta;
+         blPower = y + x + theta;
+         brPower = y - x - theta;
 
-        flMotor.setPower(flPower);
-        frMotor.setPower(frPower);
-        blMotor.setPower(blPower);
-        brMotor.setPower(brPower);
+        if (enabled) {
+            flMotor.setPower(flPower);
+            frMotor.setPower(frPower);
+            blMotor.setPower(blPower);
+            brMotor.setPower(brPower);
+        } else {
+            flMotor.setPower(0);
+            frMotor.setPower(0);
+            blMotor.setPower(0);
+            brMotor.setPower(0);
+        }
     }
 
     @Override
@@ -64,7 +76,7 @@ public class MotorHandler implements NKNComponent {
 
     @Override
     public String getName() {
-        return null;
+        return "MotorHandler";
     }
 
     @Override
@@ -74,6 +86,13 @@ public class MotorHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
+        telemetry.addData("fl", flPower);
+        telemetry.addData("fr", frPower);
+        telemetry.addData("bl", blPower);
+        telemetry.addData("br", brPower);
+    }
 
+    public void setEnabled(boolean enabled){
+        this.enabled = enabled;
     }
 }
