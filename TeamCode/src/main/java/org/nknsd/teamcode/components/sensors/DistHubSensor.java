@@ -1,14 +1,10 @@
 package org.nknsd.teamcode.components.sensors;
 
-import android.hardware.Sensor;
-
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 import java.util.HashMap;

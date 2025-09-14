@@ -1,7 +1,7 @@
 package org.nknsd.teamcode.controlSchemes.abstracts;
 
-import org.nknsd.teamcode.frameworks.NKNControlScheme;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.frameworks.NKNControlScheme;
 
 import java.util.concurrent.Callable;
 
