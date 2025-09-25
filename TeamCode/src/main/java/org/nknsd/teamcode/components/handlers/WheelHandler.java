@@ -67,12 +67,12 @@ public class WheelHandler implements NKNComponent {
 
 
     // Key function of the class
-    // Takes in y, x, and turning components of the vector, and converts them to power instructions for omni wheels
+    // Takes in x, y, and turning components of the vector, and converts them to power instructions for omni wheels
     public void relativeVectorToMotion(double y, double x, double turning) {
-        relativeVectorToMotion(y, x, turning, 0);
+        relativeVectorToMotion(x, y, turning, 0);
     }
 
-    public void relativeVectorToMotion(double y, double x, double turning, int priority) {
+    public void relativeVectorToMotion(double x, double y, double turning, int priority) {
         if (priority >= this.priority) {
             // some intern should change all instances of rVTM to use x, y, turning instead of y, x, turning
             turning *= 0.7;
@@ -92,7 +92,7 @@ public class WheelHandler implements NKNComponent {
         double x2 = (Math.cos(angle) * x) - (Math.sin(angle) * y);
         double y2 = (Math.sin(angle) * x) + (Math.cos(angle) * y);
 
-        relativeVectorToMotion(y2, x2, turning, priority);
+        relativeVectorToMotion(x2, y2, turning, priority);
     }
 
     // The wheel handler has a priority system. Requests to move the wheels require you to send a priority level with them (default 0) and if
