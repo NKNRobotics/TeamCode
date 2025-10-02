@@ -3,11 +3,11 @@ package org.nknsd.teamcode.programs.tests;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
 import org.nknsd.teamcode.components.sensors.IMUSensor;
-import org.nknsd.teamcode.controlSchemes.reals.DefaultWheelController;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class FlowSensorTestProgram extends NKNProgram {
 //        components.add(wheelDriver);
 //        telemetryEnabled.add(wheelDriver);
 
-        DefaultWheelController wheelController = new DefaultWheelController();
+        WheelControlScheme wheelController = new WheelControlScheme();
         wheelController.link(gamePadHandler);
 
 //        wheelDriver.link(gamePadHandler, wheelHandler, wheelController);

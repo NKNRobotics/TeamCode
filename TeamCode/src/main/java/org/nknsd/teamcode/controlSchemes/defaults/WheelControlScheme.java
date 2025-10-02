@@ -1,19 +1,18 @@
-package org.nknsd.teamcode.controlSchemes.reals;
+package org.nknsd.teamcode.controlSchemes.defaults;
 
 import org.nknsd.teamcode.components.utility.GamePadHandler;
-import org.nknsd.teamcode.controlSchemes.abstracts.WheelControlScheme;
+import org.nknsd.teamcode.frameworks.NKNControlScheme;
 
 import java.util.concurrent.Callable;
 
-public class CollyWheelController extends WheelControlScheme {
+public class WheelControlScheme extends NKNControlScheme {
     private boolean delaySpeedChangesUp = false, delaySpeedChangesDown = false, delaySpecFancyDeposit = false;
 
     @Override
     public String getName() {
-        return "Colly";
+        return "Default";
     }
 
-    @Override
     public Callable<Boolean> gearUp() {
         return new Callable<Boolean>() {
             @Override
@@ -32,7 +31,6 @@ public class CollyWheelController extends WheelControlScheme {
         };
     }
 
-    @Override
     public Callable<Boolean> gearDown() {
         return new Callable<Boolean>() {
             @Override
@@ -51,7 +49,6 @@ public class CollyWheelController extends WheelControlScheme {
         };
     }
 
-    @Override
     public Callable<Boolean> specFancyDeposit() {
         return new Callable<Boolean>() {
             @Override
@@ -70,12 +67,20 @@ public class CollyWheelController extends WheelControlScheme {
         };
     }
 
-    @Override
     public Callable<Boolean> resetAngle() {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 return GamePadHandler.GamepadButtons.BACK.detect(gamePadHandler.getGamePad1());
+            }
+        };
+    }
+
+    public Callable<Boolean> initDisableAutoFix() {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return GamePadHandler.GamepadButtons.Y.detect(gamePadHandler.getGamePad1());
             }
         };
     }

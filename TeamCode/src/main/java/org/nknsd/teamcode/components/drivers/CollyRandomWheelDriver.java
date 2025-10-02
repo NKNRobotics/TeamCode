@@ -1,4 +1,4 @@
-package org.nknsd.teamcode.drivers;
+package org.nknsd.teamcode.components.drivers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
 import org.nknsd.teamcode.components.sensors.IMUSensor;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
-import org.nknsd.teamcode.controlSchemes.abstracts.WheelControlScheme;
+import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 // Adds events to gamepad to control the wheels
