@@ -32,12 +32,13 @@ public class ArmPosWithin extends StateMachine.State {
 
     private boolean isWithin(int current, int target) {
         int delta = target - current;
-        if (goForward && delta <= 0)
+        if (goForward && delta <= 0) {
             return true;
-        else return !goForward && delta >= 0;
+        } else {
+            return !goForward && delta >= 0;
+        }
 
     }
-
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
