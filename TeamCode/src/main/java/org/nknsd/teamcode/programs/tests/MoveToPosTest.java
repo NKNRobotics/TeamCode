@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.nknsd.teamcode.components.handlers.FlowHandler;
 import org.nknsd.teamcode.components.handlers.MotorDriver;
 import org.nknsd.teamcode.components.handlers.MotorHandler;
-import org.nknsd.teamcode.feedbackcontroller.PidController;
+import org.nknsd.teamcode.helperClasses.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 

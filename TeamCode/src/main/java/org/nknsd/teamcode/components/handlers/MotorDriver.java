@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.feedbackcontroller.ControlLoop;
+import org.nknsd.teamcode.helperClasses.feedbackcontroller.ControlLoop;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MotorDriver implements NKNComponent {
