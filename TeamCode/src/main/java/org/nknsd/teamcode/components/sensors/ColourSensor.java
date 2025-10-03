@@ -47,13 +47,19 @@ public class ColourSensor implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData(sensorName + "hue", sensor.argb());
-        telemetry.addData(sensorName + "light", sensor.alpha());
-        telemetry.addData(sensorName + "blueness", sensor.blue());
-        telemetry.addData(sensorName + "redness", sensor.red());
-        telemetry.addData(sensorName + "greenness", sensor.green());
+        telemetry.addData(sensorName + " hue", sensor.argb());
+//        telemetry.addData(sensorName + "light", sensor.alpha());
+        telemetry.addData(sensorName + " blueness", sensor.blue());
+        telemetry.addData(sensorName + " redness", sensor.red());
+        telemetry.addData(sensorName + " greenness", sensor.green());
+        telemetry.update();
     }
     public void enableLED() {sensor.enableLed(true);}
-    public void disableLED() {
-        if sensor.sensor.enableLed(false);}
+    public void disableLED() {sensor.enableLed(false);}
+
+    public int colorHue() {return sensor.argb();};
+    public int colorLight() {return sensor.alpha();};
+    public int colorBlue() {return sensor.blue();};
+    public int colorRed() {return sensor.red();}
+    public int colorGreen() {return sensor.green();}
 }
