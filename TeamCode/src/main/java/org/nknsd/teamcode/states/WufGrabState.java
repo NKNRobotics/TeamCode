@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.ServoHandler;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
-public class WufGrabState extends StateMachine.State {
+public class WufGrabState extends StateCore.State {
 
     static public String STATE_NAME = "WUF_GRAB_STATE";
 
@@ -29,8 +29,8 @@ public class WufGrabState extends StateMachine.State {
         } else if (currentTime - startTime <= 1200) {
             servoHandler.setBothPos(0.65, 0.35);
         } else if (currentTime - startTime <= 1600) {
-            stateMachine.stopState(STATE_NAME);
-            stateMachine.startState(WufRetractState.STATE_NAME);
+            stateCore.stopState(STATE_NAME);
+            stateCore.startState(WufRetractState.STATE_NAME);
         }
     }
 

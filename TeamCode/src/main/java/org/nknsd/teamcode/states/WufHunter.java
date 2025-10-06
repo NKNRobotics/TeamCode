@@ -7,9 +7,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.FlowHandler;
 import org.nknsd.teamcode.components.handlers.MotorDriver;
 import org.nknsd.teamcode.components.handlers.WufSpotter;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
-public class WufHunter extends StateMachine.State {
+public class WufHunter extends StateCore.State {
 
     private static final double GIVE_UP_TIME = 1000;
     static public String STATE_NAME = "WUF_HUNTER";
@@ -56,8 +56,8 @@ public class WufHunter extends StateMachine.State {
 
             if (Math.abs(curPos.h - targetPos.h) < .05 && Math.abs(curPos.x - targetPos.x) < 1 && Math.abs(curPos.y - targetPos.y) < 1 ) {
                 if (runtime.milliseconds() - lastNotReadyTime >500) {
-                    stateMachine.startState(WufReachState.STATE_NAME);
-                    stateMachine.stopState(STATE_NAME);
+                    stateCore.startState(WufReachState.STATE_NAME);
+                    stateCore.stopState(STATE_NAME);
                     return;
                 }
             } else {
@@ -66,8 +66,8 @@ public class WufHunter extends StateMachine.State {
 
             lastWufSeenTime = runtime.milliseconds();
         } else if (runtime.milliseconds() - lastWufSeenTime > GIVE_UP_TIME) {
-            stateMachine.stopState(STATE_NAME);
-            stateMachine.startState(WufSpinner.STATE_NAME);
+            stateCore.stopState(STATE_NAME);
+            stateCore.startState(WufSpinner.STATE_NAME);
         } else if (runtime.milliseconds() - lastWufSeenTime > GIVE_UP_TIME / 3) {
             SparkFunOTOS.Pose2D curPos = flowHandler.getPosition();
             SparkFunOTOS.Pose2D wufPos = wufSpotter.getObjectPos();

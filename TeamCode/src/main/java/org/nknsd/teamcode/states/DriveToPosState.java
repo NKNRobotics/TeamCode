@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.MotorDriver;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
-public class DriveToPosState extends StateMachine.State {
+public class DriveToPosState extends StateCore.State {
 
     private final MotorDriver motorDriver;
     private SparkFunOTOS.Pose2D target;

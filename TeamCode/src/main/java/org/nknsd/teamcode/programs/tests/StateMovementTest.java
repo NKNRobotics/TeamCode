@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.nknsd.teamcode.components.handlers.FlowHandler;
 import org.nknsd.teamcode.components.handlers.MotorDriver;
 import org.nknsd.teamcode.components.handlers.MotorHandler;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.helperClasses.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
@@ -19,7 +19,7 @@ import java.util.List;
 public class StateMovementTest extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
-        StateMachine stateMachine = new StateMachine();
+        StateCore stateCore = new StateCore();
         FlowHandler flowHandler = new FlowHandler();
         MotorHandler motorHandler = new MotorHandler();
         motorHandler.setEnabled(true);
@@ -30,8 +30,8 @@ public class StateMovementTest extends NKNProgram {
 
         MotorDriver motorDriver = new MotorDriver(flowHandler, motorHandler, xpController, ypController, hpController);
 
-        components.add(stateMachine);
-        telemetryEnabled.add(stateMachine);
+        components.add(stateCore);
+        telemetryEnabled.add(stateCore);
         components.add(flowHandler);
         telemetryEnabled.add(flowHandler);
         components.add(motorHandler);
@@ -43,23 +43,23 @@ public class StateMovementTest extends NKNProgram {
         SparkFunOTOS.Pose2D target3 = new SparkFunOTOS.Pose2D(0, 50, Math.PI);
         SparkFunOTOS.Pose2D target4 = new SparkFunOTOS.Pose2D(0, 0, 0);
         DriveToPosState driveToPosState1 = new DriveToPosState(target1, motorDriver);
-        stateMachine.addState("driver1", driveToPosState1);
+        stateCore.addState("driver1", driveToPosState1);
         DriveToPosState driveToPosState2 = new DriveToPosState(target2, motorDriver);
-        stateMachine.addState("driver2", driveToPosState2);
+        stateCore.addState("driver2", driveToPosState2);
         DriveToPosState driveToPosState3 = new DriveToPosState(target3, motorDriver);
-        stateMachine.addState("driver3", driveToPosState3);
+        stateCore.addState("driver3", driveToPosState3);
         DriveToPosState driveToPosState4 = new DriveToPosState(target4, motorDriver);
-        stateMachine.addState("driver4", driveToPosState4);
+        stateCore.addState("driver4", driveToPosState4);
         RobotPosWithin robotPosWithin1 = new RobotPosWithin( motorDriver, .1, .1, 1, 1, new String[]{"driver2", "isWithin2"}, new String[]{"driver1"});
-        stateMachine.addState("isWithin1", robotPosWithin1);
+        stateCore.addState("isWithin1", robotPosWithin1);
         RobotPosWithin robotPosWithin2 = new RobotPosWithin( motorDriver, .1, .1, 1, 1, new String[]{"driver3", "isWithin3"}, new String[]{"driver2"});
-        stateMachine.addState("isWithin2", robotPosWithin2);
+        stateCore.addState("isWithin2", robotPosWithin2);
         RobotPosWithin robotPosWithin3 = new RobotPosWithin( motorDriver, .1, .1, 1, 1, new String[]{"driver4", "isWithin4"}, new String[]{"driver3"});
-        stateMachine.addState("isWithin3", robotPosWithin3);
+        stateCore.addState("isWithin3", robotPosWithin3);
         RobotPosWithin robotPosWithin4 = new RobotPosWithin( motorDriver, .1, .1, 1, 1, new String[]{"driver1", "isWithin1"}, new String[]{"driver4"});
-        stateMachine.addState("isWithin4", robotPosWithin4);
+        stateCore.addState("isWithin4", robotPosWithin4);
 
-        stateMachine.startState("driver1");
-        stateMachine.startState("isWithin1");
+        stateCore.startState("driver1");
+        stateCore.startState("isWithin1");
     }
 }

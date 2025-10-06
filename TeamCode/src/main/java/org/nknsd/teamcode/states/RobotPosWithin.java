@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.MotorDriver;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
 import java.util.logging.Logger;
 
-public class RobotPosWithin extends StateMachine.State {
+public class RobotPosWithin extends StateCore.State {
 
     Logger logger = Logger.getLogger(RobotPosWithin.class.getName());
 
@@ -61,7 +61,7 @@ public class RobotPosWithin extends StateMachine.State {
 //        logger.info("DC:" + distCheck + " SC:" + speedCheck);
 
         if (angleCheck && speedCheck && xyCheck) {
-            stateMachine.stopAnonymous(this);
+            stateCore.stopAnonymous(this);
         }
     }
 
@@ -73,10 +73,10 @@ public class RobotPosWithin extends StateMachine.State {
     @Override
     protected void stopped() {
         for (String stateName : this.toStop) {
-            stateMachine.stopState(stateName);
+            stateCore.stopState(stateName);
         }
         for (String stateName : this.toStart) {
-            stateMachine.startState(stateName);
+            stateCore.startState(stateName);
         }
     }
 }

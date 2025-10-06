@@ -7,9 +7,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.FlowHandler;
 import org.nknsd.teamcode.components.handlers.MotorDriver;
 import org.nknsd.teamcode.components.handlers.WufSpotter;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
-public class WufSpinner extends StateMachine.State {
+public class WufSpinner extends StateCore.State {
 
     static public String STATE_NAME = "WUF_SPINNER";
 
@@ -30,7 +30,7 @@ public class WufSpinner extends StateMachine.State {
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
         if (wufSpotter.doesWufExist()) {
-            stateMachine.stopAnonymous(this);
+            stateCore.stopAnonymous(this);
         }
 
         pos.h = (runtime.milliseconds() - startTime) / 10000 * Math.PI * 2 + startH;
@@ -46,6 +46,6 @@ public class WufSpinner extends StateMachine.State {
 
     @Override
     protected void stopped() {
-        stateMachine.startState(WufHunter.STATE_NAME);
+        stateCore.startState(WufHunter.STATE_NAME);
     }
 }

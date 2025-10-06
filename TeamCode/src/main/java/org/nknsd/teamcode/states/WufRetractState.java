@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.RailHandler;
 import org.nknsd.teamcode.components.handlers.ServoHandler;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
-public class WufRetractState extends StateMachine.State {
+public class WufRetractState extends StateCore.State {
 
     static public String STATE_NAME = "WUF_RETRACT_STATE";
 
@@ -34,8 +34,8 @@ public class WufRetractState extends StateMachine.State {
         if (rMotorPos <5 && lMotorPos <5 ) {
             railHandler.setMotorSpeed(0);
             servoHandler.setBothPos(.45,0.65);
-            stateMachine.stopState(STATE_NAME);
-            stateMachine.startState(WufHunter.STATE_NAME);
+            stateCore.stopState(STATE_NAME);
+            stateCore.startState(WufHunter.STATE_NAME);
         }
 
 

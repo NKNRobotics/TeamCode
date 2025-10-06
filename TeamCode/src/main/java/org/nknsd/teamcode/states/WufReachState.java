@@ -6,9 +6,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.RailHandler;
 import org.nknsd.teamcode.components.handlers.ServoHandler;
 import org.nknsd.teamcode.components.handlers.VisionHandler;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
-public class WufReachState extends StateMachine.State {
+public class WufReachState extends StateCore.State {
 
     static public String STATE_NAME = "WUF_REACH_STATE";
 
@@ -42,13 +42,13 @@ public class WufReachState extends StateMachine.State {
         if (runtime.milliseconds() - startTime > 1000) {
             if (rMotorPos >= maxLength || lMotorPos >= maxLength) {
                 railHandler.setMotorSpeed(0);
-                stateMachine.stopState(STATE_NAME);
-                stateMachine.startState(failStateName);
+                stateCore.stopState(STATE_NAME);
+                stateCore.startState(failStateName);
             } else if (targetFoundLength > 0 && (rMotorPos >= targetFoundLength || lMotorPos >= targetFoundLength)) {
                 // TODO - make rail handler take in target pos and be smart to align speeds
                 railHandler.setMotorSpeed(0);
-                stateMachine.stopState(STATE_NAME);
-                stateMachine.startState(successStateName);
+                stateCore.stopState(STATE_NAME);
+                stateCore.startState(successStateName);
             } else if (isSuccessful()) {
                 targetFoundLength = rMotorPos + 70;
                 railHandler.setMotorSpeed(maxSpeed / 2);
