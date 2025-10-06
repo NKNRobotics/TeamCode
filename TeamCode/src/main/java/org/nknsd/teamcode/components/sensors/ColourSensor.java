@@ -62,4 +62,26 @@ public class ColourSensor implements NKNComponent {
     public int colorBlue() {return sensor.blue();};
     public int colorRed() {return sensor.red();}
     public int colorGreen() {return sensor.green();}
+    enum BallColor {
+        GREEN,
+        PURPLE,
+        NOTHING
+    }
+    //Thresholds for the ball color, available here for easy access
+    final int greenThreshold = 400;
+    final int purpleThreshold = 400;
+
+    /**
+     * thresholds for the colors are set in ColourSensor
+     * @return BallColor ; can be PURPLE, GREEN, or NOTHING
+     */
+    public BallColor getBallColor (){
+        if (colorGreen() >= greenThreshold) {
+            return BallColor.GREEN;
+        } else if (((colorRed() + colorBlue()) / 2) >= purpleThreshold){
+            return BallColor.PURPLE;
+        } else {
+            return BallColor.NOTHING;
+        }
+    }
 }
