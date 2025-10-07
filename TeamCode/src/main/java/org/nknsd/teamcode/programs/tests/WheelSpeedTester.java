@@ -29,7 +29,7 @@ public class WheelSpeedTester extends NKNProgram {
         telemetryEnabled.add(launcherHandler);
 
         launcherHandler.setEnabled(true);
-        launcherHandler.setTargetTps(1200);
+        launcherHandler.setTargetTps(1800);
 
     }
 }

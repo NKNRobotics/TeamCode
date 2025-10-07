@@ -20,7 +20,7 @@ public class LauncherHandler implements NKNComponent {
     private int wMotorPositionPrevious;
     private double previousRunTime;
     private double ticks; // Idk what units ticks are in
-    private double pFactor = 0.0001;
+    private double pFactor = 0.00001;
     public void setTargetTps(int targetTps) {
        this.targetTps = targetTps;
     }
@@ -28,7 +28,6 @@ public class LauncherHandler implements NKNComponent {
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         wMotor = hardwareMap.dcMotor.get("wMotor");
-        wMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         wMotor.setPower(0);
         return true;
     }
@@ -55,11 +54,16 @@ public class LauncherHandler implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
+        if (!enabled) {
+            wMotor.setPower(0);
+            wPower = 0;
+            return;
+        }
 
         double runTimeVar = runtime.seconds();
         double timeElapsed = runTimeVar - previousRunTime;
 
-        if (timeElapsed < 0.1){
+        if (timeElapsed < 0.05){
             return;
         }
 
