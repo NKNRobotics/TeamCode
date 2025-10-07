@@ -16,5 +16,7 @@ public class ColourSensorTest extends NKNProgram {
         ColourSensor colorSensor = new ColourSensor("colorSensor0");
         components.add(colorSensor);
         telemetryEnabled.add(colorSensor);
+        telemetry.addData("Ball Color:", colorSensor.getBallColor());
+        telemetry.update();
     }
 }
