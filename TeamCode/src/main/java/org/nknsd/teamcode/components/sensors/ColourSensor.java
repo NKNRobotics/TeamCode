@@ -12,8 +12,10 @@ public class ColourSensor implements NKNComponent {
 
     private final String sensorName;
     private ColorSensor sensor;
+    private BallColor[] ballColorSamples;
+    private int currentSample = 0;
+    private int maxSamples = 15;
     public ColourSensor(String sensorName){this.sensorName = sensorName;}
-
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         sensor = hardwareMap.get(ColorSensor.class, sensorName);
@@ -42,16 +44,21 @@ public class ColourSensor implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-
+        if (maxSamples > currentSample) {
+            ballColorSamples[currentSample] = detectBallColor(currentSample);
+            currentSample++;
+        }
     }
 
     @Override
-    public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData(sensorName + " hue", sensor.argb());
-//        telemetry.addData(sensorName + "light", sensor.alpha());
+    public void doTelemetry(Telemetry telemetry) {telemetry.addData(sensorName + " hue", sensor.argb());
+        /*
+        telemetry.addData(sensorName + "light", sensor.alpha());
         telemetry.addData(sensorName + " blueness", sensor.blue());
         telemetry.addData(sensorName + " redness", sensor.red());
         telemetry.addData(sensorName + " greenness", sensor.green());
+        */
+
         telemetry.update();
     }
     public void enableLED() {sensor.enableLed(true);}
@@ -62,26 +69,43 @@ public class ColourSensor implements NKNComponent {
     public int colorBlue() {return sensor.blue();};
     public int colorRed() {return sensor.red();}
     public int colorGreen() {return sensor.green();}
-    enum BallColor {
+    public enum BallColor {
         GREEN,
         PURPLE,
         NOTHING
     }
-    //Thresholds for the ball color, available here for easy access
-    final int greenThreshold = 400;
-    final int purpleThreshold = 400;
+
+    //light thresh sets the minimum light for all values, diff thresh sets the minimum difference to properly detect a color.
+    private final int lightThresh = 50;
+    private final int diffThresh = 50;
 
     /**
-     * thresholds for the colors are set in ColourSensor
-     * @return BallColor ; can be PURPLE, GREEN, or NOTHING
+     * LightThresh and DiffThresh should be changed as necessary to properly tune the ability to detect the color
+     * @param currentTest
+     * @return a BallColor result used as a single sample to get a final BallColor
      */
-    public BallColor getBallColor (){
-        if (colorGreen() >= greenThreshold) {
-            return BallColor.GREEN;
-        } else if (((colorRed() + colorBlue()) / 2) >= purpleThreshold){
+    private BallColor detectBallColor(int currentTest){
+        int blue = sensor.blue();
+        int red = sensor.red();
+        int green = sensor.green();
+        int purple = (blue + red)/2;
+        if(lightThresh < green || lightThresh < red || lightThresh < blue){
+            return BallColor.NOTHING;
+        } else if (Math.abs(purple - green) < diffThresh){
+            return BallColor.NOTHING;
+        } else if (purple > green) {
             return BallColor.PURPLE;
         } else {
-            return BallColor.NOTHING;
+            return BallColor.GREEN;
         }
     }
+    public BallColor getColorGuess() {
+
+    }
+   public boolean isSure(){
+
+   }
+   public boolean isReady(){
+
+   }
 }
