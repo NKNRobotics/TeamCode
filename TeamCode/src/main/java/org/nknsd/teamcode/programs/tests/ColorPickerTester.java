@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.utility.ColorPicker;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
-import org.nknsd.teamcode.controlSchemes.reals.Default2PController;
+import org.nknsd.teamcode.controlSchemes.defaults.Generic2PControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
@@ -22,7 +22,7 @@ public class ColorPickerTester extends NKNProgram {
         ColorPicker colorPicker = new ColorPicker();
         components.add(colorPicker);
 
-        Default2PController controller = new Default2PController();
+        Generic2PControlScheme controller = new Generic2PControlScheme();
         controller.link(gamePadHandler);
         colorPicker.link(gamePadHandler, controller);
 

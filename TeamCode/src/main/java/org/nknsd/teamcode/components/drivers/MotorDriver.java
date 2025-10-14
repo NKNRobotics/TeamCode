@@ -1,4 +1,4 @@
-package org.nknsd.teamcode.components.handlers;
+package org.nknsd.teamcode.components.drivers;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -6,13 +6,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.feedbackcontroller.ControlLoop;
+import org.nknsd.teamcode.components.handlers.FlowHandler;
+import org.nknsd.teamcode.components.handlers.WheelHandler;
+import org.nknsd.teamcode.helperClasses.feedbackcontroller.ControlLoop;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MotorDriver implements NKNComponent {
 
     private final FlowHandler flowHandler;
-    private final MotorHandler motorHandler;
+    private final WheelHandler wheelHandler;
 
     private ControlLoop xControlLoop;
     public void setxControlLoop(ControlLoop xControlLoop) {
@@ -52,9 +54,9 @@ public class MotorDriver implements NKNComponent {
     }
 
 
-    public MotorDriver(FlowHandler flowHandler, MotorHandler motorHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
+    public MotorDriver(FlowHandler flowHandler, WheelHandler wheelHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
         this.flowHandler = flowHandler;
-        this.motorHandler = motorHandler;
+        this.wheelHandler = wheelHandler;
         this.xControlLoop = xControlLoop;
         this.yControlLoop = yControlLoop;
         this.hControlLoop = hControlLoop;
@@ -140,7 +142,7 @@ public class MotorDriver implements NKNComponent {
 
         getRelativeSpeeds(output, current.h);
 
-        motorHandler.setPowers(output.x, output.y, output.h);
+        wheelHandler.relativeVectorToMotion(output.x, output.y, output.h);
     }
 
     @Override

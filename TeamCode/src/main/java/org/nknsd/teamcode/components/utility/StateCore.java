@@ -1,4 +1,4 @@
-package org.nknsd.teamcode.components.handlers.statemachine;
+package org.nknsd.teamcode.components.utility;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StateMachine implements NKNComponent {
+public class StateCore implements NKNComponent {
 
 
     static public abstract class State {
         protected double startTime = -1;
-        protected StateMachine stateMachine;
+        protected StateCore stateCore;
         protected String name;
 
         protected abstract void run(ElapsedTime runtime, Telemetry telemetry);
@@ -77,7 +77,7 @@ public class StateMachine implements NKNComponent {
 
     public void addState(String name, State state) {
         stateMap.put(name, state);
-        state.stateMachine = this;
+        state.stateCore = this;
         state.name = name;
     }
 
@@ -100,7 +100,7 @@ public class StateMachine implements NKNComponent {
     }
 
     public void startAnonymous(State state){
-        state.stateMachine = this;
+        state.stateCore = this;
         state.name="anon_"+state.getClass().getSimpleName();
         runList.add(state);
     }

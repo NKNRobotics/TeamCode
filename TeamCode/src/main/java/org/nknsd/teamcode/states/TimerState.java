@@ -3,9 +3,9 @@ package org.nknsd.teamcode.states;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
-public class TimerState extends StateMachine.State {
+public class TimerState extends StateCore.State {
     String[] toStop;
     String[] toStart;
     double timerMS;
@@ -19,7 +19,7 @@ public class TimerState extends StateMachine.State {
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
         if (runtime.milliseconds() > (startTime + timerMS)) {
-            stateMachine.stopAnonymous(this);
+            stateCore.stopAnonymous(this);
         }
     }
 
@@ -31,10 +31,10 @@ public class TimerState extends StateMachine.State {
     @Override
     protected void stopped() {
         for (String stateName : this.toStop) {
-            stateMachine.stopState(stateName);
+            stateCore.stopState(stateName);
         }
         for (String stateName : this.toStart) {
-            stateMachine.startState(stateName);
+            stateCore.startState(stateName);
         }
     }
 }
