@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.FlowHandler;
-import org.nknsd.teamcode.components.handlers.MotorDriver;
-import org.nknsd.teamcode.components.handlers.WufSpotter;
+import org.nknsd.teamcode.components.drivers.MotorDriver;
+import org.nknsd.teamcode.components.sensors.WufSpotSensor;
 import org.nknsd.teamcode.components.utility.StateCore;
 
 public class WufHunter extends StateCore.State {
@@ -17,7 +17,7 @@ public class WufHunter extends StateCore.State {
     SparkFunOTOS.Pose2D targetPos = new SparkFunOTOS.Pose2D(0, 0, 0);
 
 
-    private final WufSpotter wufSpotter;
+    private final WufSpotSensor wufSpotSensor;
     final FlowHandler flowHandler;
     final MotorDriver motorDriver;
     final double targetDistToWuf;
@@ -25,8 +25,8 @@ public class WufHunter extends StateCore.State {
     private double lastNotReadyTime;
 
 
-    public WufHunter(WufSpotter wufSpotter, FlowHandler flowHandler, MotorDriver motorDriver, double targetDistToWuf) {
-        this.wufSpotter = wufSpotter;
+    public WufHunter(WufSpotSensor wufSpotSensor, FlowHandler flowHandler, MotorDriver motorDriver, double targetDistToWuf) {
+        this.wufSpotSensor = wufSpotSensor;
         this.flowHandler = flowHandler;
         this.motorDriver = motorDriver;
         this.targetDistToWuf = targetDistToWuf;
@@ -34,11 +34,11 @@ public class WufHunter extends StateCore.State {
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if (wufSpotter.doesWufExist()) {
+        if (wufSpotSensor.doesWufExist()) {
             SparkFunOTOS.Pose2D curPos = flowHandler.getPosition();
 
 
-            SparkFunOTOS.Pose2D wufPos = wufSpotter.getObjectPos();
+            SparkFunOTOS.Pose2D wufPos = wufSpotSensor.getObjectPos();
 
             double deltaX = wufPos.x - curPos.x;
             double deltaY = wufPos.y - curPos.y;
@@ -70,7 +70,7 @@ public class WufHunter extends StateCore.State {
             stateCore.startState(WufSpinner.STATE_NAME);
         } else if (runtime.milliseconds() - lastWufSeenTime > GIVE_UP_TIME / 3) {
             SparkFunOTOS.Pose2D curPos = flowHandler.getPosition();
-            SparkFunOTOS.Pose2D wufPos = wufSpotter.getObjectPos();
+            SparkFunOTOS.Pose2D wufPos = wufSpotSensor.getObjectPos();
             double deltaX = wufPos.x - curPos.x;
             double deltaY = wufPos.y - curPos.y;
             double dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);

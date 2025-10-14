@@ -1,4 +1,4 @@
-package org.nknsd.teamcode.components.handlers;
+package org.nknsd.teamcode.components.sensors;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -6,9 +6,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.drivers.MotorDriver;
+import org.nknsd.teamcode.components.handlers.FlowHandler;
+import org.nknsd.teamcode.components.handlers.VisionHandler;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
-public class WufSpotter implements NKNComponent {
+public class WufSpotSensor implements NKNComponent {
 
     boolean wufExist;
     double dist; // This is here so we can tele it
@@ -18,7 +21,7 @@ public class WufSpotter implements NKNComponent {
     final MotorDriver motorDriver;
     final FlowHandler flowHandler;
 
-    public WufSpotter(VisionHandler visionHandler, MotorDriver motorDriver, FlowHandler flowHandler) {
+    public WufSpotSensor(VisionHandler visionHandler, MotorDriver motorDriver, FlowHandler flowHandler) {
         this.visionHandler = visionHandler;
         this.motorDriver = motorDriver;
         this.flowHandler = flowHandler;

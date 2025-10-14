@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
-public class AprilTag implements NKNComponent {
+public class AprilTagSensor implements NKNComponent {
 
     Limelight3A limelight;
 

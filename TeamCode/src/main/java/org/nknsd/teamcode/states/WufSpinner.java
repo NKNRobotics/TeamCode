@@ -5,20 +5,20 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.FlowHandler;
-import org.nknsd.teamcode.components.handlers.MotorDriver;
-import org.nknsd.teamcode.components.handlers.WufSpotter;
+import org.nknsd.teamcode.components.drivers.MotorDriver;
+import org.nknsd.teamcode.components.sensors.WufSpotSensor;
 import org.nknsd.teamcode.components.utility.StateCore;
 
 public class WufSpinner extends StateCore.State {
 
     static public String STATE_NAME = "WUF_SPINNER";
 
-    final WufSpotter wufSpotter;
+    final WufSpotSensor wufSpotSensor;
     final MotorDriver motorDriver;
     final FlowHandler flowHandler;
 
-    public WufSpinner(WufSpotter wufSpotter, MotorDriver motorDriver, FlowHandler flowHandler) {
-        this.wufSpotter = wufSpotter;
+    public WufSpinner(WufSpotSensor wufSpotSensor, MotorDriver motorDriver, FlowHandler flowHandler) {
+        this.wufSpotSensor = wufSpotSensor;
         this.motorDriver = motorDriver;
         this.flowHandler = flowHandler;
     }
@@ -29,7 +29,7 @@ public class WufSpinner extends StateCore.State {
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if (wufSpotter.doesWufExist()) {
+        if (wufSpotSensor.doesWufExist()) {
             stateCore.stopAnonymous(this);
         }
 
