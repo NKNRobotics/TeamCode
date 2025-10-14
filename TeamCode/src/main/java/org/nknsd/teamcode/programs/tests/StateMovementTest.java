@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.handlers.FlowHandler;
 import org.nknsd.teamcode.components.handlers.MotorDriver;
-import org.nknsd.teamcode.components.handlers.MotorHandler;
+import org.nknsd.teamcode.components.handlers.WheelHandler;
 import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.helperClasses.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -21,8 +21,7 @@ public class StateMovementTest extends NKNProgram {
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         StateCore stateCore = new StateCore();
         FlowHandler flowHandler = new FlowHandler();
-        MotorHandler motorHandler = new MotorHandler();
-        motorHandler.setEnabled(true);
+        WheelHandler motorHandler = new WheelHandler();
 
         PidController xpController = new PidController(0.05, .75, 0.1, .25, true, 0.03, 0.3);
         PidController ypController = new PidController(0.06     , .75, 0.1, .25, true, 0.03, 0.3);

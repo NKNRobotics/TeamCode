@@ -12,7 +12,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class MotorDriver implements NKNComponent {
 
     private final FlowHandler flowHandler;
-    private final MotorHandler motorHandler;
+    private final WheelHandler wheelHandler;
 
     private ControlLoop xControlLoop;
     public void setxControlLoop(ControlLoop xControlLoop) {
@@ -52,9 +52,9 @@ public class MotorDriver implements NKNComponent {
     }
 
 
-    public MotorDriver(FlowHandler flowHandler, MotorHandler motorHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
+    public MotorDriver(FlowHandler flowHandler, WheelHandler wheelHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
         this.flowHandler = flowHandler;
-        this.motorHandler = motorHandler;
+        this.wheelHandler = wheelHandler;
         this.xControlLoop = xControlLoop;
         this.yControlLoop = yControlLoop;
         this.hControlLoop = hControlLoop;
@@ -140,7 +140,7 @@ public class MotorDriver implements NKNComponent {
 
         getRelativeSpeeds(output, current.h);
 
-        motorHandler.setPowers(output.x, output.y, output.h);
+        wheelHandler.relativeVectorToMotion(output.x, output.y, output.h);
     }
 
     @Override

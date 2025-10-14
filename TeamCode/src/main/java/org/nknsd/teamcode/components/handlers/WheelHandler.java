@@ -68,7 +68,7 @@ public class WheelHandler implements NKNComponent {
 
     // Key function of the class
     // Takes in x, y, and turning components of the vector, and converts them to power instructions for omni wheels
-    public void relativeVectorToMotion(double y, double x, double turning) {
+    public void relativeVectorToMotion(double x, double y, double turning) {
         relativeVectorToMotion(x, y, turning, 0);
     }
 
