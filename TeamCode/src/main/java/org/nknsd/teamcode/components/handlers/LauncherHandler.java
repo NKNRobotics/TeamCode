@@ -18,9 +18,9 @@ public class LauncherHandler implements NKNComponent {
     private double targetTps;
     private double currentTps;
     private int wMotorPositionPrevious;
-    private double previousRunTime;
+    private double previousRunTime = -1;
     private double ticks; // Idk what units ticks are in
-    private double pFactor = 0.0001;
+    private double pFactor = 0.00001;
     public void setTargetTps(int targetTps) {
        this.targetTps = targetTps;
     }
@@ -28,8 +28,8 @@ public class LauncherHandler implements NKNComponent {
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         wMotor = hardwareMap.dcMotor.get("wMotor");
-        wMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         wMotor.setPower(0);
+        wPower = 1;
         return true;
     }
 
@@ -55,11 +55,20 @@ public class LauncherHandler implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-
+        if (!enabled) {
+            wMotor.setPower(0);
+            //wPower = 0;
+            return;
+        }
+        if (previousRunTime == -1){
+            previousRunTime = runtime.seconds();
+            wMotorPositionPrevious = wMotor.getCurrentPosition();
+            return;
+        }
         double runTimeVar = runtime.seconds();
         double timeElapsed = runTimeVar - previousRunTime;
 
-        if (timeElapsed < 0.1){
+        if (timeElapsed < 0.05){
             return;
         }
 
@@ -69,7 +78,12 @@ public class LauncherHandler implements NKNComponent {
         ticks = Math.abs(wMotorPosition - wMotorPositionPrevious) ; // I don't know what ticks actually are
         currentTps = ticks / timeElapsed;
 
-        wPower = wPower + (pFactor*(targetTps - currentTps));
+        if ((targetTps*0.75)<currentTps){
+            if (currentTps < targetTps && wPower == 1){
+                wPower = .7;
+            }
+            wPower = wPower + (pFactor*(targetTps - currentTps));
+        }
 
         wMotorPositionPrevious = wMotorPosition;
         previousRunTime = runTimeVar;
@@ -92,5 +106,10 @@ public class LauncherHandler implements NKNComponent {
 
     public void setEnabled(boolean enabled){
         this.enabled = enabled;
+        if (enabled){
+            wPower = 1;
+        } else{
+            wPower = 0;
+        }
     }
 }
