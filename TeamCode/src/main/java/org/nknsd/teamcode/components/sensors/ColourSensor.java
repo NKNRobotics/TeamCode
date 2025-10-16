@@ -12,10 +12,11 @@ public class ColourSensor implements NKNComponent {
 
     private final String sensorName;
     private ColorSensor sensor;
-    private BallColor[] ballColorSamples;
     private int currentSample;
     private int maxSamples = 15;
     //xCount is used AFTER ballColorSamples have been completed to compare the values.
+    private BallColor[] ballColorSamples = new BallColor[maxSamples];
+
     private int greenCount;
     private int purpleCount;
     private int nothingCount;
@@ -50,27 +51,40 @@ public class ColourSensor implements NKNComponent {
     public String getName() {
         return "ColorSensor:" + sensorName;
     }
-
+    private double timeTemporary = 0;
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         if(currentSample == 0){
             timeNext = runtime.milliseconds();
         }
-        if ((maxSamples > currentSample) && (runtime.milliseconds() >= timeNext)) {
+        if ((currentSample < maxSamples) && (runtime.milliseconds() >= timeNext)) {
             ballColorSamples[currentSample] = detectBallColor(currentSample);
             currentSample++;
             timeNext = timeDelay + timeNext;
+        }
+        if(runtime.milliseconds() >= timeTemporary + 2000){
+            startSampling();
+            timeTemporary = runtime.milliseconds();
         }
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {telemetry.addData(sensorName + " hue", sensor.argb());
-        /*
-        telemetry.addData(sensorName + "light", sensor.alpha());
+
+        telemetry.addData(sensorName + " light", sensor.alpha());
         telemetry.addData(sensorName + " blueness", sensor.blue());
         telemetry.addData(sensorName + " redness", sensor.red());
         telemetry.addData(sensorName + " greenness", sensor.green());
-        */
+        telemetry.addData(sensorName + " detectedColor", getColorGuess());
+        telemetry.addData(sensorName + " 50% sure", isSure(50));
+        telemetry.addData(sensorName + " 70% sure", isSure(70));
+        telemetry.addData(sensorName + " 90% sure", isSure(90));
+        //temporaryTestingTelemetry
+        telemetry.addData(sensorName + "nothingCount", nothingCount);
+        telemetry.addData(sensorName + "greenCount", greenCount);
+        telemetry.addData(sensorName + "purpleCount", purpleCount);
+        telemetry.addData(sensorName + "currentSample", currentSample);
+
 
         telemetry.update();
     }
@@ -89,7 +103,7 @@ public class ColourSensor implements NKNComponent {
     }
 
     //light thresh sets the minimum light for all values, diff thresh sets the minimum difference to properly detect a color.
-    private final int lightThresh = 50;
+    private final int lightThresh = 20;
     private final int diffThresh = 50;
 
     /**
@@ -102,9 +116,9 @@ public class ColourSensor implements NKNComponent {
         int red = sensor.red();
         int green = sensor.green();
         int purple = (blue + red)/2;
-        if(lightThresh < green || lightThresh < red || lightThresh < blue){
+        if(lightThresh > green || lightThresh > red || lightThresh > blue){
             return BallColor.NOTHING;
-        } else if (Math.abs(purple - green) < diffThresh){
+        } else if (Math.abs(purple - green) > diffThresh){
             return BallColor.NOTHING;
         } else if (purple > green) {
             return BallColor.PURPLE;
@@ -118,20 +132,23 @@ public class ColourSensor implements NKNComponent {
      * @return BallColor value that appears most in the ballColorSamples array
      */
     public BallColor getColorGuess() {
-        for(BallColor color : ballColorSamples){
-            switch (color) {
-                case NOTHING:
-                    nothingCount++;
-                    break;
+        nothingCount = greenCount = purpleCount = 0;
+        if(isReady()) {
+            for (BallColor color : ballColorSamples) {
+                switch (color) {
+                    case NOTHING:
+                        nothingCount++;
+                        break;
 
-                case GREEN:
-                    greenCount++;
-                    break;
+                    case GREEN:
+                        greenCount++;
+                        break;
 
-                case PURPLE:
-                    purpleCount++;
-                    break;
+                    case PURPLE:
+                        purpleCount++;
+                        break;
 
+                }
             }
         }
 
@@ -148,7 +165,7 @@ public class ColourSensor implements NKNComponent {
     /**
      * Sets the ColourSensor up so it can start sampling colors
      */
-    public void StartSampling(){
+    public void startSampling(){
         currentSample = 0;
         greenCount = 0;
         purpleCount = 0;
