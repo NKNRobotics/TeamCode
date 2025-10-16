@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.controlSchemes.abstracts.Generic2PControlScheme;
+import org.nknsd.teamcode.controlSchemes.defaults.Generic2PControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class ColorPicker implements NKNComponent {

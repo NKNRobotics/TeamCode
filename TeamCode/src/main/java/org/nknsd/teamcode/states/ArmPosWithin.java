@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.RailHandler;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 
-public class ArmPosWithin extends StateMachine.State {
+public class ArmPosWithin extends StateCore.State {
 
     final String[] toStop;
     final String[] toStart;
@@ -32,12 +32,13 @@ public class ArmPosWithin extends StateMachine.State {
 
     private boolean isWithin(int current, int target) {
         int delta = target - current;
-        if (goForward && delta <= 0)
+        if (goForward && delta <= 0) {
             return true;
-        else return !goForward && delta >= 0;
+        } else {
+            return !goForward && delta >= 0;
+        }
 
     }
-
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
@@ -50,7 +51,7 @@ public class ArmPosWithin extends StateMachine.State {
         railHandler.setMotorSpeed(rSpeed);
 
         if (isWithin(rMotorPos, target) && isWithin(lMotorPos, target)) {
-            stateMachine.stopState(name);
+            stateCore.stopState(name);
         }
     }
 
@@ -64,10 +65,10 @@ public class ArmPosWithin extends StateMachine.State {
     @Override
     protected void stopped() {
         for (String stateName : this.toStop) {
-            stateMachine.stopState(stateName);
+            stateCore.stopState(stateName);
         }
         for (String stateName : this.toStart) {
-            stateMachine.startState(stateName);
+            stateCore.startState(stateName);
         }
     }
 }

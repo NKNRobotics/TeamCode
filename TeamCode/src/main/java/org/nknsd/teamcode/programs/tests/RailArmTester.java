@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.RailHandler;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 import org.nknsd.teamcode.states.ArmPosWithin;
@@ -15,7 +15,7 @@ import java.util.List;
 @TeleOp(name = "Rail Arm Tester", group = "Tests")
 public class RailArmTester extends NKNProgram {
 
-    class Move extends StateMachine.State {
+    class Move extends StateCore.State {
 
         double speed;
 
@@ -44,18 +44,18 @@ public class RailArmTester extends NKNProgram {
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
-        StateMachine stateMachine = new StateMachine();
-        components.add(stateMachine);
-        telemetryEnabled.add(stateMachine);
+        StateCore stateCore = new StateCore();
+        components.add(stateCore);
+        telemetryEnabled.add(stateCore);
 
         RailHandler railHandler = new RailHandler();
         components.add(railHandler);
         telemetryEnabled.add(railHandler);
 
-        stateMachine.addState("extend", new ArmPosWithin(railHandler, 450, new String[]{"retract"}, new String[]{}, 3, 0.7));
+        stateCore.addState("extend", new ArmPosWithin(railHandler, 450, new String[]{"retract"}, new String[]{}, 3, 0.7));
 //        stateMachine.addState("middle", new ArmPosWithin(railHandler,450,new String[]{"extend"}, new String[]{}));
-        stateMachine.addState("retract", new ArmPosWithin(railHandler, 0, new String[]{"extend"}, new String[]{}, 3,0.7));
-        stateMachine.startState("extend");
+        stateCore.addState("retract", new ArmPosWithin(railHandler, 0, new String[]{"extend"}, new String[]{}, 3,0.7));
+        stateCore.startState("extend");
 
 //        stateMachine.addState("f", new Move(railHandler,0.7));
 //        stateMachine.addState("b", new Move(railHandler, -0.7));
