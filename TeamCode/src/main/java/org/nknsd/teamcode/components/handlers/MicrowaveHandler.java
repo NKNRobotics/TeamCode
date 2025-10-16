@@ -26,10 +26,26 @@ public class MicrowaveHandler implements NKNComponent {
             this.microPosition = microPosition;
         }
     }
+
+    // Remove or make this private, probably
     public boolean setState(MicroState state) {
         servo.setPosition(state.microPosition);
         return true;
     }
+
+    public void prepLoad() {
+
+    }
+
+    public void prepFirePurple() {
+        // until proper color sensor implementation, just pick a slot that has a ball and fire that
+    }
+
+    public void prepFireGreen() {
+        // for now, until proper color sensor implementation, just do the same as prepFirePurple()
+        prepFirePurple();
+    }
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         hardwareMap.servo.get(servoName);
