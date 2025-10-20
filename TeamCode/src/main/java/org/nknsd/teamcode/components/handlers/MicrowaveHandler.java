@@ -6,21 +6,25 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.sensors.ColourSensor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MicrowaveHandler implements NKNComponent {
+    private ColourSensor colourSensor;
     final private String servoName;
+    private MicroState servoState;
     public MicrowaveHandler(String servoName){
         this.servoName = servoName;
     }
     Servo servo;
+    ColourSensor.BallColor[] slotColors = new ColourSensor.BallColor[3];
     enum MicroState {
-        LOAD1(-1),
-        LOAD2(-0.3),
-        LOAD3(0.4),
-        FIRE1(0.05),
-        FIRE2(0.75),
-        FIRE3(-0.95);
+        LOAD0(-1),
+        LOAD1(-0.3),
+        LOAD2(0.4),
+        FIRE0(0.05),
+        FIRE1(0.75),
+        FIRE2(-0.95);
         public final double microPosition;
         MicroState(double microPosition){
             this.microPosition = microPosition;
@@ -28,17 +32,38 @@ public class MicrowaveHandler implements NKNComponent {
     }
 
     // Remove or make this private, probably
-    public boolean setState(MicroState state) {
+    private void setState(MicroState state) {
         servo.setPosition(state.microPosition);
-        return true;
+        servoState = state;
     }
-
+    public void findIntakeColour(ColourSensor.BallColor color){
+        if (servoState.ordinal() < 3) {
+            slotColors[servoState.ordinal()] = color;
+        }
+    }
     public void prepLoad() {
-
+        int i = 0;
+        boolean foundState = false;
+        while( i < 3 || !foundState){
+            if(slotColors[i] == ColourSensor.BallColor.NOTHING){
+                setState(MicroState.values()[i]);
+                foundState = true;
+            }
+            i++;
+        }
     }
 
     public void prepFirePurple() {
         // until proper color sensor implementation, just pick a slot that has a ball and fire that
+        int i = 0;
+        boolean foundState = false;
+        while( i < 3 || !foundState){
+            if(slotColors[i] == ColourSensor.BallColor.GREEN || slotColors[i] == ColourSensor.BallColor.PURPLE){
+                setState(MicroState.values()[i]);
+                foundState = true;
+            }
+            i++;
+        }
     }
 
     public void prepFireGreen() {
@@ -49,7 +74,6 @@ public class MicrowaveHandler implements NKNComponent {
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         hardwareMap.servo.get(servoName);
-        servo.setPosition(MicroState.LOAD1.microPosition);
         return true;
     }
 
@@ -60,7 +84,7 @@ public class MicrowaveHandler implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-
+        setState(MicroState.LOAD0);
     }
 
     @Override
@@ -70,7 +94,7 @@ public class MicrowaveHandler implements NKNComponent {
 
     @Override
     public String getName() {
-        return "";
+        return "MicrowaveHandler";
     }
 
     @Override
@@ -81,5 +105,8 @@ public class MicrowaveHandler implements NKNComponent {
     @Override
     public void doTelemetry(Telemetry telemetry) {
 
+    }
+    public void link(ColourSensor colourSensor){
+        this.colourSensor = colourSensor;
     }
 }
