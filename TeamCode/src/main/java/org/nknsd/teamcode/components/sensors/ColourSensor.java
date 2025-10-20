@@ -54,17 +54,23 @@ public class ColourSensor implements NKNComponent {
     private double timeTemporary = 0;
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        if(currentSample == 0){
-            timeNext = runtime.milliseconds();
-        }
-        if ((currentSample < maxSamples) && (runtime.milliseconds() >= timeNext)) {
-            ballColorSamples[currentSample] = detectBallColor(currentSample);
-            currentSample++;
-            timeNext = timeDelay + timeNext;
-        }
-        if(runtime.milliseconds() >= timeTemporary + 2000){
-            startSampling();
-            timeTemporary = runtime.milliseconds();
+        BallColor color = BallColor.NOTHING; //setting it to nothing ensures that if it
+        if(currentSample < maxSamples) {
+            color = detectBallColor(currentSample);
+            if (currentSample == 0) {
+                if (color != BallColor.NOTHING) {
+                    timeNext = runtime.milliseconds();
+                }
+            }
+            if (runtime.milliseconds() >= timeNext) {
+                ballColorSamples[currentSample] = color;
+                currentSample++;
+                timeNext = timeDelay + timeNext;
+            }
+            if (runtime.milliseconds() >= timeTemporary + 10000) {
+                startSampling();
+                timeTemporary = runtime.milliseconds();
+            }
         }
     }
 
