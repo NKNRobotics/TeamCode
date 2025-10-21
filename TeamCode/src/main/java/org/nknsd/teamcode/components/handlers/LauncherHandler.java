@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -12,6 +13,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class LauncherHandler implements NKNComponent {
 
     private DcMotor wMotor;
+    private Servo scoopServo;
     private boolean enabled;
     private double wPower;
 
@@ -21,15 +23,16 @@ public class LauncherHandler implements NKNComponent {
     private double previousRunTime = -1;
     private double ticks; // Idk what units ticks are in
     private double pFactor = 0.00001;
-    public void setTargetTps(int targetTps) {
+    public void setTargetTps(double targetTps) {
        this.targetTps = targetTps;
     }
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         wMotor = hardwareMap.dcMotor.get("wMotor");
+        scoopServo = hardwareMap.servo.get("scoop");
         wMotor.setPower(0);
-        wPower = 1;
+        wPower = 1; // initial wPower is set to 1 so that the speed up is more aggressive initially
         return true;
     }
 
@@ -111,5 +114,21 @@ public class LauncherHandler implements NKNComponent {
         } else{
             wPower = 0;
         }
+    }
+
+    public boolean isScoopInLaunchPosition() {
+        return scoopServo.getPosition() == 1;
+    }
+
+    /**
+     * Controls the servo, allowing for the launching or defaulting of the scoop servo.
+     * @param launch = If true, sets the scoop to the launch position. If false, resets the scoop.
+     */
+    public void setScoopToLaunch(boolean launch) {
+        scoopServo.setPosition(launch ? 1 : 0);
+    }
+
+    public double getCurrentTps() {
+        return currentTps;
     }
 }
