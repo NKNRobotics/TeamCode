@@ -82,7 +82,7 @@ public class MicrowaveHandler implements NKNComponent {
     }
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        hardwareMap.servo.get(servoName);
+        servo = hardwareMap.servo.get(servoName);
         return true;
     }
 
