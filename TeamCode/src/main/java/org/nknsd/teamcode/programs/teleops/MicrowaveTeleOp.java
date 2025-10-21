@@ -1,15 +1,19 @@
 package org.nknsd.teamcode.programs.teleops;
 
+import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
 import org.nknsd.teamcode.components.drivers.WheelDriver;
+import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
+import org.nknsd.teamcode.components.sensors.ColourSensor;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-public class BasicTeleOp extends NKNProgram {
+public class MicrowaveTeleOp extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         WheelHandler wheelHandler = new WheelHandler();
@@ -23,5 +27,19 @@ public class BasicTeleOp extends NKNProgram {
 
         WheelControlScheme wheelControlScheme = new WheelControlScheme();
         wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);
+
+        //setup for the microwave
+//        ColourSensor colourSensor = new ColourSensor("ColorSensor");
+//        components.add(colourSensor);
+
+        MicrowaveHandler microwaveHandler = new MicrowaveHandler("Spin");
+//        microwaveHandler.link(colourSensor);
+        components.add(microwaveHandler);
+
+        MicrowaveDriver microwaveDriver = new MicrowaveDriver();
+        components.add(microwaveHandler);
+
+        MicrowaveControlScheme microwaveControlScheme = new MicrowaveControlScheme();
+        microwaveDriver.link(gamePadHandler, microwaveHandler, microwaveControlScheme);
     }
 }

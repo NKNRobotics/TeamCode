@@ -35,6 +35,42 @@ public class MicrowaveDriver implements NKNComponent {
             microwaveHandler.prepFireGreen();
         }
     };
+    Runnable fireOne = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.fireOne();
+        }
+    };
+    Runnable fireTwo = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.fireTwo();
+        }
+    };
+    Runnable fireThree = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.fireThree();
+        }
+    };
+    Runnable intakeOne = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.intakeOne();
+        }
+    };
+    Runnable intakeTwo = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.intakeOne();
+        }
+    };
+    Runnable intakeThree = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.intakeOne();
+        }
+    };
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
