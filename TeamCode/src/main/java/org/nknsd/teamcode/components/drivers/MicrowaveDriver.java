@@ -35,6 +35,42 @@ public class MicrowaveDriver implements NKNComponent {
             microwaveHandler.prepFireGreen();
         }
     };
+    Runnable fireOne = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.fireOne();
+        }
+    };
+    Runnable fireTwo = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.fireTwo();
+        }
+    };
+    Runnable fireThree = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.fireThree();
+        }
+    };
+    Runnable intakeOne = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.intakeOne();
+        }
+    };
+    Runnable intakeTwo = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.intakeOne();
+        }
+    };
+    Runnable intakeThree = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.intakeOne();
+        }
+    };
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
@@ -48,9 +84,16 @@ public class MicrowaveDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        gamePadHandler.addListener(controlScheme.loadBall(), loadBall, "Bring to loading pos");
-        gamePadHandler.addListener(controlScheme.firePurple(), firePurple, "Bring to firing pos (purple)");
-        gamePadHandler.addListener(controlScheme.fireGreen(), fireGreen, "Bring to firing pos (green)");
+//        gamePadHandler.addListener(controlScheme.loadBall(), loadBall, "Bring to loading pos");
+//        gamePadHandler.addListener(controlScheme.firePurple(), firePurple, "Bring to firing pos (purple)");
+//        gamePadHandler.addListener(controlScheme.fireGreen(), fireGreen, "Bring to firing pos (green)");
+
+        gamePadHandler.addListener(controlScheme.load1(), intakeOne, "intakeOne");
+        gamePadHandler.addListener(controlScheme.load2(), intakeTwo, "intakeTwo");
+        gamePadHandler.addListener(controlScheme.load3(), intakeThree, "intakeThree");
+        gamePadHandler.addListener(controlScheme.fire1(), fireOne, "fireOne");
+        gamePadHandler.addListener(controlScheme.fire2(), fireTwo, "fireTwo");
+        gamePadHandler.addListener(controlScheme.fire3(), fireThree, "fireThree");
     }
 
     @Override

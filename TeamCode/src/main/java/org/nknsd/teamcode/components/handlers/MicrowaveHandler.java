@@ -55,22 +55,31 @@ public class MicrowaveHandler implements NKNComponent {
 
     public void prepFirePurple() {
         // until proper color sensor implementation, just pick a slot that has a ball and fire that
-        int i = 0;
-        boolean foundState = false;
-        while( i < 3 || !foundState){
-            if(slotColors[i] == ColourSensor.BallColor.GREEN || slotColors[i] == ColourSensor.BallColor.PURPLE){
-                setState(MicroState.values()[i]);
-                foundState = true;
-            }
-            i++;
-        }
+
     }
 
     public void prepFireGreen() {
         // for now, until proper color sensor implementation, just do the same as prepFirePurple()
         prepFirePurple();
     }
-
+    public void fireOne() {
+        setState(MicroState.FIRE0);
+    }
+    public void fireTwo() {
+        setState(MicroState.FIRE1);
+    }
+    public void fireThree() {
+        setState(MicroState.FIRE2);
+    }
+    public void intakeOne() {
+        setState(MicroState.LOAD0);
+    }
+    public void intakeTwo() {
+        setState(MicroState.LOAD1);
+    }
+    public void intakeThree() {
+        setState(MicroState.LOAD2);
+    }
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         hardwareMap.servo.get(servoName);
