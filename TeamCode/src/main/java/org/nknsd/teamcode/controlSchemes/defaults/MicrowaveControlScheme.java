@@ -38,4 +38,28 @@ public class MicrowaveControlScheme extends NKNControlScheme {
     public Callable<Boolean> fireGreen() {
         return () -> GamePadHandler.GamepadButtons.DPAD_RIGHT.detect(gamePadHandler.getGamePad2());
     }
+
+    public Callable<Boolean> fire1() {
+        return () -> GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2());
+    }
+
+    public Callable<Boolean> fire2() {
+        return () -> GamePadHandler.GamepadButtons.A.detect(gamePadHandler.getGamePad2());
+    }
+
+    public Callable<Boolean> fire3() {
+        return () -> GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2());
+    }
+
+    public Callable<Boolean> load1() {
+        return () -> GamePadHandler.GamepadButtons.DPAD_LEFT.detect(gamePadHandler.getGamePad2());
+    }
+
+    public Callable<Boolean> load2() {
+        return () -> GamePadHandler.GamepadButtons.DPAD_DOWN.detect(gamePadHandler.getGamePad2());
+    }
+
+    public Callable<Boolean> load3() {
+        return () -> GamePadHandler.GamepadButtons.DPAD_RIGHT.detect(gamePadHandler.getGamePad2());
+    }
 }

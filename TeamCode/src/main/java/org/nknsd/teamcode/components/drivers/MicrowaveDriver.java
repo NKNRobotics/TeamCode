@@ -84,9 +84,16 @@ public class MicrowaveDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        gamePadHandler.addListener(controlScheme.loadBall(), loadBall, "Bring to loading pos");
-        gamePadHandler.addListener(controlScheme.firePurple(), firePurple, "Bring to firing pos (purple)");
-        gamePadHandler.addListener(controlScheme.fireGreen(), fireGreen, "Bring to firing pos (green)");
+//        gamePadHandler.addListener(controlScheme.loadBall(), loadBall, "Bring to loading pos");
+//        gamePadHandler.addListener(controlScheme.firePurple(), firePurple, "Bring to firing pos (purple)");
+//        gamePadHandler.addListener(controlScheme.fireGreen(), fireGreen, "Bring to firing pos (green)");
+
+        gamePadHandler.addListener(controlScheme.load1(), intakeOne, "intakeOne");
+        gamePadHandler.addListener(controlScheme.load2(), intakeTwo, "intakeTwo");
+        gamePadHandler.addListener(controlScheme.load3(), intakeThree, "intakeThree");
+        gamePadHandler.addListener(controlScheme.fire1(), fireOne, "fireOne");
+        gamePadHandler.addListener(controlScheme.fire2(), fireTwo, "fireTwo");
+        gamePadHandler.addListener(controlScheme.fire3(), fireThree, "fireThree");
     }
 
     @Override
