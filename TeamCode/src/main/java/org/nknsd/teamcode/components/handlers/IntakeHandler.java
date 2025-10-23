@@ -1,23 +1,26 @@
 package org.nknsd.teamcode.components.handlers;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class IntakeHandler implements NKNComponent {
-    CRServo spinner;
+    CRServoImplEx spinner;
     private TimedControlFlags timingFlag; // flags that allow delayed control over the intake
     private double timeToDisable = -1;
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        spinner = hardwareMap.crservo.get("Intake");
+        spinner = hardwareMap.get(CRServoImplEx.class, "Intake");
         spinner.setDirection(DcMotorSimple.Direction.REVERSE);
+        spinner.setPwmRange(new PwmControl.PwmRange(600, 2400)); // currently default, can be changed if needed
         return true;
     }
 
