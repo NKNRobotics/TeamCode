@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.handlers.IntakeHandler;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -12,14 +13,22 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class IntakeDriver implements NKNComponent {
     private GamePadHandler gamePadHandler;
     private IntakeHandler intakeHandler;
-    private MicrowaveControlScheme microwaveControlScheme;
+    private MicrowaveControlScheme controlScheme;
 
-    Runnable toggleIntake = new Runnable(){
+    Runnable startIntakeSpin = new Runnable(){
         @Override
         public void run() {
-            intakeHandler.toggleIntake();
+            intakeHandler.toggleIntake(true);
         }
-    }
+    };
+    Runnable stopIntakeSpin = new Runnable() {
+        @Override
+        public void run() {
+            intakeHandler.toggleIntake(false);
+        }
+    };
+
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         return true;
@@ -32,7 +41,8 @@ public class IntakeDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-
+        gamePadHandler.addListener(controlScheme.startIntake(), startIntakeSpin, "startIntakeSpin");
+        gamePadHandler.addListener(controlScheme.stopIntake(), stopIntakeSpin, "stopIntakeSpin");
     }
 
     @Override
@@ -42,7 +52,7 @@ public class IntakeDriver implements NKNComponent {
 
     @Override
     public String getName() {
-        return "";
+        return "IntakeDriver";
     }
 
     @Override
@@ -53,5 +63,10 @@ public class IntakeDriver implements NKNComponent {
     @Override
     public void doTelemetry(Telemetry telemetry) {
 
+    }
+    public void link(GamePadHandler gamePadHandler, IntakeHandler intakeHandler, MicrowaveControlScheme controlScheme) {
+        this.gamePadHandler = gamePadHandler;
+        this.intakeHandler = intakeHandler;
+        this.controlScheme = controlScheme;
     }
 }

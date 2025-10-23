@@ -62,4 +62,50 @@ public class MicrowaveControlScheme extends NKNControlScheme {
     public Callable<Boolean> load3() {
         return () -> GamePadHandler.GamepadButtons.DPAD_RIGHT.detect(gamePadHandler.getGamePad2());
     }
+    private boolean intakeIsSpinning = false;
+    private boolean delayIntakeButtonCheck = false;
+    public Callable<Boolean> startIntake() {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                if(intakeIsSpinning){
+                    return false;
+                }
+                boolean button = GamePadHandler.GamepadButtons.RIGHT_BUMPER.detect(gamePadHandler.getGamePad2());
+
+                if (button && !delayIntakeButtonCheck) {
+                    delayIntakeButtonCheck = true;
+                    intakeIsSpinning = true;
+                    return true;
+                }
+                else if (!button) {
+                    delayIntakeButtonCheck = false;
+                }
+
+                return false;
+            }
+        };
+    }
+    public Callable<Boolean> stopIntake() {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                if(!intakeIsSpinning){
+                    return false;
+                }
+                boolean button = GamePadHandler.GamepadButtons.RIGHT_BUMPER.detect(gamePadHandler.getGamePad2());
+
+                if (button && !delayIntakeButtonCheck) {
+                    delayIntakeButtonCheck = true;
+                    intakeIsSpinning = false;
+                    return true;
+                }
+                else if (!button) {
+                    delayIntakeButtonCheck = false;
+                }
+
+                return false;
+            }
+        };
+    }
 }
