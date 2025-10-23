@@ -1,5 +1,7 @@
 package org.nknsd.teamcode.programs.teleops;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
 import org.nknsd.teamcode.components.drivers.WheelDriver;
 import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
@@ -12,7 +14,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
-
+@TeleOp (name = "MicrowaveTeleOp")
 public class MicrowaveTeleOp extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {

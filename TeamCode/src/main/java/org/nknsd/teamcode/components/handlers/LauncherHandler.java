@@ -29,8 +29,8 @@ public class LauncherHandler implements NKNComponent {
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        wMotor = hardwareMap.dcMotor.get("wMotor");
-        scoopServo = hardwareMap.servo.get("scoop");
+        wMotor = hardwareMap.dcMotor.get("LM");
+        scoopServo = hardwareMap.servo.get("Scoop");
         wMotor.setPower(0);
         wPower = 1; // initial wPower is set to 1 so that the speed up is more aggressive initially
         return true;
@@ -105,6 +105,7 @@ public class LauncherHandler implements NKNComponent {
         telemetry.addData("wPower", wPower);
         telemetry.addData("currentTps", currentTps);
         telemetry.addData("targetTps", targetTps);
+        telemetry.update();
     }
 
     public void setEnabled(boolean enabled){

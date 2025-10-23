@@ -11,7 +11,7 @@ import org.nknsd.teamcode.states.ArmPosWithin;
 
 import java.util.List;
 
-@TeleOp(name = "Launcher Tester", group = "Tests")
+@TeleOp(name = "Launcher Speed Tester", group = "Tests")
 public class WheelSpeedTester extends NKNProgram {
 
     @Override
@@ -26,7 +26,7 @@ public class WheelSpeedTester extends NKNProgram {
         telemetryEnabled.add(launcherHandler);
 
         launcherHandler.setEnabled(true);
-        launcherHandler.setTargetTps(1800);
+        launcherHandler.setTargetTps(2800);
 
     }
 }
