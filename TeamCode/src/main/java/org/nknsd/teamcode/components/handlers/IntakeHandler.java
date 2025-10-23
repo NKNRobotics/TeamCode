@@ -1,16 +1,19 @@
 package org.nknsd.teamcode.components.handlers;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.internal.webserver.websockets.CommandNotImplementedException;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class IntakeHandler implements NKNComponent {
+    CRServo spinner;
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
+        spinner = hardwareMap.crservo.get("Spin");
         return true;
     }
 
@@ -31,7 +34,7 @@ public class IntakeHandler implements NKNComponent {
 
     @Override
     public String getName() {
-        return "";
+        return "IntakeHandler";
     }
 
     @Override
@@ -41,14 +44,14 @@ public class IntakeHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-
+        telemetry.addData("Intake Spinner Speed: ", spinner.getPower());
     }
 
     public void toggleIntake(boolean startSpinning) {
-
+        spinner.setPower(startSpinning ? 1 : 0);
     }
 
     public boolean isSpinning() {
-        return false;
+        return spinner.getPower() != 0;
     }
 }
