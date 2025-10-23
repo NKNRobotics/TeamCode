@@ -18,12 +18,12 @@ public class MicrowaveHandler implements NKNComponent {
     private IntakeHandler intakeHandler;
 
     enum MicroState {
-        LOAD0(0.25),
-        LOAD1(0.6),
-        LOAD2(0.95),
-        FIRE0(0.05),
-        FIRE1(0.8),
-        FIRE2(0.35);
+        LOAD0(0.22),
+        LOAD1(0.61),
+        LOAD2(0.99),
+        FIRE0(0.8),
+        FIRE1(0.03),
+        FIRE2(0.42);
         public final double microPosition;
         MicroState(double microPosition){
             this.microPosition = microPosition;
