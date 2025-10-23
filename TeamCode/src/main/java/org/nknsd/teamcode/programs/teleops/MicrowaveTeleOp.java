@@ -28,6 +28,7 @@ public class MicrowaveTeleOp extends NKNProgram {
         components.add(wheelDriver);
 
         WheelControlScheme wheelControlScheme = new WheelControlScheme();
+        wheelControlScheme.link(gamePadHandler);
         wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);
 
         //setup for the microwave
@@ -43,5 +44,6 @@ public class MicrowaveTeleOp extends NKNProgram {
 
         MicrowaveControlScheme microwaveControlScheme = new MicrowaveControlScheme();
         microwaveDriver.link(gamePadHandler, microwaveHandler, microwaveControlScheme);
+        microwaveControlScheme.link(gamePadHandler);
     }
 }

@@ -28,18 +28,18 @@ public class LauncherTest extends NKNProgram {
         telemetryEnabled.add(gamePadHandler);
 
         // Wheel Handler
-        //WheelHandler wheelHandler = new WheelHandler();
-        //components.add(wheelHandler);
+        WheelHandler wheelHandler = new WheelHandler();
+        components.add(wheelHandler);
         //telemetryEnabled.add(wheelHandler);
 
-        //WheelControlScheme wheelController = new WheelControlScheme();
-        //wheelController.link(gamePadHandler);
+        WheelControlScheme wheelController = new WheelControlScheme();
+        wheelController.link(gamePadHandler);
 
         // Wheel Driver
-        //WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
-        //components.add(wheelDriver);
+        WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
+        components.add(wheelDriver);
         //telemetryEnabled.add(wheelDriver);
-        //wheelDriver.link(gamePadHandler, wheelHandler, wheelController);
+        wheelDriver.link(gamePadHandler, wheelHandler, wheelController);
 
         // Launcher Handler
         LauncherHandler launcherHandler = new LauncherHandler();
@@ -52,5 +52,8 @@ public class LauncherTest extends NKNProgram {
         // Link
         LauncherControlScheme launcherControlScheme = new LauncherControlScheme();
         launcherDriver.link(gamePadHandler, launcherHandler, launcherControlScheme);
+
+        wheelController.link(gamePadHandler);
+        launcherControlScheme.link(gamePadHandler);
     }
 }
