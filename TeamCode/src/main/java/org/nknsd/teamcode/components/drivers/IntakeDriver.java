@@ -19,12 +19,14 @@ public class IntakeDriver implements NKNComponent {
         @Override
         public void run() {
             intakeHandler.toggleIntake(true);
+            intakeHandler.setDontDisableFlag();
         }
     };
     Runnable stopIntakeSpin = new Runnable() {
         @Override
         public void run() {
             intakeHandler.toggleIntake(false);
+            intakeHandler.releaseDontDisableFlag();
         }
     };
 

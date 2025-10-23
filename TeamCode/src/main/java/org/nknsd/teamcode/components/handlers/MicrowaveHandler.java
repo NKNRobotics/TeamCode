@@ -15,6 +15,8 @@ public class MicrowaveHandler implements NKNComponent {
     private MicroState servoState;
     Servo servo;
     ColourSensor.BallColor[] slotColors = new ColourSensor.BallColor[3];
+    private IntakeHandler intakeHandler;
+
     enum MicroState {
         LOAD0(0.25),
         LOAD1(0.6),
@@ -28,10 +30,14 @@ public class MicrowaveHandler implements NKNComponent {
         }
     }
 
-    // Remove or make this private, probably
     private void setState(MicroState state) {
         servo.setPosition(state.microPosition);
         servoState = state;
+
+        if (intakeHandler != null) {
+            intakeHandler.toggleIntake(true);
+            intakeHandler.setDisableFlag();
+        }
     }
     public void findIntakeColour(ColourSensor.BallColor color){
         if (servoState.ordinal() < 3) {
@@ -114,5 +120,9 @@ public class MicrowaveHandler implements NKNComponent {
     }
     public void link(ColourSensor colourSensor){
         this.colourSensor = colourSensor;
+    }
+
+    public void link(IntakeHandler intakeHandler) {
+        this.intakeHandler = intakeHandler;
     }
 }
