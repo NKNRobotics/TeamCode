@@ -76,6 +76,7 @@ public class BasicTeleOp extends NKNProgram {
         // LINK
 //        microwaveHandler.link(colourSensor);
         microwaveHandler.link(intakeHandler);
+        microwaveHandler.link(launcherHandler);
 
         wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);
         microwaveDriver.link(gamePadHandler, microwaveHandler, microwaveControlScheme);
