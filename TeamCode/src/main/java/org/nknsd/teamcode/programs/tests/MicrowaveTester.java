@@ -75,7 +75,7 @@ public class MicrowaveTester extends NKNProgram {
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
 
 
-        MicrowaveHandler microwaveHandler = new MicrowaveHandler("Spin");
+        MicrowaveHandler microwaveHandler = new MicrowaveHandler();
         components.add(microwaveHandler);
 
         MicrowaveDriver microwaveDriver = new MicrowaveDriver();

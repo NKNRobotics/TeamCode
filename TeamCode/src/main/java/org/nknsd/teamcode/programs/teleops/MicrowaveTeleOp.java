@@ -23,6 +23,7 @@ public class MicrowaveTeleOp extends NKNProgram {
         // SPECIAL
         GamePadHandler gamePadHandler = new GamePadHandler();
         components.add(gamePadHandler);
+        telemetryEnabled.add(gamePadHandler);
 
 
         // WHEELS
@@ -39,11 +40,11 @@ public class MicrowaveTeleOp extends NKNProgram {
 
 
         // MICROWAVE
-        MicrowaveHandler microwaveHandler = new MicrowaveHandler("Spin");
+        MicrowaveHandler microwaveHandler = new MicrowaveHandler();
         components.add(microwaveHandler);
 
         MicrowaveDriver microwaveDriver = new MicrowaveDriver();
-        components.add(microwaveHandler);
+        components.add(microwaveDriver);
 
 
         // INTAKE

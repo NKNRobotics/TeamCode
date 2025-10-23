@@ -11,20 +11,17 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MicrowaveHandler implements NKNComponent {
     private ColourSensor colourSensor;
-    final private String servoName;
+    final private String servoName = "Spin";
     private MicroState servoState;
-    public MicrowaveHandler(String servoName){
-        this.servoName = servoName;
-    }
     Servo servo;
     ColourSensor.BallColor[] slotColors = new ColourSensor.BallColor[3];
     enum MicroState {
-        LOAD0(-1),
-        LOAD1(-0.3),
-        LOAD2(0.4),
+        LOAD0(0.25),
+        LOAD1(0.6),
+        LOAD2(0.95),
         FIRE0(0.05),
-        FIRE1(0.75),
-        FIRE2(-0.95);
+        FIRE1(0.8),
+        FIRE2(0.35);
         public final double microPosition;
         MicroState(double microPosition){
             this.microPosition = microPosition;

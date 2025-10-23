@@ -62,14 +62,12 @@ public class MicrowaveDriver implements NKNComponent {
     Runnable intakeTwo = new Runnable() {
         @Override
         public void run() {
-            microwaveHandler.intakeOne();
+            microwaveHandler.intakeTwo();
         }
     };
     Runnable intakeThree = new Runnable() {
         @Override
-        public void run() {
-            microwaveHandler.intakeOne();
-        }
+        public void run() {microwaveHandler.intakeThree();}
     };
 
     @Override

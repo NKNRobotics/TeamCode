@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.components.handlers;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -13,7 +14,8 @@ public class IntakeHandler implements NKNComponent {
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        spinner = hardwareMap.crservo.get("Spin");
+        spinner = hardwareMap.crservo.get("Intake");
+        spinner.setDirection(DcMotorSimple.Direction.REVERSE);
         return true;
     }
 
