@@ -1,5 +1,7 @@
 package org.nknsd.teamcode.programs.teleops;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.nknsd.teamcode.components.drivers.IntakeDriver;
 import org.nknsd.teamcode.components.drivers.LauncherDriver;
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
@@ -17,6 +19,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
+@TeleOp(name="Basic Tele Op (USE ME)")
 public class BasicTeleOp extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
@@ -43,7 +46,7 @@ public class BasicTeleOp extends NKNProgram {
         components.add(microwaveHandler);
 
         MicrowaveDriver microwaveDriver = new MicrowaveDriver();
-        components.add(microwaveHandler);
+        components.add(microwaveDriver);
 
 
         // INTAKE
@@ -77,10 +80,17 @@ public class BasicTeleOp extends NKNProgram {
 //        microwaveHandler.link(colourSensor);
         microwaveHandler.link(intakeHandler);
         microwaveHandler.link(launcherHandler);
+        launcherHandler.link(microwaveHandler);
 
         wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);
         microwaveDriver.link(gamePadHandler, microwaveHandler, microwaveControlScheme);
         intakeDriver.link(gamePadHandler, intakeHandler, microwaveControlScheme);
         launcherDriver.link(gamePadHandler, launcherHandler, launcherControlScheme);
+
+
+        // TELEMETRY
+//        telemetryEnabled.add(launcherHandler);
+        telemetryEnabled.add(microwaveDriver);
+        telemetryEnabled.add(gamePadHandler);
     }
 }

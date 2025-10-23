@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class LauncherHandler implements NKNComponent {
-    private TimedControlFlags timingFlag; // flags that allow delayed control over the intake
+    private TimedControlFlags timingFlag = TimedControlFlags.NO_FLAG; // flags that allow delayed control over the intake
 
     private DcMotor wMotor;
     private Servo scoopServo;
@@ -24,6 +24,7 @@ public class LauncherHandler implements NKNComponent {
     private double ticks; // Idk what units ticks are in
     private double pFactor = 0.00001;
     private double timeToDisable;
+    private MicrowaveHandler microwaveHandler;
 
     public void setTargetTps(double targetTps) {
        this.targetTps = targetTps;
@@ -123,7 +124,7 @@ public class LauncherHandler implements NKNComponent {
         telemetry.addData("wPower", wPower);
         telemetry.addData("currentTps", currentTps);
         telemetry.addData("targetTps", targetTps);
-        telemetry.update();
+        telemetry.addData("scoop pos", scoopServo.getPosition());
     }
 
     public void setEnabled(boolean enabled){
@@ -147,6 +148,9 @@ public class LauncherHandler implements NKNComponent {
         if (timingFlag == TimedControlFlags.NO_SCOOP_CONTROL || timingFlag == TimedControlFlags.NO_SCOOP_CONTROL_START) {
             return;
         }
+        if (microwaveHandler != null && !microwaveHandler.isInFirePosition()) {
+            return;
+        }
         scoopServo.setPosition(launch ? 1 : 0.5);
     }
 
@@ -162,5 +166,9 @@ public class LauncherHandler implements NKNComponent {
         NO_FLAG,
         NO_SCOOP_CONTROL_START,
         NO_SCOOP_CONTROL
+    }
+
+    public void link(MicrowaveHandler microwaveHandler) {
+        this.microwaveHandler = microwaveHandler;
     }
 }

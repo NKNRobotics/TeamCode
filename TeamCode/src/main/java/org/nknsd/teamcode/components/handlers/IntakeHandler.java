@@ -13,7 +13,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class IntakeHandler implements NKNComponent {
     CRServoImplEx spinner;
-    private TimedControlFlags timingFlag; // flags that allow delayed control over the intake
+    private TimedControlFlags timingFlag = TimedControlFlags.NO_FLAG; // flags that allow delayed control over the intake
     private double timeToDisable = -1;
 
     @Override

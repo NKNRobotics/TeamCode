@@ -46,55 +46,41 @@ public class MicrowaveControlScheme extends NKNControlScheme {
             @Override
             public Boolean call() throws Exception {
                 boolean button = GamePadHandler.GamepadButtons.BACK.detect(gamePadHandler.getGamePad2());
-                if(!delaySwappingPositions){
+                if (button && !delaySwappingPositions){
                     delaySwappingPositions = true;
-                    if(button && moveToFirePositions){
-                        moveToFirePositions = false;
-                    } else {
-                        moveToFirePositions = true;
-                    }
+                    moveToFirePositions = !moveToFirePositions;
+                    return true;
+
                 } else if (!button) {
                     delaySwappingPositions = false;
                 }
-                return null;
+                return false;
             }
         };
     }
 
     public Callable<Boolean> fire1() {
-        if(moveToFirePositions) {
-            return () -> GamePadHandler.GamepadButtons.DPAD_LEFT.detect(gamePadHandler.getGamePad2());
-        } else return () -> false;
+        return () -> GamePadHandler.GamepadButtons.DPAD_LEFT.detect(gamePadHandler.getGamePad2()) && moveToFirePositions;
     }
 
     public Callable<Boolean> fire2() {
-        if(moveToFirePositions) {
-            return () -> GamePadHandler.GamepadButtons.DPAD_DOWN.detect(gamePadHandler.getGamePad2());
-        } else return  () -> false;
+        return () -> GamePadHandler.GamepadButtons.DPAD_DOWN.detect(gamePadHandler.getGamePad2()) && moveToFirePositions;
     }
 
     public Callable<Boolean> fire3() {
-        if(moveToFirePositions) {
-            return () -> GamePadHandler.GamepadButtons.DPAD_RIGHT.detect(gamePadHandler.getGamePad2());
-        } else return () -> false;
+        return () -> GamePadHandler.GamepadButtons.DPAD_RIGHT.detect(gamePadHandler.getGamePad2()) && moveToFirePositions;
     }
 
     public Callable<Boolean> load1() {
-        if(!moveToFirePositions) {
-            return () -> GamePadHandler.GamepadButtons.DPAD_LEFT.detect(gamePadHandler.getGamePad2());
-        } else return () -> false;
+        return () -> GamePadHandler.GamepadButtons.DPAD_LEFT.detect(gamePadHandler.getGamePad2()) && !moveToFirePositions;
     }
 
     public Callable<Boolean> load2() {
-        if(!moveToFirePositions) {
-            return () -> GamePadHandler.GamepadButtons.DPAD_DOWN.detect(gamePadHandler.getGamePad2());
-        } else return () -> false;
+        return () -> GamePadHandler.GamepadButtons.DPAD_DOWN.detect(gamePadHandler.getGamePad2()) && !moveToFirePositions;
     }
 
     public Callable<Boolean> load3() {
-        if(!moveToFirePositions) {
-            return () -> GamePadHandler.GamepadButtons.DPAD_RIGHT.detect(gamePadHandler.getGamePad2());
-        } else return () -> false;
+        return () -> GamePadHandler.GamepadButtons.DPAD_RIGHT.detect(gamePadHandler.getGamePad2()) && !moveToFirePositions;
     }
     private boolean intakeIsSpinning = false;
     private boolean delayIntakeButtonCheck = false;

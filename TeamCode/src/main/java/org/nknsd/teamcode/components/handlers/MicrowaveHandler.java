@@ -32,9 +32,10 @@ public class MicrowaveHandler implements NKNComponent {
     }
 
     private void setState(MicroState state) {
-        if (launcherHandler.isScoopInLaunchPosition()) {
+        if (launcherHandler != null && launcherHandler.isScoopInLaunchPosition()) {
             return;
         }
+
 
         servo.setPosition(state.microPosition);
         servoState = state;
@@ -138,5 +139,9 @@ public class MicrowaveHandler implements NKNComponent {
 
     public void link(LauncherHandler launcherHandler) {
         this.launcherHandler = launcherHandler;
+    }
+
+    public boolean isInFirePosition() {
+        return servoState == MicroState.FIRE0 || servoState == MicroState.FIRE1 || servoState == MicroState.FIRE2;
     }
 }
