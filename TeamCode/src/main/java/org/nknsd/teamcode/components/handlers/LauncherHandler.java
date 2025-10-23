@@ -43,7 +43,7 @@ public class LauncherHandler implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        scoopServo.setPosition(1);
+        setScoopToLaunch(false);
     }
 
     @Override

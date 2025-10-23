@@ -13,7 +13,7 @@ import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class LauncherDriver implements NKNComponent {
-    private double launcherTargetTPS = 3000;
+    private double launcherTargetTPS = 2000;
 
     private GamePadHandler gamePadHandler;
     private LauncherHandler launcherHandler;

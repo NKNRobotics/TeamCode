@@ -24,15 +24,9 @@ public class LauncherTest extends NKNProgram {
     private LauncherDriver launcherDriver;
 
     @Override
-    public void loop() {
-        // ALLOW FOR DRIVER TPS ADJUSTMENT
-        targetTps += gamepad2.right_trigger - gamepad2.left_trigger;
-
-        super.loop();
-    }
-
-    @Override
     public void doTelemetry() {
+        // ALLOW FOR DRIVER TPS ADJUSTMENT
+        targetTps += (gamepad2.right_trigger - gamepad2.left_trigger) * 50;
         launcherDriver.adjustTargetSpeed(telemetry, targetTps);
 
         super.doTelemetry();
