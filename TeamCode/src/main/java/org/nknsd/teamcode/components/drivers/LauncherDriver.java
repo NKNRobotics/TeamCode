@@ -37,9 +37,9 @@ public class LauncherDriver implements NKNComponent {
     Runnable launchBall = new Runnable() {
         @Override
         public void run() {
-            if (launcherHandler.getCurrentTps() < launcherTargetTPS) {
-                return;
-            }
+//            if (launcherHandler.getCurrentTps() < launcherTargetTPS) {
+//                return;
+//            }
 
             launcherHandler.setScoopToLaunch(true);
         }

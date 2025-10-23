@@ -17,7 +17,7 @@ public class LauncherControlScheme extends NKNControlScheme {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                boolean button = GamePadHandler.GamepadButtons.A.detect(gamePadHandler.getGamePad2());
+                boolean button = GamePadHandler.GamepadButtons.Y.detect(gamePadHandler.getGamePad2());
 
                 if (button && delaySpinChange == DelaySpinStates.NO_DELAY) {
                     delaySpinChange = DelaySpinStates.UP_DELAY;
@@ -35,7 +35,7 @@ public class LauncherControlScheme extends NKNControlScheme {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                boolean button = GamePadHandler.GamepadButtons.A.detect(gamePadHandler.getGamePad2());
+                boolean button = GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2());
 
                 if (button && delaySpinChange == DelaySpinStates.NO_DELAY) {
                     delaySpinChange = DelaySpinStates.DOWN_DELAY;
@@ -64,6 +64,7 @@ public class LauncherControlScheme extends NKNControlScheme {
 
                 if (button && !delayLaunchButtonChecks) {
                     delayLaunchButtonChecks = true;
+                    lastLaunchStateWasLaunch = true;
                     return true;
 
                 } else if (!button) {
@@ -88,6 +89,7 @@ public class LauncherControlScheme extends NKNControlScheme {
 
                 if (button && !delayLaunchButtonChecks) {
                     delayLaunchButtonChecks = true;
+                    lastLaunchStateWasLaunch = false;
                     return true;
                 } else if (!button) {
                     delayLaunchButtonChecks = false;

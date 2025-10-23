@@ -16,7 +16,7 @@ public class WheelHandler implements NKNComponent {
     private static final String BR_NAME = "BR";
     private DcMotor motorFR; private DcMotor motorBR; private DcMotor motorFL; private DcMotor motorBL;
 
-    private final DcMotor[] INVERTED_MOTORS = new DcMotor[]{motorFL, motorBL}; // Names in this array are reversed during initialization
+//    private final DcMotor[] INVERTED_MOTORS = new DcMotor[]{motorFL, motorBL}; // Names in this array are reversed during initialization
     private int priority = 0;
 
     @Override
@@ -34,10 +34,13 @@ public class WheelHandler implements NKNComponent {
         motorBR = hardwareMap.dcMotor.get(BR_NAME);
         motorBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Invert the specified motors
-        for (DcMotor motor : INVERTED_MOTORS) {
-            motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
+//        // Invert the specified motors
+//        for (DcMotor motor : INVERTED_MOTORS) {
+//            motor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        }
+
+        motorFL.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         return true;
     }
