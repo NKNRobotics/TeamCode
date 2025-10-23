@@ -126,7 +126,7 @@ public class LauncherHandler implements NKNComponent {
      * @param launch = If true, sets the scoop to the launch position. If false, resets the scoop.
      */
     public void setScoopToLaunch(boolean launch) {
-        scoopServo.setPosition(launch ? 0 : 1);
+        scoopServo.setPosition(launch ? 1 : 0);
     }
 
     public double getCurrentTps() {

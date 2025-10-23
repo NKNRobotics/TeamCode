@@ -20,6 +20,24 @@ import java.util.List;
 
 @TeleOp(name = "Launcher Test", group="Tests")
 public class LauncherTest extends NKNProgram {
+    private double targetTps = 2000;
+    private LauncherDriver launcherDriver;
+
+    @Override
+    public void loop() {
+        // ALLOW FOR DRIVER TPS ADJUSTMENT
+        targetTps += gamepad2.right_trigger - gamepad2.left_trigger;
+
+        super.loop();
+    }
+
+    @Override
+    public void doTelemetry() {
+        launcherDriver.adjustTargetSpeed(telemetry, targetTps);
+
+        super.doTelemetry();
+    }
+
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         // Gamepad Handler
@@ -44,9 +62,10 @@ public class LauncherTest extends NKNProgram {
         // Launcher Handler
         LauncherHandler launcherHandler = new LauncherHandler();
         components.add(launcherHandler);
+        telemetryEnabled.add(launcherHandler);
 
         // Launcher Driver
-        LauncherDriver launcherDriver = new LauncherDriver();
+        launcherDriver = new LauncherDriver();
         components.add(launcherDriver);
 
         // Link
