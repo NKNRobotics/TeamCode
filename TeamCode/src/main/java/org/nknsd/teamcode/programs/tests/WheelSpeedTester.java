@@ -107,7 +107,7 @@ public class WheelSpeedTester extends NKNProgram {
         telemetryEnabled.add(stateCore);
 
         launcherHandler.setEnabled(true);
-        launcherHandler.setTargetTps(1600);
+        launcherHandler.setTargetTps(1500);
 
         StateCore.State timer1 = new TimerState(5000,new String[]{"microwave intake"},new String[]{ "state 2"}, new String[]{"microwave intake"} );
         StateCore.State timer2 = new TimerState(500,new String[]{"microwave fire"},new String[]{ "state 3"}, new String[]{"microwave fire"} );

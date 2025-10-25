@@ -102,7 +102,7 @@ public class LauncherHandler implements NKNComponent {
 
         if ((targetTps*0.75)<currentTps){
             if (currentTps < targetTps && wPower == 1){
-                wPower = .7;
+                wPower = .62;
             }
             wPower = wPower + (pFactor*(targetTps - currentTps));
         }
