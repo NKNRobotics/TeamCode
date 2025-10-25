@@ -121,9 +121,9 @@ public class LauncherHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData("wPower", wPower);
-        telemetry.addData("currentTps", currentTps);
-        telemetry.addData("targetTps", targetTps);
+//        telemetry.addData("wPower", wPower);
+//        telemetry.addData("currentTps", currentTps);
+//        telemetry.addData("targetTps", targetTps);
         telemetry.addData("scoop pos", scoopServo.getPosition());
     }
 
