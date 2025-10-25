@@ -10,7 +10,10 @@ import org.nknsd.teamcode.components.sensors.ColourSensor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MicrowaveHandler implements NKNComponent {
-    private ColourSensor colourSensor;
+
+    public enum MicrowavePositions {
+        FIRE_ONE,FIRE_TWO,FIRE_THREE,LOAD_ONE,LOAD_TWO,LOAD_THREE;
+    }
     final private String servoName = "Spin";
     private MicroState servoState;
     Servo servo;
@@ -127,11 +130,10 @@ public class MicrowaveHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
+        telemetry.addData("Microwave", servoState.name());
 
     }
-    public void link(ColourSensor colourSensor){
-        this.colourSensor = colourSensor;
-    }
+
 
     public void link(IntakeHandler intakeHandler) {
         this.intakeHandler = intakeHandler;

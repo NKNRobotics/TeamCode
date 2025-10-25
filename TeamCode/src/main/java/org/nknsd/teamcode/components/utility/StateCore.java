@@ -3,6 +3,7 @@ package org.nknsd.teamcode.components.utility;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -16,6 +17,9 @@ public class StateCore implements NKNComponent {
 
     static public abstract class State {
         protected double startTime = -1;
+        protected boolean stopping = true;
+        protected  boolean starting = false;
+
         protected StateCore stateCore;
         protected String name;
 
@@ -58,9 +62,14 @@ public class StateCore implements NKNComponent {
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         List<State> copyList = new LinkedList<>(runList);
         for (State state : copyList) {
-            if (state.startTime == -1) {
+            if (state.stopping){
+                continue;
+            }
+            if (state.starting) {
                 state.startTime = runtime.milliseconds();
+                RobotLog.v("Actively starting %s",state.name);
                 state.started();
+                state.starting = false;
             }
             state.run(runtime, telemetry);
         }
@@ -86,6 +95,9 @@ public class StateCore implements NKNComponent {
         if (state == null) {
             throw new NullPointerException("State: " + name + " not found!");
         }
+        RobotLog.v("Adding starting state %s which is %s and has time %f",name,state.name,state.startTime);
+        state.stopping = false;
+        state.starting = true;
         runList.add(state);
     }
 
@@ -95,18 +107,20 @@ public class StateCore implements NKNComponent {
             throw new NullPointerException("State: " + name + " not found!");
         }
         state.stopped();
-        state.startTime = -1;
+        state.stopping = true;
         runList.remove(state);
     }
 
     public void startAnonymous(State state){
         state.stateCore = this;
         state.name="anon_"+state.getClass().getSimpleName();
+        state.stopping = false;
+        state.starting = true;
         runList.add(state);
     }
     public void stopAnonymous(State state){
         state.stopped();
-        state.startTime = -1;
+        state.stopping = true;
         runList.remove(state);
     }
 }
