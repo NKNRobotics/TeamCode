@@ -20,14 +20,14 @@ import java.util.List;
 
 @TeleOp(name = "Launcher Test", group="Tests")
 public class LauncherTest extends NKNProgram {
-    private double targetTps = 2000;
+    private double targetTps = 1100;
     private LauncherDriver launcherDriver;
 
     @Override
     public void doTelemetry() {
         // ALLOW FOR DRIVER TPS ADJUSTMENT
-        targetTps += (gamepad2.right_trigger - gamepad2.left_trigger) * 50;
-        launcherDriver.adjustTargetSpeed(telemetry, targetTps);
+//        targetTps += (gamepad2.right_trigger - gamepad2.left_trigger) * 50;
+//        launcherDriver.adjustTargetSpeed(telemetry, targetTps);
 
         super.doTelemetry();
     }

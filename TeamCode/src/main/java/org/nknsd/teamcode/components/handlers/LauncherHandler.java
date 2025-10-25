@@ -63,7 +63,7 @@ public class LauncherHandler implements NKNComponent {
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         switch (timingFlag) {
             case NO_SCOOP_CONTROL_START:
-                timeToDisable = runtime.milliseconds() + 1000;
+                timeToDisable = runtime.milliseconds() + 500;
                 timingFlag = TimedControlFlags.NO_SCOOP_CONTROL;
                 break;
 

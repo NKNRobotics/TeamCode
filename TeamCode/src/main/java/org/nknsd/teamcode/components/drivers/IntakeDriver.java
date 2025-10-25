@@ -30,7 +30,6 @@ public class IntakeDriver implements NKNComponent {
         }
     };
 
-
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         return true;
