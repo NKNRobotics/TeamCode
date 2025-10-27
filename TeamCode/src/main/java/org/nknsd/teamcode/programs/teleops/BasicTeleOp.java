@@ -91,6 +91,5 @@ public class BasicTeleOp extends NKNProgram {
         // TELEMETRY
         telemetryEnabled.add(launcherHandler);
         telemetryEnabled.add(microwaveDriver);
-        telemetryEnabled.add(gamePadHandler);
     }
 }
