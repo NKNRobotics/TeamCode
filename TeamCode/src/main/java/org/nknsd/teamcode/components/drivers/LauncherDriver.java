@@ -13,7 +13,7 @@ import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class LauncherDriver implements NKNComponent {
-    private final double launcherTargetTPS = 1800;
+    private double launcherTargetTPS = 1500;
 
     private GamePadHandler gamePadHandler;
     private LauncherHandler launcherHandler;
@@ -37,9 +37,9 @@ public class LauncherDriver implements NKNComponent {
     Runnable launchBall = new Runnable() {
         @Override
         public void run() {
-            if (launcherHandler.getCurrentTps() < launcherTargetTPS) {
-                return;
-            }
+//            if (launcherHandler.getCurrentTps() < launcherTargetTPS) {
+//                return;
+//            }
 
             launcherHandler.setScoopToLaunch(true);
         }
@@ -94,5 +94,10 @@ public class LauncherDriver implements NKNComponent {
         this.gamePadHandler = gamePadHandler;
         this.launcherHandler = launcherHandler;
         this.controlScheme = controlScheme;
+    }
+
+    public void adjustTargetSpeed(Telemetry telemetry, double newTps) {
+        telemetry.addData("WARNING", "THIS CODE IS JUST FOR TESTING. IT HAS SERIOUS DRIVER PERMISSION OVERRIDES.");
+        launcherTargetTPS = newTps;
     }
 }

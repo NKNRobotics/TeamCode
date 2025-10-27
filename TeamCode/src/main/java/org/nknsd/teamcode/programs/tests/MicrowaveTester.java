@@ -33,7 +33,7 @@ public class MicrowaveTester extends NKNProgram {
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
 
-            while(runtime.milliseconds() < switchState) {
+            /*while(runtime.milliseconds() < switchState) {
                 microwaveHandler.intakeOne();
             }
             switchState = runtime.milliseconds() + 2000;
@@ -57,6 +57,7 @@ public class MicrowaveTester extends NKNProgram {
                 microwaveHandler.fireThree();
             }
             switchState = runtime.milliseconds() + 2000;
+             */
         }
 
         @Override
@@ -75,7 +76,7 @@ public class MicrowaveTester extends NKNProgram {
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
 
 
-        MicrowaveHandler microwaveHandler = new MicrowaveHandler("Spin");
+        MicrowaveHandler microwaveHandler = new MicrowaveHandler();
         components.add(microwaveHandler);
 
         MicrowaveDriver microwaveDriver = new MicrowaveDriver();

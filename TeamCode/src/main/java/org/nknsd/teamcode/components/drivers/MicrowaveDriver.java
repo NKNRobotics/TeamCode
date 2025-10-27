@@ -62,13 +62,19 @@ public class MicrowaveDriver implements NKNComponent {
     Runnable intakeTwo = new Runnable() {
         @Override
         public void run() {
-            microwaveHandler.intakeOne();
+            microwaveHandler.intakeTwo();
         }
     };
     Runnable intakeThree = new Runnable() {
         @Override
+        public void run() {microwaveHandler.intakeThree();}
+    };
+
+    boolean controlSchemeMicrowaveState = false;
+    Runnable swapStateTelemetry = new Runnable() {
+        @Override
         public void run() {
-            microwaveHandler.intakeOne();
+            controlSchemeMicrowaveState =!controlSchemeMicrowaveState;
         }
     };
 
@@ -94,6 +100,8 @@ public class MicrowaveDriver implements NKNComponent {
         gamePadHandler.addListener(controlScheme.fire1(), fireOne, "fireOne");
         gamePadHandler.addListener(controlScheme.fire2(), fireTwo, "fireTwo");
         gamePadHandler.addListener(controlScheme.fire3(), fireThree, "fireThree");
+
+        gamePadHandler.addListener(controlScheme.swapState(), swapStateTelemetry, "Swap Microwave Control State");
     }
 
     @Override
@@ -113,7 +121,7 @@ public class MicrowaveDriver implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-
+        telemetry.addData("Microwave Control State", controlSchemeMicrowaveState);
     }
 
     public void link(GamePadHandler gamePadHandler, MicrowaveHandler microwaveHandler, MicrowaveControlScheme controlScheme) {

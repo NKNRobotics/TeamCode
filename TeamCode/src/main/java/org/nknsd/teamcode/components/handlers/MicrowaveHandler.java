@@ -10,31 +10,48 @@ import org.nknsd.teamcode.components.sensors.ColourSensor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MicrowaveHandler implements NKNComponent {
-    private ColourSensor colourSensor;
-    final private String servoName;
-    private MicroState servoState;
-    public MicrowaveHandler(String servoName){
-        this.servoName = servoName;
+
+    public enum MicrowavePositions {
+        FIRE_ONE,FIRE_TWO,FIRE_THREE,LOAD_ONE,LOAD_TWO,LOAD_THREE;
     }
+    final private String servoName = "Spin";
+    private MicroState servoState;
     Servo servo;
     ColourSensor.BallColor[] slotColors = new ColourSensor.BallColor[3];
+    private IntakeHandler intakeHandler;
+    private LauncherHandler launcherHandler;
+
     enum MicroState {
-        LOAD0(-1),
-        LOAD1(-0.3),
-        LOAD2(0.4),
-        FIRE0(0.05),
-        FIRE1(0.75),
-        FIRE2(-0.95);
+        LOAD0(0.22),
+        LOAD1(0.61),
+        LOAD2(0.99),
+        FIRE0(0.8),
+        FIRE1(0.03),
+        FIRE2(0.42);
         public final double microPosition;
         MicroState(double microPosition){
             this.microPosition = microPosition;
         }
     }
 
-    // Remove or make this private, probably
     private void setState(MicroState state) {
+        if (launcherHandler != null && launcherHandler.isScoopInLaunchPosition()) {
+            return;
+        }
+
+
         servo.setPosition(state.microPosition);
         servoState = state;
+
+        if (intakeHandler != null) {
+            intakeHandler.toggleIntake(true);
+            intakeHandler.setDisableFlag();
+        }
+
+        if (launcherHandler != null) {
+            launcherHandler.setScoopToLaunch(false);
+            launcherHandler.setDisableFlag();
+        }
     }
     public void findIntakeColour(ColourSensor.BallColor color){
         if (servoState.ordinal() < 3) {
@@ -113,9 +130,20 @@ public class MicrowaveHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
+        telemetry.addData("Microwave", servoState.name());
 
     }
-    public void link(ColourSensor colourSensor){
-        this.colourSensor = colourSensor;
+
+
+    public void link(IntakeHandler intakeHandler) {
+        this.intakeHandler = intakeHandler;
+    }
+
+    public void link(LauncherHandler launcherHandler) {
+        this.launcherHandler = launcherHandler;
+    }
+
+    public boolean isInFirePosition() {
+        return servoState == MicroState.FIRE0 || servoState == MicroState.FIRE1 || servoState == MicroState.FIRE2;
     }
 }
