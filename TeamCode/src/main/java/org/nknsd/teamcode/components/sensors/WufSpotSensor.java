@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.drivers.MotorDriver;
-import org.nknsd.teamcode.components.handlers.FlowHandler;
+import org.nknsd.teamcode.components.handlers.FlowAverager;
 import org.nknsd.teamcode.components.handlers.VisionHandler;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
@@ -19,9 +19,9 @@ public class WufSpotSensor implements NKNComponent {
 
     final VisionHandler visionHandler;
     final MotorDriver motorDriver;
-    final FlowHandler flowHandler;
+    final FlowAverager flowHandler;
 
-    public WufSpotSensor(VisionHandler visionHandler, MotorDriver motorDriver, FlowHandler flowHandler) {
+    public WufSpotSensor(VisionHandler visionHandler, MotorDriver motorDriver, FlowAverager flowHandler) {
         this.visionHandler = visionHandler;
         this.motorDriver = motorDriver;
         this.flowHandler = flowHandler;
@@ -86,7 +86,7 @@ public class WufSpotSensor implements NKNComponent {
             maxTime = currentTime;
         }
 
-        SparkFunOTOS.Pose2D currentPos = flowHandler.getPosition();
+        SparkFunOTOS.Pose2D currentPos = flowHandler.getAvPos();
 
         dist= yToDist(object.yAngle)/2.54;
         objectPos.h = (object.xAngle * Math.PI / 180) + currentPos.h;
