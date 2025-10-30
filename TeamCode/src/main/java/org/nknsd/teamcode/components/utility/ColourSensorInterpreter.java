@@ -13,8 +13,9 @@ public class ColourSensorInterpreter implements NKNComponent {
 
     private ColourSensor colourSensor = new ColourSensor("ColorSensor");
     private int currentSample;
-    private int maxSamples = 20;
+    private final int maxSamples = 20;
     private BallColor[] ballColorSamples = new BallColor[maxSamples];
+    private boolean currentlySampling = false;
 
     //xCount is used AFTER ballColorSamples have been completed to compare the values.
     private int greenCount;
@@ -53,17 +54,21 @@ public class ColourSensorInterpreter implements NKNComponent {
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         BallColor color;
-        if(currentSample < maxSamples) {
-            color = detectBallColor(currentSample);
-            if (currentSample == 0) {
-                if (color != BallColor.NOTHING) {
-                    timeNext = runtime.milliseconds();
+        if(currentlySampling) {
+            if (currentSample < maxSamples) {
+                color = detectBallColor(currentSample);
+                if (currentSample == 0) {
+                    if (color != BallColor.NOTHING) {
+                        timeNext = runtime.milliseconds();
+                    }
                 }
-            }
-            if (runtime.milliseconds() >= timeNext) {
-                ballColorSamples[currentSample] = color;
-                currentSample++;
-                timeNext = timeDelay + timeNext;
+                if (runtime.milliseconds() >= timeNext) {
+                    ballColorSamples[currentSample] = color;
+                    currentSample++;
+                    timeNext = timeDelay + timeNext;
+                }
+            } else {
+                currentlySampling = false;
             }
         }
     }
@@ -154,6 +159,7 @@ public class ColourSensorInterpreter implements NKNComponent {
         greenCount = 0;
         purpleCount = 0;
         nothingCount = 0;
+        currentlySampling = true;
     }
 
     /**

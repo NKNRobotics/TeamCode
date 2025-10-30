@@ -128,9 +128,17 @@ public class MicrowaveHandler implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        if(!isInFirePosition()){
-            if(colourSensorInterpreter.isReady());
-            slotColors[servoState.ordinal()] = colourSensorInterpreter.getColorGuess();
+        /*  if it is in an intake position with an empty ball it
+            waits until it's done testing and 
+         */
+        if(servoState.ordinal() > 3 || slotColors[servoState.ordinal()] == ColourSensorInterpreter.BallColor.NOTHING || slotColors[servoState.ordinal()] == ColourSensorInterpreter.BallColor.UNSURE){
+            if(colourSensorInterpreter.isReady()){
+                slotColors[servoState.ordinal()] = colourSensorInterpreter.getColorGuess();
+                if(slotColors[servoState.ordinal()] == ColourSensorInterpreter.BallColor.UNSURE){
+                 slotColors[servoState.ordinal()] = ColourSensorInterpreter.BallColor.NOTHING;
+                }
+                colourSensorInterpreter.startSampling();
+            }
         }
     }
 
@@ -140,7 +148,9 @@ public class MicrowaveHandler implements NKNComponent {
 
     }
 
-    public void link(ColourSensorInterpreter colourSensorInterpreter) {this.colourSensorInterpreter = colourSensorInterpreter;}
+    public void link(ColourSensorInterpreter colourSensorInterpreter) {
+        this.colourSensorInterpreter = colourSensorInterpreter;
+    }
     public void link(IntakeHandler intakeHandler) {
         this.intakeHandler = intakeHandler;
     }
