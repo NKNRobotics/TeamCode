@@ -8,10 +8,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.ServoHandler;
 import org.nknsd.teamcode.components.sensors.ColourSensor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
+import org.nknsd.teamcode.states.MockColorSensor;
 
 public class ColourSensorInterpreter implements NKNComponent {
 
-    private ColourSensor colourSensor = new ColourSensor("ColorSensor");
+//    private ColourSensor colourSensor = new ColourSensor("ColorSensor");
     private int currentSample;
     private final int maxSamples = 20;
     private BallColor[] ballColorSamples = new BallColor[maxSamples];
@@ -26,6 +27,7 @@ public class ColourSensorInterpreter implements NKNComponent {
     //timeNext and timeDelay to make sure the ball color happens evenly.
     private final double timeDelay = 5;
     private double timeNext;
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         return true;
@@ -75,7 +77,8 @@ public class ColourSensorInterpreter implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-
+        telemetry.addData("DetectedColor ", getColorGuess());
+        telemetry.addData("isTesting", currentlySampling);
     }
 
     public enum BallColor {
@@ -163,22 +166,25 @@ public class ColourSensorInterpreter implements NKNComponent {
     }
 
     /**
-     * compares # of tests to highest color amount and decides if it is sure based on a given confidencePercent
-     * @param confidencePercent should be a value from 0 - 100 based on how confident you need to be.
-     * @return boolean of if detected value is equal to or higher than confidencePercent
-     */
-    private boolean isSure(int confidencePercent){
-        return (((max / (double) maxSamples ) * 100) >= confidencePercent);
-    }
-
-    /**
      *
      * @return boolean of if it is done with all previous tests.
      */
     public boolean isReady(){
         return(currentSample == maxSamples);
     }
-    public void link(ColourSensor colourSensor){
-        this.colourSensor = colourSensor;
+//    public void link(ColourSensor colourSensor){
+//        this.colourSensor = colourSensor;
+//    }
+
+
+
+
+
+
+//    Mock Testing Code - comment out when done!!!!
+    final MockColorSensor colourSensor;
+    public ColourSensorInterpreter(MockColorSensor mockColorSensor) {
+        this.colourSensor = mockColorSensor;
     }
+
 }
