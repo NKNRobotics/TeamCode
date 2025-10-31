@@ -1,8 +1,10 @@
 package org.nknsd.teamcode.programs.tests;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.nknsd.teamcode.components.handlers.FlowAverager;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
@@ -29,8 +31,12 @@ public class AbsoluteMovementTestProgram extends NKNProgram {
         //telemetryEnabled.add(wheelHandler);
 
         // Flow Sensory Handler
-        FlowSensor flowSensor = new FlowSensor();
-        components.add(flowSensor);
+        FlowSensor flowSensor1 = new FlowSensor(new SparkFunOTOS.Pose2D(0,0,0), "RODOS");
+        components.add(flowSensor1);
+        FlowSensor flowSensor2 = new FlowSensor(new SparkFunOTOS.Pose2D(0,0,0), "LODOS");
+        components.add(flowSensor2);
+        FlowAverager flowAverager = new FlowAverager(flowSensor1,flowSensor2);
+        components.add(flowAverager);
         //telemetryEnabled.add(flowSensorHandler);
 
         // IMU Handler

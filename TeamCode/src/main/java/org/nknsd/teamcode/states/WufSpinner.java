@@ -4,7 +4,8 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.FlowHandler;
+import org.nknsd.teamcode.components.handlers.FlowAverager;
+//import org.nknsd.teamcode.components.sensors.FlowHandler;
 import org.nknsd.teamcode.components.drivers.MotorDriver;
 import org.nknsd.teamcode.components.sensors.WufSpotSensor;
 import org.nknsd.teamcode.components.utility.StateCore;
@@ -15,9 +16,9 @@ public class WufSpinner extends StateCore.State {
 
     final WufSpotSensor wufSpotSensor;
     final MotorDriver motorDriver;
-    final FlowHandler flowHandler;
+    final FlowAverager flowHandler;
 
-    public WufSpinner(WufSpotSensor wufSpotSensor, MotorDriver motorDriver, FlowHandler flowHandler) {
+    public WufSpinner(WufSpotSensor wufSpotSensor, MotorDriver motorDriver, FlowAverager flowHandler) {
         this.wufSpotSensor = wufSpotSensor;
         this.motorDriver = motorDriver;
         this.flowHandler = flowHandler;
@@ -40,7 +41,7 @@ public class WufSpinner extends StateCore.State {
 
     @Override
     protected void started() {
-        pos = flowHandler.getPosition();
+        pos = flowHandler.getAvPos();
         startH = pos.h;
     }
 
