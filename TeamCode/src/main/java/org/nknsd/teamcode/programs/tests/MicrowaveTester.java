@@ -5,14 +5,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
-import org.nknsd.teamcode.components.drivers.WheelDriver;
 import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
-import org.nknsd.teamcode.components.handlers.WheelHandler;
-import org.nknsd.teamcode.components.sensors.ColourSensor;
-import org.nknsd.teamcode.components.utility.GamePadHandler;
 import org.nknsd.teamcode.components.utility.StateCore;
-import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
-import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 

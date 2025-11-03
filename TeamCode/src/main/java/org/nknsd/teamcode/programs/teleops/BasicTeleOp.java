@@ -37,7 +37,7 @@ public class BasicTeleOp extends NKNProgram {
 
 
         // SENSORS
-//        ColourSensor colourSensor = new ColourSensor("ColorSensor");
+//        ColorReader colourSensor = new ColorReader("ColorSensor");
 //        components.add(colourSensor);
 
 

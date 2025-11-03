@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.utility.ColourSensorInterpreter;
+import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MicrowaveHandler implements NKNComponent {
@@ -16,11 +16,10 @@ public class MicrowaveHandler implements NKNComponent {
     public enum MicrowavePositions {
         FIRE_ONE,FIRE_TWO,FIRE_THREE,LOAD_ONE,LOAD_TWO,LOAD_THREE;
     }
-    private ColourSensorInterpreter colourSensorInterpreter;
+    private BallColorInterpreter colourSensorInterpreter;
     final private String servoName = "Spin";
     private MicrowaveState servoState;
     Servo servo;
-    ColourSensorInterpreter.BallColor[] slotColors = new ColourSensorInterpreter.BallColor[3];
     private IntakeHandler intakeHandler;
     private LauncherHandler launcherHandler;
 
@@ -54,22 +53,6 @@ public class MicrowaveHandler implements NKNComponent {
         if (launcherHandler != null) {
             launcherHandler.setScoopToLaunch(false);
             launcherHandler.setDisableFlag();
-        }
-    }
-    public void findIntakeColour(ColourSensorInterpreter.BallColor color){
-        if (servoState.ordinal() < 3) {
-            slotColors[servoState.ordinal()] = color;
-        }
-    }
-    public void prepLoad() {
-        int i = 0;
-        boolean foundState = false;
-        while( i < 3 || !foundState){
-            if(slotColors[i] == ColourSensorInterpreter.BallColor.NOTHING){
-                setMicrowaveState(MicrowaveState.values()[i]);
-                foundState = true;
-            }
-            i++;
         }
     }
 
@@ -128,18 +111,6 @@ public class MicrowaveHandler implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        /*  if it is in an intake position with an empty ball it
-            waits until it's done testing and 
-         */
-        if(servoState.ordinal() > 3 || slotColors[servoState.ordinal()] == ColourSensorInterpreter.BallColor.NOTHING || slotColors[servoState.ordinal()] == ColourSensorInterpreter.BallColor.UNSURE){
-            if(colourSensorInterpreter.isReady()){
-                slotColors[servoState.ordinal()] = colourSensorInterpreter.getColorGuess();
-                if(slotColors[servoState.ordinal()] == ColourSensorInterpreter.BallColor.UNSURE){
-                 slotColors[servoState.ordinal()] = ColourSensorInterpreter.BallColor.NOTHING;
-                }
-                colourSensorInterpreter.startSampling();
-            }
-        }
     }
 
     @Override
@@ -148,7 +119,7 @@ public class MicrowaveHandler implements NKNComponent {
 
     }
 
-    public void link(ColourSensorInterpreter colourSensorInterpreter) {
+    public void link(BallColorInterpreter colourSensorInterpreter) {
         this.colourSensorInterpreter = colourSensorInterpreter;
     }
     public void link(IntakeHandler intakeHandler) {
