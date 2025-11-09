@@ -35,20 +35,28 @@ public class TimerState extends StateCore.State {
     }
 
     @Override
-    protected void started() {
+    final protected void started() {
+        internalStarted();
         for (String stateName : this.startOnStart) {
             RobotLog.v(String.format("Starting: '%s' ", stateName));
             stateCore.startState(stateName);
         }
     }
 
+    protected void internalStarted(){}
+
     @Override
-    protected void stopped() {
+    final protected void stopped() {
+        internalStopped();
         for (String stateName : this.toStopOnEnd) {
             stateCore.stopState(stateName);
         }
         for (String stateName : this.toStartOnEnd) {
             stateCore.startState(stateName);
         }
+    }
+
+    protected void internalStopped(){
+
     }
 }
