@@ -4,7 +4,8 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.FlowHandler;
+import org.nknsd.teamcode.components.handlers.FlowAverager;
+//import org.nknsd.teamcode.components.sensors.FlowHandler;
 import org.nknsd.teamcode.components.drivers.MotorDriver;
 import org.nknsd.teamcode.components.sensors.WufSpotSensor;
 import org.nknsd.teamcode.components.utility.StateCore;
@@ -18,14 +19,14 @@ public class WufHunter extends StateCore.State {
 
 
     private final WufSpotSensor wufSpotSensor;
-    final FlowHandler flowHandler;
+    final FlowAverager flowHandler;
     final MotorDriver motorDriver;
     final double targetDistToWuf;
     private double lastWufSeenTime;
     private double lastNotReadyTime;
 
 
-    public WufHunter(WufSpotSensor wufSpotSensor, FlowHandler flowHandler, MotorDriver motorDriver, double targetDistToWuf) {
+    public WufHunter(WufSpotSensor wufSpotSensor, FlowAverager flowHandler, MotorDriver motorDriver, double targetDistToWuf) {
         this.wufSpotSensor = wufSpotSensor;
         this.flowHandler = flowHandler;
         this.motorDriver = motorDriver;
@@ -35,7 +36,7 @@ public class WufHunter extends StateCore.State {
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
         if (wufSpotSensor.doesWufExist()) {
-            SparkFunOTOS.Pose2D curPos = flowHandler.getPosition();
+            SparkFunOTOS.Pose2D curPos = flowHandler.getAvPos();
 
 
             SparkFunOTOS.Pose2D wufPos = wufSpotSensor.getObjectPos();
@@ -69,7 +70,7 @@ public class WufHunter extends StateCore.State {
             stateCore.stopState(STATE_NAME);
             stateCore.startState(WufSpinner.STATE_NAME);
         } else if (runtime.milliseconds() - lastWufSeenTime > GIVE_UP_TIME / 3) {
-            SparkFunOTOS.Pose2D curPos = flowHandler.getPosition();
+            SparkFunOTOS.Pose2D curPos = flowHandler.getAvPos();
             SparkFunOTOS.Pose2D wufPos = wufSpotSensor.getObjectPos();
             double deltaX = wufPos.x - curPos.x;
             double deltaY = wufPos.y - curPos.y;

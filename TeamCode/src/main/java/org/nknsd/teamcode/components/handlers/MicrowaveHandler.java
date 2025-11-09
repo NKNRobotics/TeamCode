@@ -22,7 +22,7 @@ public class MicrowaveHandler implements NKNComponent {
     private MicrowaveState microwavePos;
     Servo servo;
     private IntakeHandler intakeHandler;
-    private LauncherHandler launcherHandler;
+    private ScoopHandler scoopHandler;
 
     public enum MicrowaveState {
         LOAD0(0.22),
@@ -39,10 +39,14 @@ public class MicrowaveHandler implements NKNComponent {
     }
 
     public void setMicrowaveState(MicrowaveState state) {
-        if (launcherHandler != null && launcherHandler.isScoopInLaunchPosition()) {
+        if (microwavePos == state) {
             return;
         }
 
+        // if we failed to lock out the servo, return
+        if (scoopHandler != null && !scoopHandler.lockOutServo()) {
+            return;
+        }
 
         servo.setPosition(state.microPosition);
         microwavePos = state;
@@ -51,10 +55,21 @@ public class MicrowaveHandler implements NKNComponent {
             intakeHandler.toggleIntake(true);
             intakeHandler.setDisableFlag();
         }
-
-        if (launcherHandler != null) {
-            launcherHandler.setScoopToLaunch(false);
-            launcherHandler.setDisableFlag();
+    }
+    public void findIntakeColour(ColourSensor.BallColor color){
+        if (servoState.ordinal() < 3) {
+            slotColors[servoState.ordinal()] = color;
+        }
+    }
+    public void prepLoad() {
+        int i = 0;
+        boolean foundState = false;
+        while( i < 3 || !foundState){
+            if(slotColors[i] == ColourSensor.BallColor.NOTHING){
+                setState(MicroState.values()[i]);
+                foundState = true;
+            }
+            i++;
         }
     }
 
@@ -148,7 +163,11 @@ public class MicrowaveHandler implements NKNComponent {
     }
 
     public void link(LauncherHandler launcherHandler) {
-        this.launcherHandler = launcherHandler;
+//        this.launcherHandler = launcherHandler;
+    }
+
+    public void link(ScoopHandler scoopHandler) {
+        this.scoopHandler = scoopHandler;
     }
 
     public boolean isInFirePosition() {

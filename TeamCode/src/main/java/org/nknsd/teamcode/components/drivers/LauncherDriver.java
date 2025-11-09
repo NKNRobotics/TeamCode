@@ -34,24 +34,6 @@ public class LauncherDriver implements NKNComponent {
         }
     };
 
-    Runnable launchBall = new Runnable() {
-        @Override
-        public void run() {
-//            if (launcherHandler.getCurrentTps() < launcherTargetTPS) {
-//                return;
-//            }
-
-            launcherHandler.setScoopToLaunch(true);
-        }
-    };
-
-    Runnable resetScoop = new Runnable() {
-        @Override
-        public void run() {
-            launcherHandler.setScoopToLaunch(false);
-        }
-    };
-
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         return true;
@@ -66,8 +48,8 @@ public class LauncherDriver implements NKNComponent {
     public void start(ElapsedTime runtime, Telemetry telemetry) {
         gamePadHandler.addListener(controlScheme.spinUp(), spinUp, "Start spinning up");
         gamePadHandler.addListener(controlScheme.spinDown(), spinDown, "Release spin, start down");
-        gamePadHandler.addListener(controlScheme.launchBall(), launchBall, "Trigger a launch via the scoop");
-        gamePadHandler.addListener(controlScheme.resetScoop(), resetScoop, "Return the scoop to the down position");
+//        gamePadHandler.addListener(controlScheme.launchBall(), launchBall, "Trigger a launch via the scoop");
+//        gamePadHandler.addListener(controlScheme.resetScoop(), resetScoop, "Return the scoop to the down position");
     }
 
     @Override

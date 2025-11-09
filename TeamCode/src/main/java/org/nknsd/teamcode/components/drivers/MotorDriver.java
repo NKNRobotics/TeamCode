@@ -6,14 +6,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.FlowHandler;
+import org.nknsd.teamcode.components.handlers.FlowAverager;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
 import org.nknsd.teamcode.helperClasses.feedbackcontroller.ControlLoop;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MotorDriver implements NKNComponent {
 
-    private final FlowHandler flowHandler;
+    private final FlowAverager flowHandler;
     private final WheelHandler wheelHandler;
 
     private ControlLoop xControlLoop;
@@ -54,7 +54,7 @@ public class MotorDriver implements NKNComponent {
     }
 
 
-    public MotorDriver(FlowHandler flowHandler, WheelHandler wheelHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
+    public MotorDriver(FlowAverager flowHandler, WheelHandler wheelHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
         this.flowHandler = flowHandler;
         this.wheelHandler = wheelHandler;
         this.xControlLoop = xControlLoop;
@@ -117,7 +117,7 @@ public class MotorDriver implements NKNComponent {
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
 
-        SparkFunOTOS.Pose2D current = flowHandler.getPosition();
+        SparkFunOTOS.Pose2D current = flowHandler.getAvPos();
         current.h = current.h % (2 * Math.PI);
         SparkFunOTOS.Pose2D oldError = error;
         error = calcDelta(target,current);

@@ -3,9 +3,11 @@ package org.nknsd.teamcode.programs.tests;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.handlers.FlowHandler;
+import org.nknsd.teamcode.components.handlers.FlowAverager;
+//import org.nknsd.teamcode.components.sensors.FlowHandler;
 import org.nknsd.teamcode.components.drivers.MotorDriver;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
+import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.helperClasses.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -20,19 +22,26 @@ public class StateMovementTest extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         StateCore stateCore = new StateCore();
-        FlowHandler flowHandler = new FlowHandler();
+
+        FlowSensor flowSensor1 = new FlowSensor(new SparkFunOTOS.Pose2D(0, 0, 0), "RODOS");
+        components.add(flowSensor1);
+        FlowSensor flowSensor2 = new FlowSensor(new SparkFunOTOS.Pose2D(0, 0, 0), "LODOS");
+        components.add(flowSensor2);
+        FlowAverager flowAverager = new FlowAverager(flowSensor1, flowSensor2);
+        components.add(flowAverager);
+
         WheelHandler motorHandler = new WheelHandler();
 
         PidController xpController = new PidController(0.05, .75, 0.1, .25, true, 0.03, 0.3);
         PidController ypController = new PidController(0.06     , .75, 0.1, .25, true, 0.03, 0.3);
         PidController hpController = new PidController(0.3, .5, 0.1, .25, true, 0.4, 0.5);
 
-        MotorDriver motorDriver = new MotorDriver(flowHandler, motorHandler, xpController, ypController, hpController);
+        MotorDriver motorDriver = new MotorDriver(flowAverager, motorHandler, xpController, ypController, hpController);
 
         components.add(stateCore);
         telemetryEnabled.add(stateCore);
-        components.add(flowHandler);
-        telemetryEnabled.add(flowHandler);
+        components.add(flowAverager);
+        telemetryEnabled.add(flowAverager);
         components.add(motorHandler);
         telemetryEnabled.add(motorHandler);
         components.add(motorDriver);
