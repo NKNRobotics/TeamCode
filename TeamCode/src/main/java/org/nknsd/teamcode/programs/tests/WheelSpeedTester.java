@@ -29,13 +29,13 @@ public class WheelSpeedTester extends NKNProgram {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            launcherHandler.setScoopToLaunch(position);
+//            launcherHandler.setScoopToLaunch(position);
 
         }
 
         @Override
         protected void started() {
-            launcherHandler.setScoopToLaunch(position);
+//            launcherHandler.setScoopToLaunch(position);
 
         }
 
