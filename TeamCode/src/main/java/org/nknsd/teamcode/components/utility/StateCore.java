@@ -31,7 +31,7 @@ public class StateCore implements NKNComponent {
 
         public boolean isRunning(){
             return !stopping;
-        }f
+        }
     }
 
     final private HashMap<String, State> stateMap = new HashMap<>();
