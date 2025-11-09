@@ -28,6 +28,10 @@ public class StateCore implements NKNComponent {
         protected abstract void started();
 
         protected abstract void stopped();
+
+        public boolean isRunning(){
+            return !stopping;
+        }f
     }
 
     final private HashMap<String, State> stateMap = new HashMap<>();
