@@ -19,7 +19,7 @@ public class MicrowaveHandler implements NKNComponent {
     Servo servo;
     ColourSensor.BallColor[] slotColors = new ColourSensor.BallColor[3];
     private IntakeHandler intakeHandler;
-    private LauncherHandler launcherHandler;
+    private ScoopHandler scoopHandler;
 
     enum MicroState {
         LOAD0(0.22),
@@ -35,10 +35,14 @@ public class MicrowaveHandler implements NKNComponent {
     }
 
     private void setState(MicroState state) {
-        if (launcherHandler != null && launcherHandler.isScoopInLaunchPosition()) {
+        if (state == servoState) {
             return;
         }
 
+        // if we failed to lock out the servo, return
+        if (scoopHandler != null && !scoopHandler.lockOutServo()) {
+            return;
+        }
 
         servo.setPosition(state.microPosition);
         servoState = state;
@@ -46,11 +50,6 @@ public class MicrowaveHandler implements NKNComponent {
         if (intakeHandler != null) {
             intakeHandler.toggleIntake(true);
             intakeHandler.setDisableFlag();
-        }
-
-        if (launcherHandler != null) {
-            launcherHandler.setScoopToLaunch(false);
-            launcherHandler.setDisableFlag();
         }
     }
     public void findIntakeColour(ColourSensor.BallColor color){
@@ -140,7 +139,11 @@ public class MicrowaveHandler implements NKNComponent {
     }
 
     public void link(LauncherHandler launcherHandler) {
-        this.launcherHandler = launcherHandler;
+//        this.launcherHandler = launcherHandler;
+    }
+
+    public void link(ScoopHandler scoopHandler) {
+        this.scoopHandler = scoopHandler;
     }
 
     public boolean isInFirePosition() {

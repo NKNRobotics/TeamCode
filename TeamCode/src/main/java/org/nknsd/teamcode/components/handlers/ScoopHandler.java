@@ -4,12 +4,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNStateBasedComponent;
-
-import java.util.concurrent.locks.Lock;
 
 public class ScoopHandler extends NKNStateBasedComponent {
     static final double SERVO_REST_POS = 0.5;
@@ -44,16 +41,25 @@ public class ScoopHandler extends NKNStateBasedComponent {
 
     }
 
+    // SETTERS
     void returnScoopToRest() {
         switchState(new RestState(scoopServo));
     }
-    public void triggerScoopToLaunch() {
-        switchState(new LaunchState(scoopServo, this));
+    public boolean triggerScoopToLaunch() {
+        return switchState(new LaunchState(scoopServo, this));
     }
-    public void lockOutServo() {
-        switchState(new LockedState(this));
+    public boolean lockOutServo() {
+        return switchState(new LockedState(this));
     }
 
+
+    // GETTERS
+    public boolean isInLaunch() {
+        return currentState.getClass() == LaunchState.class;
+    }
+
+
+    // STATES
     private class RestState extends State {
         private final Servo servo;
         RestState(Servo servo){
@@ -86,7 +92,12 @@ public class ScoopHandler extends NKNStateBasedComponent {
 
         @Override
         public void onStart() {
-            servo.setPosition(ScoopHandler.SERVO_LAUNCH_POS);
+            servo.setPosition(SERVO_LAUNCH_POS);
+        }
+
+        @Override
+        public void onStop() {
+            servo.setPosition(SERVO_REST_POS);
         }
 
         @Override

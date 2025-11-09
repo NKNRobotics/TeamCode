@@ -17,12 +17,14 @@ public abstract class NKNStateBasedComponent implements NKNComponent {
         currentState.doTelemetry();
     }
 
-    protected void switchState(State state) {
+    protected boolean switchState(State state) {
         if (currentState.canSwitchToState(state)) {
             currentState.onStop();
             currentState = state;
             currentState.onStart();
+            return true;
         }
+        return false;
     }
 
     protected abstract class State {
