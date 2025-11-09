@@ -18,18 +18,19 @@ public class ColorClassifier {
     }
 
     public BallColor classifyColor() {
-        int[] hl = colorReader.getHueLight();
-        if (hl[1] <= maxNothingLightness) {
-            return BallColor.NOTHING;
-        }
-        if (hl[1] >= minSomethingLightness) {
-            if (hl[0] >= minPurpleHue && hl[0] <= maxPurpleHue) {
-                return BallColor.PURPLE;
-            }
-            if (hl[0] >= minGreenHue && hl[0] <= maxGreenHue) {
-                return BallColor.GREEN;
-            }
-        }
+//        int[] hl = colorReader.getHueLight();
+//        if (hl[1] <= maxNothingLightness) {
+//            return BallColor.NOTHING;
+//        }
+//        if (hl[1] >= minSomethingLightness) {
+//            if (hl[0] >= minPurpleHue && hl[0] <= maxPurpleHue) {
+//                return BallColor.PURPLE;
+//            }
+//            if (hl[0] >= minGreenHue && hl[0] <= maxGreenHue) {
+//                return BallColor.GREEN;
+//            }
+//        }
+//        return BallColor.UNSURE;
         return BallColor.UNSURE;
     }
 }

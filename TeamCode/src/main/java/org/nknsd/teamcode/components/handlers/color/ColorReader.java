@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.components.handlers.color;
 
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -7,17 +8,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class ColorReader implements NKNComponent {
 
     private final String sensorName;
-    private ColorSensor sensor;
+    private RevColorSensorV3 sensor;
 
     public ColorReader(String sensorName){this.sensorName = sensorName;}
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        sensor = hardwareMap.get(ColorSensor.class, sensorName);
+        sensor = hardwareMap.get(RevColorSensorV3.class, sensorName);
         return true;
     }
 
@@ -49,9 +51,8 @@ public class ColorReader implements NKNComponent {
     @Override
     public void doTelemetry(Telemetry telemetry) {
         int[] rgb = getRGB();
-        int[] hueLight = getHueLight();
-        telemetry.addData(sensorName + " hue", hueLight[0]);
-        telemetry.addData(sensorName + " light",hueLight[1]);
+        double dist = getDistance();
+        telemetry.addData(sensorName + " distance", dist);
         telemetry.addData(sensorName + " redness",rgb[0]);
         telemetry.addData(sensorName + " greenness", rgb[1]);
         telemetry.addData(sensorName + " blueness", rgb[2]);
@@ -69,11 +70,18 @@ public class ColorReader implements NKNComponent {
         return rgb;
     }
 
-    public int[] getHueLight(){
-        int[] hueLight = new int[2];
-        hueLight[0] = sensor.argb();
-        hueLight[1] = sensor.alpha();
-        RobotLog.v("ColorReader: H="+hueLight[0]+" L="+hueLight[1]);
-        return hueLight;
+//    public int[] getHueLight(){
+//        int[] hueLight = new int[2];
+//        hueLight[0] = sensor.argb();
+//        hueLight[1] = sensor.alpha();
+//        RobotLog.v("ColorReader: H="+hueLight[0]+" L="+hueLight[1]);
+//        return hueLight;
+//    }
+
+    public double getDistance(){
+        double dist = sensor.getDistance(DistanceUnit.MM);
+        RobotLog.v("ColorReader: D="+dist);
+        return dist;
     }
+
 }
