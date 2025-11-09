@@ -2,15 +2,9 @@ package org.nknsd.teamcode.components.handlers.color;
 
 public class ColorClassifier {
 
-    final int maxNothingLightness = 10;
 
-    final int minSomethingLightness = 100;
 
-    final int minPurpleHue = 1;
-    final int maxPurpleHue = 4;
-
-    final int minGreenHue = 5;
-    final int maxGreenHue = 10;
+    final double maxDist = 35;
     final private ColorReader colorReader;
 
     public ColorClassifier(ColorReader colorReader) {
@@ -18,19 +12,16 @@ public class ColorClassifier {
     }
 
     public BallColor classifyColor() {
-//        int[] hl = colorReader.getHueLight();
-//        if (hl[1] <= maxNothingLightness) {
-//            return BallColor.NOTHING;
-//        }
-//        if (hl[1] >= minSomethingLightness) {
-//            if (hl[0] >= minPurpleHue && hl[0] <= maxPurpleHue) {
-//                return BallColor.PURPLE;
-//            }
-//            if (hl[0] >= minGreenHue && hl[0] <= maxGreenHue) {
-//                return BallColor.GREEN;
-//            }
-//        }
-//        return BallColor.UNSURE;
+        if(colorReader.getDistance() >= maxDist){
+            return BallColor.NOTHING;
+        }
+        int[] colors = colorReader.getRGB();
+        if(colors[1] > colors[0]  && colors[1] > colors[2]){
+           return BallColor.GREEN;
+        }
+        if(colors[2] > colors[0]){
+            return BallColor.PURPLE;
+        }
         return BallColor.UNSURE;
     }
 }

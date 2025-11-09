@@ -15,16 +15,16 @@ import java.util.List;
 public class ColorPickerTester extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
-        GamePadHandler gamePadHandler = new GamePadHandler();
-        components.add(gamePadHandler);
-
-        ColorPicker colorPicker = new ColorPicker();
-        components.add(colorPicker);
-
-        Generic2PControlScheme controller = new Generic2PControlScheme();
-        controller.link(gamePadHandler);
-        colorPicker.link(gamePadHandler, controller);
-
-        telemetryEnabled.add(colorPicker);
+//        GamePadHandler gamePadHandler = new GamePadHandler();
+//        components.add(gamePadHandler);
+//
+//        ColorPicker colorPicker = new ColorPicker();
+//        components.add(colorPicker);
+//
+//        Generic2PControlScheme controller = new Generic2PControlScheme();
+//        controller.link(gamePadHandler);
+//        colorPicker.link(gamePadHandler, controller);
+//
+//        telemetryEnabled.add(colorPicker);
     }
 }

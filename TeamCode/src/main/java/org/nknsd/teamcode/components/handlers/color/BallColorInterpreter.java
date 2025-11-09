@@ -3,6 +3,7 @@ package org.nknsd.teamcode.components.handlers.color;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -71,7 +72,7 @@ public class BallColorInterpreter implements NKNComponent {
 
     public BallColor getColorGuess() {
         int[] colorCount = new int[4];
-        for (int i = 0; i == maxSamples; i += 1) {
+        for (int i = 0; i < maxSamples; i += 1) {
             BallColor color = ballColorSamples[i];
             switch (color) {
                 case GREEN:
@@ -102,10 +103,12 @@ public class BallColorInterpreter implements NKNComponent {
 
     private void sample() {
         ballColorSamples[sampleCounter] = colorClassifier.classifyColor();
+        RobotLog.v("sample counter " + sampleCounter + " color " + ballColorSamples[sampleCounter]);
         sampleCounter += 1;
         if (sampleCounter >= maxSamples) {
             sampleCounter = 0;
         }
+
     }
 
 

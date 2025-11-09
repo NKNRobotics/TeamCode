@@ -14,11 +14,12 @@ public class MicrowaveHandler implements NKNComponent {
 
     //I don't know why David added this, I already made the enumerator down there, please have david remove this enum later
     public enum MicrowavePositions {
-        FIRE_ONE,FIRE_TWO,FIRE_THREE,LOAD_ONE,LOAD_TWO,LOAD_THREE;
+        FIRE_ONE, FIRE_TWO, FIRE_THREE, LOAD_ONE, LOAD_TWO, LOAD_THREE;
     }
+
     private BallColorInterpreter colourSensorInterpreter;
     final private String servoName = "Spin";
-    private MicrowaveState servoState;
+    private MicrowaveState microwavePos;
     Servo servo;
     private IntakeHandler intakeHandler;
     private LauncherHandler launcherHandler;
@@ -31,7 +32,8 @@ public class MicrowaveHandler implements NKNComponent {
         FIRE1(0.03),
         FIRE2(0.42);
         public final double microPosition;
-        MicrowaveState(double microPosition){
+
+        MicrowaveState(double microPosition) {
             this.microPosition = microPosition;
         }
     }
@@ -43,7 +45,7 @@ public class MicrowaveHandler implements NKNComponent {
 
 
         servo.setPosition(state.microPosition);
-        servoState = state;
+        microwavePos = state;
 
         if (intakeHandler != null) {
             intakeHandler.toggleIntake(true);
@@ -65,24 +67,42 @@ public class MicrowaveHandler implements NKNComponent {
         // for now, until proper color sensor implementation, just do the same as prepFirePurple()
         prepFirePurple();
     }
-    public void fireOne() {
-        setMicrowaveState(MicrowaveState.FIRE0);
+
+//    public void fireOne() {
+//        setMicrowaveState(MicrowaveState.FIRE0);
+//    }
+//    public void fireTwo() {
+//        setMicrowaveState(MicrowaveState.FIRE1);
+//    }
+//    public void fireThree() {
+//        setMicrowaveState(MicrowaveState.FIRE2);
+//    }
+//    public void intakeOne() {
+//        setMicrowaveState(MicrowaveState.LOAD0);
+//    }
+//    public void intakeTwo() {
+//        setMicrowaveState(MicrowaveState.LOAD1);
+//    }
+//    public void intakeThree() {
+//        setMicrowaveState(MicrowaveState.LOAD2);
+//    }
+
+    public MicrowaveState getMicrowaveState() {
+        return microwavePos;
     }
-    public void fireTwo() {
-        setMicrowaveState(MicrowaveState.FIRE1);
+
+    public void setMicrowavePos(MicrowaveState state){
+
+        setMicrowaveState(state);
     }
-    public void fireThree() {
-        setMicrowaveState(MicrowaveState.FIRE2);
+
+    public void scoop(){
+
+
     }
-    public void intakeOne() {
-        setMicrowaveState(MicrowaveState.LOAD0);
-    }
-    public void intakeTwo() {
-        setMicrowaveState(MicrowaveState.LOAD1);
-    }
-    public void intakeThree() {
-        setMicrowaveState(MicrowaveState.LOAD2);
-    }
+
+
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         servo = hardwareMap.servo.get(servoName);
@@ -115,21 +135,23 @@ public class MicrowaveHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData("Microwave", servoState.name());
+        telemetry.addData("Microwave", microwavePos.name());
 
     }
 
     public void link(BallColorInterpreter colourSensorInterpreter) {
         this.colourSensorInterpreter = colourSensorInterpreter;
     }
+
     public void link(IntakeHandler intakeHandler) {
         this.intakeHandler = intakeHandler;
     }
+
     public void link(LauncherHandler launcherHandler) {
         this.launcherHandler = launcherHandler;
     }
 
     public boolean isInFirePosition() {
-        return servoState == MicrowaveState.FIRE0 || servoState == MicrowaveState.FIRE1 || servoState == MicrowaveState.FIRE2;
+        return microwavePos == MicrowaveState.FIRE0 || microwavePos == MicrowaveState.FIRE1 || microwavePos == MicrowaveState.FIRE2;
     }
 }

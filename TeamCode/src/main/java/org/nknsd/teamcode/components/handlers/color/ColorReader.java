@@ -16,7 +16,10 @@ public class ColorReader implements NKNComponent {
     private final String sensorName;
     private RevColorSensorV3 sensor;
 
-    public ColorReader(String sensorName){this.sensorName = sensorName;}
+    public ColorReader(String sensorName) {
+        this.sensorName = sensorName;
+    }
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         sensor = hardwareMap.get(RevColorSensorV3.class, sensorName);
@@ -52,21 +55,28 @@ public class ColorReader implements NKNComponent {
     public void doTelemetry(Telemetry telemetry) {
         int[] rgb = getRGB();
         double dist = getDistance();
+
         telemetry.addData(sensorName + " distance", dist);
-        telemetry.addData(sensorName + " redness",rgb[0]);
+        telemetry.addData(sensorName + " redness", rgb[0]);
         telemetry.addData(sensorName + " greenness", rgb[1]);
         telemetry.addData(sensorName + " blueness", rgb[2]);
-        telemetry.update();
+        RobotLog.v("hi");
     }
-    public void enableLED() {sensor.enableLed(true);}
-    public void disableLED() {sensor.enableLed(false);}
 
-    public int[] getRGB(){
+    public void enableLED() {
+        sensor.enableLed(true);
+    }
+
+    public void disableLED() {
+        sensor.enableLed(false);
+    }
+
+    public int[] getRGB() {
         int[] rgb = new int[3];
         rgb[0] = sensor.red();
         rgb[1] = sensor.green();
         rgb[2] = sensor.blue();
-        RobotLog.v("ColorReader: R="+rgb[0]+" G="+rgb[1]+" B="+rgb[1]);
+        RobotLog.v("ColorReader: R=" + rgb[0] + " G=" + rgb[1] + " B=" + rgb[2]);
         return rgb;
     }
 
@@ -78,9 +88,9 @@ public class ColorReader implements NKNComponent {
 //        return hueLight;
 //    }
 
-    public double getDistance(){
+    public double getDistance() {
         double dist = sensor.getDistance(DistanceUnit.MM);
-        RobotLog.v("ColorReader: D="+dist);
+        RobotLog.v("ColorReader: D=" + dist);
         return dist;
     }
 
