@@ -37,7 +37,7 @@ public class BasicTeleOp extends NKNProgram {
 
 
         // SENSORS
-//        ColourSensor colourSensor = new ColourSensor("ColorSensor");
+//        ColorReader colourSensor = new ColorReader("ColorSensor");
 //        components.add(colourSensor);
 
 
@@ -79,7 +79,6 @@ public class BasicTeleOp extends NKNProgram {
         // LINK
 //        microwaveHandler.link(colourSensor);
         microwaveHandler.link(intakeHandler);
-        microwaveHandler.link(launcherHandler);
         launcherHandler.link(microwaveHandler);
 
         wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);

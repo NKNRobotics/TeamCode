@@ -93,36 +93,36 @@ public class WheelSpeedTester extends NKNProgram {
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
-
-        LauncherHandler launcherHandler = new LauncherHandler();
-        components.add(launcherHandler);
-        telemetryEnabled.add(launcherHandler);
-
-        MicrowaveHandler microwaveHandler = new MicrowaveHandler();
-        components.add(microwaveHandler);
-        telemetryEnabled.add(microwaveHandler);
-
-        StateCore stateCore = new StateCore();
-        components.add(stateCore);
-        telemetryEnabled.add(stateCore);
-
-        launcherHandler.setEnabled(true);
-        launcherHandler.setTargetTps(1500);
-
-        StateCore.State timer1 = new TimerState(5000,new String[]{"microwave intake"},new String[]{ "state 2"}, new String[]{"microwave intake"} );
-        StateCore.State timer2 = new TimerState(500,new String[]{"microwave fire"},new String[]{ "state 3"}, new String[]{"microwave fire"} );
-        StateCore.State timer3 = new TimerState(500,new String[]{"scoop up"},new String[]{ "state 4"}, new String[]{"scoop up"} );
-        StateCore.State timer4 = new TimerState(500,new String[]{"scoop down"},new String[]{ "state 1"}, new String[]{"scoop down"} );
-
-
-        stateCore.addState("microwave intake", new MicroState(microwaveHandler, MicrowaveHandler.MicrowavePositions.LOAD_ONE));
-        stateCore.addState("microwave fire", new MicroState(microwaveHandler, MicrowaveHandler.MicrowavePositions.FIRE_ONE));
-        stateCore.addState("scoop up", new ScoopState(launcherHandler,true));
-        stateCore.addState("scoop down", new ScoopState(launcherHandler,false));
-        stateCore.addState("state 1", timer1);
-        stateCore.addState("state 2", timer2);
-        stateCore.addState("state 3", timer3);
-        stateCore.addState("state 4", timer4);
-        stateCore.startState("state 1");
+//
+//        LauncherHandler launcherHandler = new LauncherHandler();
+//        components.add(launcherHandler);
+//        telemetryEnabled.add(launcherHandler);
+//
+//        MicrowaveHandler microwaveHandler = new MicrowaveHandler();
+//        components.add(microwaveHandler);
+//        telemetryEnabled.add(microwaveHandler);
+//
+//        StateCore stateCore = new StateCore();
+//        components.add(stateCore);
+//        telemetryEnabled.add(stateCore);
+//
+//        launcherHandler.setEnabled(true);
+//        launcherHandler.setTargetTps(1500);
+//
+//        StateCore.State timer1 = new TimerState(5000,new String[]{"microwave intake"},new String[]{ "state 2"}, new String[]{"microwave intake"} );
+//        StateCore.State timer2 = new TimerState(500,new String[]{"microwave fire"},new String[]{ "state 3"}, new String[]{"microwave fire"} );
+//        StateCore.State timer3 = new TimerState(500,new String[]{"scoop up"},new String[]{ "state 4"}, new String[]{"scoop up"} );
+//        StateCore.State timer4 = new TimerState(500,new String[]{"scoop down"},new String[]{ "state 1"}, new String[]{"scoop down"} );
+//
+//
+//        stateCore.addState("microwave intake", new MicroState(microwaveHandler, MicrowaveHandler.MicrowavePositions.LOAD_ONE));
+//        stateCore.addState("microwave fire", new MicroState(microwaveHandler, MicrowaveHandler.MicrowavePositions.FIRE_ONE));
+//        stateCore.addState("scoop up", new ScoopState(launcherHandler,true));
+//        stateCore.addState("scoop down", new ScoopState(launcherHandler,false));
+//        stateCore.addState("state 1", timer1);
+//        stateCore.addState("state 2", timer2);
+//        stateCore.addState("state 3", timer3);
+//        stateCore.addState("state 4", timer4);
+//        stateCore.startState("state 1");
     }
 }

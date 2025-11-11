@@ -8,7 +8,6 @@ import org.nknsd.teamcode.components.drivers.WheelDriver;
 import org.nknsd.teamcode.components.handlers.IntakeHandler;
 import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
-import org.nknsd.teamcode.components.sensors.ColourSensor;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
@@ -35,7 +34,7 @@ public class MicrowaveTeleOp extends NKNProgram {
 
 
         // SENSORS
-//        ColourSensor colourSensor = new ColourSensor("ColorSensor");
+//        ColorReader colourSensor = new ColorReader("ColorSensor");
 //        components.add(colourSensor);
 
 
