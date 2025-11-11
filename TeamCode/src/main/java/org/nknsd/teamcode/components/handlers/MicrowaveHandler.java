@@ -8,7 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
+import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.frameworks.NKNComponent;
+import org.nknsd.teamcode.states.FindAllColors;
 
 public class MicrowaveHandler implements NKNComponent {
 
@@ -19,6 +21,8 @@ public class MicrowaveHandler implements NKNComponent {
     Servo servo;
     private IntakeHandler intakeHandler;
     private ScoopHandler scoopHandler;
+    private SlotTracker slotTracker;
+    private StateCore stateCore;
 
     public enum MicrowaveState {
         LOAD0(0.22),
@@ -52,9 +56,69 @@ public class MicrowaveHandler implements NKNComponent {
             intakeHandler.setDisableFlag();
         }
     }
+    public void findAllColors(){
+        stateCore.addState("findAllColors", new FindAllColors(this));
+        stateCore.startState("findAllColors");
+    }
+    public void loadBall(){
+        int i = 0;
+        boolean fired = false;
+        while(i < 3 && !fired) {
+            if(slotTracker.getSlotColor(i) == BallColor.NOTHING || slotTracker.getSlotColor(i) == BallColor.UNSURE){
+                if(i == 0) {
+                    setMicrowaveState(MicrowaveState.LOAD0);
+                } else if (i == 1) {
+                    setMicrowaveState(MicrowaveState.LOAD1);
+                } else {
+                    setMicrowaveState(MicrowaveState.LOAD2);
+                }
+                fired = true;
+            }
+            i++;
+        }
+    }
+    public void firePurple(){
+        int i = 0;
+        boolean fired = false;
+        while(i < 3 && !fired) {
+            if(slotTracker.getSlotColor(i) == BallColor.PURPLE){
+                if(i == 0) {
+                    setMicrowaveState(MicrowaveState.FIRE0);
+                } else if (i == 1) {
+                    setMicrowaveState(MicrowaveState.FIRE1);
+                } else {
+                    setMicrowaveState(MicrowaveState.FIRE2);
+                }
+                fired = true;
+            }
+            i++;
+        }
+    }
+    public void fireGreen(){
+        int i = 0;
+        boolean fired = false;
+        while(i < 3 && !fired) {
 
+
+
+            if(slotTracker.getSlotColor(i) == BallColor.GREEN){
+                if(i == 0) {
+                    setMicrowaveState(MicrowaveState.FIRE0);
+                } else if (i == 1) {
+                    setMicrowaveState(MicrowaveState.FIRE1);
+                } else {
+                    setMicrowaveState(MicrowaveState.FIRE2);
+                }
+                fired = true;
+            }
+            i++;
+        }
+    }
     public MicrowaveState getMicrowaveState() {
         return microwavePos;
+    }
+    public boolean isInFirePosition() {
+        return (microwavePos == MicrowaveState.FIRE0 || microwavePos == MicrowaveState.FIRE1 || microwavePos == MicrowaveState.FIRE2);
     }
 
     @Override
@@ -89,7 +153,7 @@ public class MicrowaveHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData("hi", "hello good friend");
+//        telemetry.addData("hi", "hello good friend");
         telemetry.addData("Microwave", microwavePos.name());
     }
 
@@ -99,5 +163,11 @@ public class MicrowaveHandler implements NKNComponent {
 
     public void link(ScoopHandler scoopHandler) {
         this.scoopHandler = scoopHandler;
+    }
+    public void link(SlotTracker slotTracker) {
+        this.slotTracker = slotTracker;
+    }
+    public void link(StateCore stateCore){
+        this.stateCore = stateCore;
     }
 }
