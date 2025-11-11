@@ -21,16 +21,18 @@ public class MicrowaveHandler implements NKNComponent {
     private ScoopHandler scoopHandler;
 
     public enum MicrowaveState {
-        LOAD0(0.22),
-        LOAD1(0.61),
-        LOAD2(0.99),
-        FIRE0(0.8),
-        FIRE1(0.03),
-        FIRE2(0.42);
+        LOAD0(0.22, false),
+        LOAD1(0.61, false),
+        LOAD2(0.99, false),
+        FIRE0(0.8, true),
+        FIRE1(0.03, true),
+        FIRE2(0.42, true);
         public final double microPosition;
+        public final boolean isAFirePosition;
 
-        MicrowaveState(double microPosition) {
+        MicrowaveState(double microPosition, boolean isAFirePosition) {
             this.microPosition = microPosition;
+            this.isAFirePosition = isAFirePosition;
         }
     }
 

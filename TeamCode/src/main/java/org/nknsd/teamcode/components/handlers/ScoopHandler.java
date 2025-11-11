@@ -18,6 +18,7 @@ public class ScoopHandler extends NKNStateBasedComponent {
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         scoopServo = hardwareMap.servo.get("Scoop");
+
         return true;
     }
 
@@ -102,7 +103,7 @@ public class ScoopHandler extends NKNStateBasedComponent {
         @Override
         public void onStart() {
             // if the microwave wasn't in the right position for firing, quickly go back to rest lol
-            if (!master.microwaveHandler.isInFirePosition()) {
+            if (!master.microwaveHandler.getMicrowaveState().isAFirePosition) {
                 master.returnScoopToRest();
             }
             servo.setPosition(SERVO_LAUNCH_POS);

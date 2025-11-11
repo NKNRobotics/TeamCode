@@ -18,6 +18,12 @@ public abstract class NKNStateBasedComponent implements NKNComponent {
     }
 
     protected boolean switchState(State state) {
+        if (currentState == null) {
+            currentState = state;
+            currentState.onStart();
+            return true;
+        }
+
         if (currentState.canSwitchToState(state)) {
             currentState.onStop();
             currentState = state;
