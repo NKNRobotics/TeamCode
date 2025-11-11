@@ -28,11 +28,14 @@ public class TimerState extends StateCore.State {
 
 
     @Override
-    protected void run(ElapsedTime runtime, Telemetry telemetry) {
+    final protected void run(ElapsedTime runtime, Telemetry telemetry) {
+        internalRun(runtime);
         if (runtime.milliseconds() > (startTime + timerMS)) {
             stateCore.stopAnonymous(this);
         }
     }
+
+    protected void internalRun(ElapsedTime runtime){}
 
     @Override
     final protected void started() {

@@ -9,9 +9,16 @@ import org.nknsd.teamcode.components.utility.StateCore;
 public class FindAllColors extends StateCore.State {
 
     final MicrowaveHandler microwaveHandler;
+    String[] toStartOnEnd;
 
     public FindAllColors(MicrowaveHandler microwaveHandler) {
         this.microwaveHandler = microwaveHandler;
+        this.toStartOnEnd = new String[]{};
+    }
+
+    public FindAllColors(MicrowaveHandler microwaveHandler, String[] toStartOnEnd) {
+        this.microwaveHandler = microwaveHandler;
+        this.toStartOnEnd = toStartOnEnd;
     }
 
     double startTime;
@@ -44,6 +51,8 @@ public class FindAllColors extends StateCore.State {
 
     @Override
     protected void stopped() {
-
+        for (String stateName : this.toStartOnEnd) {
+            stateCore.startState(stateName);
+        }
     }
 }
