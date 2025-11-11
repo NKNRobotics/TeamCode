@@ -69,6 +69,11 @@ public class SlotTracker implements NKNComponent {
             slotColors[2] = colorInterpreter.getColorGuess();
         }
     }
+    public void clearSlotColors(){
+        for (int i = 0; i < 3; i++) {
+            slotColors[i] = BallColor.UNSURE;
+        }
+    }
 
     public BallColor getSlotColor(int slotnumber){
         return slotColors[slotnumber];
