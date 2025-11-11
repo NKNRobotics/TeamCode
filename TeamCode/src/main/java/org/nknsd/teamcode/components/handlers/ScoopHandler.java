@@ -13,6 +13,7 @@ public class ScoopHandler extends NKNStateBasedComponent {
     static final double SERVO_LAUNCH_POS = 1;
 
     private Servo scoopServo;
+    private MicrowaveHandler microwaveHandler;
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
@@ -41,6 +42,10 @@ public class ScoopHandler extends NKNStateBasedComponent {
 
     }
 
+    public void link(MicrowaveHandler microwaveHandler) {
+        this.microwaveHandler = microwaveHandler;
+    }
+
     // SETTERS
     void returnScoopToRest() {
         switchState(new RestState(scoopServo));
@@ -56,6 +61,10 @@ public class ScoopHandler extends NKNStateBasedComponent {
     // GETTERS
     public boolean isInLaunch() {
         return currentState.getClass() == LaunchState.class;
+    }
+
+    public boolean isLocked() {
+        return  currentState.getClass() == LockedState.class;
     }
 
 
@@ -92,6 +101,10 @@ public class ScoopHandler extends NKNStateBasedComponent {
 
         @Override
         public void onStart() {
+            // if the microwave wasn't in the right position for firing, quickly go back to rest lol
+            if (!master.microwaveHandler.isInFirePosition()) {
+                master.returnScoopToRest();
+            }
             servo.setPosition(SERVO_LAUNCH_POS);
         }
 
@@ -115,7 +128,7 @@ public class ScoopHandler extends NKNStateBasedComponent {
 
         @Override
         public boolean canSwitchToState(State state) {
-            return state.getClass() == RestState.class;
+            return state.getClass() == RestState.class || state.getClass() == LockedState.class;
         }
 
         @Override

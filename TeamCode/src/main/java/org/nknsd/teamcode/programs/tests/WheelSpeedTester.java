@@ -17,60 +17,80 @@ import java.util.List;
 @TeleOp(name = "Wheel Speed Tester", group = "Tests")
 public class WheelSpeedTester extends NKNProgram {
 
-//    class ScoopState extends StateCore.State {
-//
-//        final LauncherHandler launcherHandler;
-//        final boolean position;
-//
-//        public ScoopState(LauncherHandler launcherHandler, boolean position) {
-//            this.launcherHandler = launcherHandler;
-//            this.position = position;
-//        }
-//
-//        @Override
-//        protected void run(ElapsedTime runtime, Telemetry telemetry) {
-//
-//
-//        }
-//
-//        @Override
-//        protected void started() {
-//
-//        }
-//
-//        @Override
-//        protected void stopped() {
-//        }
-//    }
-//
-//    class MicroState extends StateCore.State {
-//
-//        final MicrowaveHandler microwaveHandler;
-//        final MicrowaveHandler.MicrowavePositions position;
-//
-//        public MicroState(MicrowaveHandler microwaveHandler, MicrowaveHandler.MicrowavePositions position) {
-//            this.microwaveHandler = microwaveHandler;
-//            this.position = position;
-//        }
-//
-//        @Override
-//        protected void run(ElapsedTime runtime, Telemetry telemetry) {
-//            // This code should live in microwave handler post meet 0
-//            // Scratch that, use the enum karsten already made but as a input to one function
-//
-//
-//        }
-//
-//        @Override
-//        protected void started() {
-//
-//        }
-//
-//        @Override
-//        protected void stopped() {
-//        }
-//    }
-//
+    class ScoopState extends StateCore.State {
+
+        final LauncherHandler launcherHandler;
+        final boolean position;
+
+        public ScoopState(LauncherHandler launcherHandler, boolean position) {
+            this.launcherHandler = launcherHandler;
+            this.position = position;
+        }
+
+        @Override
+        protected void run(ElapsedTime runtime, Telemetry telemetry) {
+//            launcherHandler.setScoopToLaunch(position);
+
+        }
+
+        @Override
+        protected void started() {
+//            launcherHandler.setScoopToLaunch(position);
+
+        }
+
+        @Override
+        protected void stopped() {
+        }
+    }
+
+    class MicroState extends StateCore.State {
+
+        final MicrowaveHandler microwaveHandler;
+        final MicrowaveHandler.MicrowavePositions position;
+
+        public MicroState(MicrowaveHandler microwaveHandler, MicrowaveHandler.MicrowavePositions position) {
+            this.microwaveHandler = microwaveHandler;
+            this.position = position;
+        }
+
+        @Override
+        protected void run(ElapsedTime runtime, Telemetry telemetry) {
+            // This code should live in microwave handler post meet 0
+            // Scratch that, use the enum karsten already made but as a input to one function
+
+            switch (position){
+                case FIRE_ONE:
+                    microwaveHandler.fireOne();
+                    break;
+                case FIRE_TWO:
+                    microwaveHandler.fireTwo();
+                    break;
+                case FIRE_THREE:
+                    microwaveHandler.fireThree();
+                    break;
+                case LOAD_ONE:
+                    microwaveHandler.intakeOne();
+                    break;
+                case LOAD_TWO:
+                    microwaveHandler.intakeTwo();
+                    break;
+                case LOAD_THREE:
+                    microwaveHandler.intakeThree();
+                    break;
+            }
+        }
+
+        @Override
+        protected void started() {
+
+        }
+
+        @Override
+        protected void stopped() {
+        }
+    }
+
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
 //
