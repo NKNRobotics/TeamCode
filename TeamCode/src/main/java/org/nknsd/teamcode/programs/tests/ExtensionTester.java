@@ -6,7 +6,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.ExtensionHandler;
 import org.nknsd.teamcode.components.handlers.ServoHandler;
-import org.nknsd.teamcode.components.handlers.statemachine.StateMachine;
+
+import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 import org.nknsd.teamcode.states.TimerState;
@@ -16,7 +17,7 @@ import java.util.List;
 @TeleOp(name = "Extension Tester", group = "Tests")
 public class ExtensionTester extends NKNProgram {
     ExtensionHandler extensionHandler;
-    class Move extends StateMachine.State{
+    class Move extends StateCore.State{
 
 
 
@@ -48,7 +49,7 @@ public class ExtensionTester extends NKNProgram {
         components.add(extensionHandler);
 
 
-        StateMachine stateMachine = new StateMachine();
+        StateCore stateMachine = new StateCore();
         components.add(stateMachine);
         telemetryEnabled.add(stateMachine);
 

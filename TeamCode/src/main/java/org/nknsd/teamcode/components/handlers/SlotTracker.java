@@ -60,12 +60,12 @@ public class SlotTracker implements NKNComponent {
     }
 
     public void findSlotColors(){
-        MicrowaveHandler.MicrowaveState slotState = microwaveHandler.getMicrowaveState();
-        if(slotState == MicrowaveHandler.MicrowaveState.LOAD0){
+        MicrowaveState slotState = microwaveHandler.getMicrowaveState();
+        if(slotState == MicrowaveState.LOAD0){
             slotColors[0] = colorInterpreter.getColorGuess();
-        } else if(slotState == MicrowaveHandler.MicrowaveState.LOAD1){
+        } else if(slotState == MicrowaveState.LOAD1){
             slotColors[1] = colorInterpreter.getColorGuess();
-        } else if(slotState == MicrowaveHandler.MicrowaveState.LOAD2){
+        } else if(slotState == MicrowaveState.LOAD2){
             slotColors[2] = colorInterpreter.getColorGuess();
         }
     }

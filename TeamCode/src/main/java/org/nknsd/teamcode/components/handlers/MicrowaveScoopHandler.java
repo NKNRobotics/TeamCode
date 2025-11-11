@@ -1,0 +1,144 @@
+package org.nknsd.teamcode.components.handlers;
+
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
+import org.nknsd.teamcode.components.utility.StateCore;
+import org.nknsd.teamcode.frameworks.NKNComponent;
+
+public class MicrowaveScoopHandler implements NKNComponent {
+
+
+
+    class ScoopActionState extends StateCore.State{
+        final double SCOOPACTIONTIMEMS = 500;
+        @Override
+        protected void run(ElapsedTime runtime, Telemetry telemetry) {
+            if (runtime.milliseconds() > (startTime + SCOOPACTIONTIMEMS)) {
+                stateCore.stopAnonymous(this);
+            }
+
+        }
+
+        @Override
+        protected void started() {
+            scoopServo.setPosition(SERVO_LAUNCH_POS);
+        }
+
+        @Override
+        protected void stopped() {
+            scoopServo.setPosition(SERVO_REST_POS);
+        }
+    }
+    class MicrowaveActionState extends StateCore.State{
+        final double MICROWAVEACTIONTIMEMS = 500;
+        @Override
+        protected void run(ElapsedTime runtime, Telemetry telemetry) {
+            if (runtime.milliseconds() > (startTime + MICROWAVEACTIONTIMEMS)) {
+                stateCore.stopAnonymous(this);
+            }
+
+        }
+
+        @Override
+        protected void started() {
+            intakeHandler.toggleIntake(true);
+        }
+
+        @Override
+        protected void stopped() {
+            intakeHandler.toggleIntake(false);
+        }
+    }
+
+    private BallColorInterpreter colourSensorInterpreter;
+    final private String microwaveServoName = "Spin";
+    final private String scoopServoName = "Scoop";
+    private ScoopActionState scoopActionState = new ScoopActionState();
+    private MicrowaveActionState microwaveActionState = new MicrowaveActionState();
+
+    private MicrowaveState microwavePos;
+    Servo microwaveServo;
+    Servo scoopServo;
+    private IntakeHandler intakeHandler;
+    private StateCore stateCore;
+    private static final double SERVO_REST_POS = 0.5;
+    private static final double SERVO_LAUNCH_POS = 1;
+
+    public boolean setMicrowaveState(MicrowaveState position) {
+        if (!isDone()){
+            return false;
+        }
+        microwaveServo.setPosition(position.microPosition);
+        microwavePos = position;
+        stateCore.startAnonymous(microwaveActionState);
+        return true;
+    }
+    public boolean doScoopLaunch() {
+        if (!isDone()){
+            return false;
+        }
+        stateCore.startAnonymous(scoopActionState);
+        return true;
+    }
+    public boolean isDone() {
+        return !(scoopActionState.isRunning() || microwaveActionState.isRunning());
+    }
+
+
+    public MicrowaveState getMicrowaveState() {
+        return microwavePos;
+    }
+
+    @Override
+    public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
+        microwaveServo = hardwareMap.servo.get(microwaveServoName);
+        scoopServo = hardwareMap.servo.get(scoopServoName);
+        scoopServo.setPosition(SERVO_REST_POS);
+        microwaveServo.setPosition(MicrowaveState.FIRE0.microPosition);
+        microwavePos = MicrowaveState.FIRE0;
+        return true;
+    }
+
+    @Override
+    public void init_loop(ElapsedTime runtime, Telemetry telemetry) {
+
+    }
+
+    @Override
+    public void start(ElapsedTime runtime, Telemetry telemetry) {
+        setMicrowaveState(MicrowaveState.LOAD0);
+    }
+
+    @Override
+    public void stop(ElapsedTime runtime, Telemetry telemetry) {
+
+    }
+
+    @Override
+    public String getName() {
+        return "MicrowaveScoopHandler";
+    }
+
+    @Override
+    public void loop(ElapsedTime runtime, Telemetry telemetry) {
+    }
+
+    @Override
+    public void doTelemetry(Telemetry telemetry) {
+        telemetry.addData("Microwave", microwavePos.name());
+    }
+
+    public void link(IntakeHandler intakeHandler) {
+        this.intakeHandler = intakeHandler;
+    }
+
+    public void link(StateCore stateCore) {
+        this.stateCore = stateCore;
+    }
+
+}

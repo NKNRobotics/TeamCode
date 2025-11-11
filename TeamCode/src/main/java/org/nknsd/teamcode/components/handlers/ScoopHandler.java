@@ -101,11 +101,11 @@ public class ScoopHandler extends NKNStateBasedComponent {
 
         @Override
         public void onStart() {
-            // if the microwave wasn't in the right position for firing, quickly go back to rest lol
-            if (!master.microwaveHandler.isInFirePosition()) {
-                master.returnScoopToRest();
-            }
-            servo.setPosition(SERVO_LAUNCH_POS);
+//            // if the microwave wasn't in the right position for firing, quickly go back to rest lol
+//            if (!master.microwaveHandler.isInFirePosition()) {
+//                master.returnScoopToRest();
+//            }
+//            servo.setPosition(SERVO_LAUNCH_POS);
         }
 
         @Override

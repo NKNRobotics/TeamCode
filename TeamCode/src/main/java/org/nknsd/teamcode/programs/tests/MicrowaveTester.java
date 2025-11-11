@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
+import org.nknsd.teamcode.components.handlers.MicrowaveState;
 import org.nknsd.teamcode.components.handlers.SlotTracker;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.ColorReader;
@@ -21,9 +22,9 @@ public class MicrowaveTester extends NKNProgram {
     class SlotSwitchState extends TimerState {
 
         final MicrowaveHandler microwaveHandler;
-        final MicrowaveHandler.MicrowaveState state;
+        final MicrowaveState state;
 
-        public SlotSwitchState(MicrowaveHandler microwaveHandler, MicrowaveHandler.MicrowaveState state,
+        public SlotSwitchState(MicrowaveHandler microwaveHandler, MicrowaveState state,
                                double timerMS, String toStartOnEnd) {
             super(timerMS, new String[]{}, new String[]{toStartOnEnd}, new String[]{});
             this.microwaveHandler = microwaveHandler;
@@ -62,12 +63,12 @@ public class MicrowaveTester extends NKNProgram {
         StateCore stateCore = new StateCore();
         components.add(stateCore);
 
-        stateCore.addState("load0", new SlotSwitchState(microwaveHandler, MicrowaveHandler.MicrowaveState.LOAD0, 5000, "load1"));
-        stateCore.addState("load1", new SlotSwitchState(microwaveHandler, MicrowaveHandler.MicrowaveState.LOAD1, 5000, "load2"));
-        stateCore.addState("load2", new SlotSwitchState(microwaveHandler, MicrowaveHandler.MicrowaveState.LOAD2, 5000, "fire0"));
-        stateCore.addState("fire0", new SlotSwitchState(microwaveHandler, MicrowaveHandler.MicrowaveState.FIRE0, 5000, "fire1"));
-        stateCore.addState("fire1", new SlotSwitchState(microwaveHandler, MicrowaveHandler.MicrowaveState.FIRE1, 5000, "fire2"));
-        stateCore.addState("fire2", new SlotSwitchState(microwaveHandler, MicrowaveHandler.MicrowaveState.FIRE2, 5000, "load0"));
+        stateCore.addState("load0", new SlotSwitchState(microwaveHandler, MicrowaveState.LOAD0, 5000, "load1"));
+        stateCore.addState("load1", new SlotSwitchState(microwaveHandler, MicrowaveState.LOAD1, 5000, "load2"));
+        stateCore.addState("load2", new SlotSwitchState(microwaveHandler, MicrowaveState.LOAD2, 5000, "fire0"));
+        stateCore.addState("fire0", new SlotSwitchState(microwaveHandler, MicrowaveState.FIRE0, 5000, "fire1"));
+        stateCore.addState("fire1", new SlotSwitchState(microwaveHandler, MicrowaveState.FIRE1, 5000, "fire2"));
+        stateCore.addState("fire2", new SlotSwitchState(microwaveHandler, MicrowaveState.FIRE2, 5000, "load0"));
 
         stateCore.startState("load0");
     }
