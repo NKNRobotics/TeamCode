@@ -20,11 +20,7 @@ public class AprilTagSensor implements NKNComponent {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
         limelight.start(); // This tells Limelight to start looking!
-        limelight.pipelineSwitch(2); // Switch to aprilTag pipeline
-
-//        Pipeline 2 is PGP
-//        Pipeline 3 is GPP
-//        Pipeline 4 is PPG
+        limelight.pipelineSwitch(0); // Switch to aprilTag pipeline
         return true;
     }
 
@@ -64,31 +60,7 @@ public class AprilTagSensor implements NKNComponent {
 
         LLResult result = limelight.getLatestResult();
 
-        limelight.pipelineSwitch(2);
-        if (result != null && result.isValid()) {
-
-            pattern = 2;
-        } else {
-            limelight.pipelineSwitch(3);
-            if (result != null && result.isValid()) {
-                pattern = 3;
-            } else {
-                limelight.pipelineSwitch(4);
-                if (result != null && result.isValid()) {
-                    pattern = 4;
-                } else {
-                    pattern = 1;
-                    ta = 0;
-                }
-            }
-
-        }
-
-        if (pattern != 1) {
-            tx = result.getTx();
-            ty = result.getTy();
-            ta = result.getTa();
-        }
+        result.getDetectorResults().;
     }
 
     @Override
