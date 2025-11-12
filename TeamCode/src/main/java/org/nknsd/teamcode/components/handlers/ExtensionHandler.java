@@ -34,7 +34,7 @@ public class ExtensionHandler implements NKNComponent {
     }
 
     public void goUp(){
-        liftBLServo.setPower(1);
+        liftBLServo.setPower(0.6);
         liftFLServo.setPower(1);
         liftBRServo.setPower(1);
     }

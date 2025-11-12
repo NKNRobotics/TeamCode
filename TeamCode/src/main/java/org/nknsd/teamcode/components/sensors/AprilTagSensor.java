@@ -7,21 +7,22 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.handlers.VisionHandler;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class AprilTagSensor implements NKNComponent {
 
     Limelight3A limelight;
 
-
-
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        if (limelight == null) {
+            throw new NullPointerException("No Limelight Camera Detected");
+        }
         limelight.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
-        limelight.start(); // This tells Limelight to start looking!
-        limelight.pipelineSwitch(0); // Switch to aprilTag pipeline
-        return true;
+        limelight.start(); // This tells Limelight to start looking!distSensor = hardwareMap.get(Rev2mDistanceSensor.class,"distanceSensor");
+        return limelight.pipelineSwitch(0);
     }
 
     @Override
@@ -47,39 +48,41 @@ public class AprilTagSensor implements NKNComponent {
     double tx; // How far left or right the target is (degrees)
     double ty; // How far up or down the target is (degrees)
     double ta; // How big the target looks (0%-100% of the image)
+    int size;
 
-    int pattern; // this should probably be an enum, it tells what pattern we have, 4 is PPG, 2 is PGP, 3 is GPP, 1 is nothing;
+    int id;
+    public int getPattern() {
+        return id;
+    }
+
+    public VisionHandler.VisionResult getResults() {
+        return new VisionHandler.VisionResult(tx, ty, ta);
+    }
+
+    public boolean doesSee() {
+        return size > 0;
+    }
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        // TODO - You should consider using :
-        // result.getDetectorResults()
-        // I think that will give you april tag details (including id).
-        // I would put the logic into a handler, where you initiate a camera and single pipeline
-        // That focuses on the 5 IDs we care about
 
         LLResult result = limelight.getLatestResult();
+        size = result.getFiducialResults().size();
 
-        result.getDetectorResults().;
+        if (size > 0){
+            id = result.getFiducialResults().get(0).getFiducialId();
+            tx = result.getFiducialResults().get(0).getTargetXDegrees();
+            ty = result.getFiducialResults().get(0).getTargetYDegrees();
+            ta = result.getTa();
+        }
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        if (pattern == 1) {
+        if (size == 0) {
             telemetry.addLine("Not seen");
         } else {
-            telemetry.addData("Target X", tx);
-            telemetry.addData("Target Y", ty);
-            telemetry.addData("Target Area", ta);
-
-            if(pattern == 2){
-                telemetry.addLine("PGP");
-            } else if(pattern == 3){
-                telemetry.addLine("GPP");
-            } else{
-                telemetry.addLine("PPG");
-            }
+            telemetry.addData("tag id", id);
         }
-
     }
 }

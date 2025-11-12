@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.handlers.IntakeHandler;
 import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
 import org.nknsd.teamcode.components.handlers.SlotTracker;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
@@ -17,6 +18,9 @@ import java.util.List;
 
 @TeleOp(name = "MicrowaveTester", group = "Tests")
 public class MicrowaveTester extends NKNProgram {
+
+
+    IntakeHandler intakeHandler = new IntakeHandler();
 
     class SlotSwitchState extends TimerState {
 
@@ -33,6 +37,7 @@ public class MicrowaveTester extends NKNProgram {
         @Override
         protected void internalStarted() {
             microwaveHandler.setMicrowaveState(state);
+            intakeHandler.toggleIntake(true);
         }
 
     }
@@ -70,5 +75,10 @@ public class MicrowaveTester extends NKNProgram {
         stateCore.addState("fire2", new SlotSwitchState(microwaveHandler, MicrowaveHandler.MicrowaveState.FIRE2, 5000, "load0"));
 
         stateCore.startState("load0");
+
+
+//        TURNS SERVO ON
+        components.add(intakeHandler);
+        telemetryEnabled.add(intakeHandler);
     }
 }
