@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.VisionHandler;
+import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class AprilTagSensor implements NKNComponent {
@@ -48,12 +49,22 @@ public class AprilTagSensor implements NKNComponent {
     double tx; // How far left or right the target is (degrees)
     double ty; // How far up or down the target is (degrees)
     double ta; // How big the target looks (0%-100% of the image)
-    int size;
+    int size; // How many tags it sees
 
-    int id;
-    public int getPattern() {
-        return id;
+    int idNum;
+
+    public Patterns getPattern() {
+        return pattern;
     }
+
+    public enum Patterns {
+        PGP,
+        PPG,
+        GPP,
+        NONE
+    }
+
+    Patterns pattern = Patterns.NONE;
 
     public VisionHandler.VisionResult getResults() {
         return new VisionHandler.VisionResult(tx, ty, ta);
@@ -69,11 +80,25 @@ public class AprilTagSensor implements NKNComponent {
         LLResult result = limelight.getLatestResult();
         size = result.getFiducialResults().size();
 
-        if (size > 0){
-            id = result.getFiducialResults().get(0).getFiducialId();
+        if (size > 0) {
+            idNum = result.getFiducialResults().get(0).getFiducialId();
             tx = result.getFiducialResults().get(0).getTargetXDegrees();
             ty = result.getFiducialResults().get(0).getTargetYDegrees();
             ta = result.getTa();
+            switch (idNum) {
+                case 23:
+                    pattern = Patterns.PPG;
+                    break;
+                case 22:
+                    pattern = Patterns.PGP;
+                    break;
+                case 21:
+                    pattern = Patterns.GPP;
+                    break;
+            }
+        } else {
+//            this should probably be deleted for competition:
+            pattern = Patterns.NONE;
         }
     }
 
@@ -82,7 +107,8 @@ public class AprilTagSensor implements NKNComponent {
         if (size == 0) {
             telemetry.addLine("Not seen");
         } else {
-            telemetry.addData("tag id", id);
+            telemetry.addData("tag id", idNum);
         }
+        telemetry.addData("pattern", pattern);
     }
 }
