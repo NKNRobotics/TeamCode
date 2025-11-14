@@ -50,7 +50,11 @@ public class ScoopHandler extends NKNStateBasedComponent {
     void returnScoopToRest() {
         switchState(new RestState(scoopServo));
     }
+
     public boolean triggerScoopToLaunch() {
+        if (!microwaveHandler.isInFirePosition() || currentState.getClass() == LaunchState.class) {
+            return false;
+        }
         return switchState(new LaunchState(scoopServo, this));
     }
     public boolean lockOutServo() {
@@ -89,7 +93,7 @@ public class ScoopHandler extends NKNStateBasedComponent {
         private final ScoopHandler master;
 
         LaunchState(Servo servo, ScoopHandler master){
-            super(100);
+            super(50.);
             this.servo = servo;
             this.master = master;
         }
@@ -102,9 +106,6 @@ public class ScoopHandler extends NKNStateBasedComponent {
         @Override
         public void onStart() {
             // if the microwave wasn't in the right position for firing, quickly go back to rest lol
-            if (!master.microwaveHandler.isInFirePosition()) {
-                master.returnScoopToRest();
-            }
             servo.setPosition(SERVO_LAUNCH_POS);
         }
 

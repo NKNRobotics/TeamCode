@@ -49,12 +49,12 @@ public abstract class NKNStateBasedComponent implements NKNComponent {
 
         abstract protected void finishTimer();
         public void run(ElapsedTime runtime){
-            if (runtime.milliseconds() > startTime + resetTime) {
-                finishTimer();
-            }
-
             if (startTime == -1) {
                 startTime = runtime.milliseconds();
+            }
+
+            if (runtime.milliseconds() > startTime + resetTime) {
+                finishTimer();
             }
         }
     }

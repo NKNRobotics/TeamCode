@@ -5,12 +5,18 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.nknsd.teamcode.components.drivers.IntakeDriver;
 import org.nknsd.teamcode.components.drivers.LauncherDriver;
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
+import org.nknsd.teamcode.components.drivers.ScoopDriver;
 import org.nknsd.teamcode.components.drivers.WheelDriver;
 import org.nknsd.teamcode.components.handlers.IntakeHandler;
 import org.nknsd.teamcode.components.handlers.LauncherHandler;
 import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
+import org.nknsd.teamcode.components.handlers.ScoopHandler;
+import org.nknsd.teamcode.components.handlers.SlotTracker;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
+import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
+import org.nknsd.teamcode.components.handlers.color.ColorReader;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.controlSchemes.defaults.LauncherControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
@@ -27,6 +33,9 @@ public class BasicTeleOp extends NKNProgram {
         GamePadHandler gamePadHandler = new GamePadHandler();
         components.add(gamePadHandler);
 
+        StateCore stateCore = new StateCore();
+        components.add(stateCore);
+
 
         // WHEELS
         WheelHandler wheelHandler = new WheelHandler();
@@ -37,8 +46,8 @@ public class BasicTeleOp extends NKNProgram {
 
 
         // SENSORS
-//        ColorReader colourSensor = new ColorReader("ColorSensor");
-//        components.add(colourSensor);
+        ColorReader colorReader = new ColorReader("ColorSensor");
+        components.add(colorReader);
 
 
         // MICROWAVE
@@ -47,6 +56,14 @@ public class BasicTeleOp extends NKNProgram {
 
         MicrowaveDriver microwaveDriver = new MicrowaveDriver();
         components.add(microwaveDriver);
+
+
+        // MICROWAVE COLOR SUBSYSTEM
+        BallColorInterpreter colorInterpreter = new BallColorInterpreter(10, 0.05);
+        components.add(colorInterpreter);
+
+        SlotTracker slotTracker = new SlotTracker();
+        components.add(slotTracker);
 
 
         // INTAKE
@@ -65,6 +82,14 @@ public class BasicTeleOp extends NKNProgram {
         components.add(launcherDriver);
 
 
+        // SCOOP
+        ScoopHandler scoopHandler = new ScoopHandler();
+        components.add(scoopHandler);
+
+        ScoopDriver scoopDriver = new ScoopDriver();
+        components.add(scoopDriver);
+
+
         // CONTROL SCHEME
         WheelControlScheme wheelControlScheme = new WheelControlScheme();
         wheelControlScheme.link(gamePadHandler);
@@ -77,18 +102,26 @@ public class BasicTeleOp extends NKNProgram {
 
 
         // LINK
-//        microwaveHandler.link(colourSensor);
         microwaveHandler.link(intakeHandler);
-        launcherHandler.link(microwaveHandler);
+        microwaveHandler.link(scoopHandler);
+        microwaveHandler.link(slotTracker);
+        microwaveHandler.link(stateCore);
+
+        scoopHandler.link(microwaveHandler);
 
         wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);
         microwaveDriver.link(gamePadHandler, microwaveHandler, microwaveControlScheme);
         intakeDriver.link(gamePadHandler, intakeHandler, microwaveControlScheme);
         launcherDriver.link(gamePadHandler, launcherHandler, launcherControlScheme);
+        scoopDriver.link(gamePadHandler, scoopHandler, launcherControlScheme);
 
+        slotTracker.link(microwaveHandler, colorInterpreter);
+        colorInterpreter.link(colorReader);
 
         // TELEMETRY
-        telemetryEnabled.add(launcherHandler);
-        telemetryEnabled.add(microwaveDriver);
+//        telemetryEnabled.add(slotTracker);
+//        telemetryEnabled.add(launcherHandler);
+//        telemetryEnabled.add(microwaveDriver);
+        telemetryEnabled.add(gamePadHandler);
     }
 }

@@ -14,13 +14,13 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Flow Sensor Test", group="Tests") @Disabled
+@TeleOp(name = "Flow Sensor Test", group="Tests")
 public class FlowSensorTestProgram extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         // Gamepad Handler
-        GamePadHandler gamePadHandler = new GamePadHandler();
-        components.add(gamePadHandler);
+//        GamePadHandler gamePadHandler = new GamePadHandler();
+//        components.add(gamePadHandler);
         //telemetryEnabled.add(gamePadHandler);
 
         // Wheel Handler
@@ -34,19 +34,20 @@ public class FlowSensorTestProgram extends NKNProgram {
         components.add(flowSensor2);
         FlowAverager flowAverager = new FlowAverager(flowSensor1,flowSensor2);
         components.add(flowAverager);
+        telemetryEnabled.add(flowAverager);
 
         // IMU Handler
-        IMUSensor imuSensor = new IMUSensor();
-        components.add(imuSensor);
-        telemetryEnabled.add(imuSensor);
+//        IMUSensor imuSensor = new IMUSensor();
+//        components.add(imuSensor);
+//        telemetryEnabled.add(imuSensor);
 
         // Wheel Driver
 //        WheelDriver wheelDriver = new WheelDriver(0, 1, 10, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
 //        components.add(wheelDriver);
 //        telemetryEnabled.add(wheelDriver);
 
-        WheelControlScheme wheelController = new WheelControlScheme();
-        wheelController.link(gamePadHandler);
+//        WheelControlScheme wheelController = new WheelControlScheme();
+//        wheelController.link(gamePadHandler);
 
 //        wheelDriver.link(gamePadHandler, wheelHandler, wheelController);
     }

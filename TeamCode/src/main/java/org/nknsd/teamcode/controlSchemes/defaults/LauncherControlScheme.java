@@ -49,53 +49,11 @@ public class LauncherControlScheme extends NKNControlScheme {
         };
     }
 
-    private boolean delayLaunchButtonChecks = false;
-    private boolean lastLaunchStateWasLaunch = false;
-
     public Callable<Boolean> launchBall() {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                if (lastLaunchStateWasLaunch) {
-                    return false; // early quit this check if the last state was launching, since we want to transfer control to its twin
-                }
-
-                boolean button = GamePadHandler.GamepadButtons.A.detect(gamePadHandler.getGamePad2());
-
-                if (button && !delayLaunchButtonChecks) {
-                    delayLaunchButtonChecks = true;
-                    lastLaunchStateWasLaunch = true;
-                    return true;
-
-                } else if (!button) {
-                    delayLaunchButtonChecks = false;
-
-                }
-
-                return false;
-            }
-        };
-    }
-
-    public Callable<Boolean> resetScoop() {
-        return new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                if (!lastLaunchStateWasLaunch) {
-                    return false; // early quit this check if the last state was resetting, since we want to transfer control to its twin
-                }
-
-                boolean button = GamePadHandler.GamepadButtons.A.detect(gamePadHandler.getGamePad2());
-
-                if (button && !delayLaunchButtonChecks) {
-                    delayLaunchButtonChecks = true;
-                    lastLaunchStateWasLaunch = false;
-                    return true;
-                } else if (!button) {
-                    delayLaunchButtonChecks = false;
-                }
-
-                return false;
+                return GamePadHandler.GamepadButtons.A.detect(gamePadHandler.getGamePad2());
             }
         };
     }

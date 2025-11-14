@@ -25,7 +25,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp (name = "MicrowaveTestTeleOp", group = "Tests")
+//@TeleOp (name = "MicrowaveTestTeleOp", group = "Tests")
 public class MicrowaveTestTeleOp extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
