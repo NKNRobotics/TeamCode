@@ -120,7 +120,12 @@ public class MicrowaveHandler implements NKNComponent {
     public boolean isInFirePosition() {
         return (microwavePos == MicrowaveState.FIRE0 || microwavePos == MicrowaveState.FIRE1 || microwavePos == MicrowaveState.FIRE2);
     }
-
+    /// BAD CODE PLEASE DELETE ONCE DONE PLEASE PLEASE PLEASE
+    public void resetLaunchedColor() {
+        if (isInFirePosition()) {
+            slotTracker.clearOneSlotColor(getMicrowaveState().ordinal() - 3);
+        }
+    }
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         servo = hardwareMap.servo.get(servoName);

@@ -119,9 +119,9 @@ public class BasicTeleOp extends NKNProgram {
         colorInterpreter.link(colorReader);
 
         // TELEMETRY
-//        telemetryEnabled.add(slotTracker);
-//        telemetryEnabled.add(launcherHandler);
-//        telemetryEnabled.add(microwaveDriver);
-        telemetryEnabled.add(gamePadHandler);
+        telemetryEnabled.add(slotTracker);
+        telemetryEnabled.add(launcherHandler);
+        telemetryEnabled.add(microwaveDriver);
+//        telemetryEnabled.add(gamePadHandler);
     }
 }

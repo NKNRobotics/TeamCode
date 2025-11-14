@@ -174,4 +174,12 @@ public class MicrowaveControlScheme extends NKNControlScheme {
             }
         };
     }
+    public Callable<Boolean> resetColor(){
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return GamePadHandler.GamepadButtons.A.detect(gamePadHandler.getGamePad2());
+            }
+        };
+    }
 }

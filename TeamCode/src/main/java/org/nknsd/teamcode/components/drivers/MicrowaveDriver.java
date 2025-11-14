@@ -41,6 +41,12 @@ public class MicrowaveDriver implements NKNComponent {
             microwaveHandler.findAllColors();
         }
     };
+    Runnable resetBallColor = new Runnable() {
+        @Override
+        public void run() {
+            microwaveHandler.resetLaunchedColor();
+        }
+    };
 //    Runnable fireOne = new Runnable() {
 //        @Override
 //        public void run() {
@@ -100,6 +106,7 @@ public class MicrowaveDriver implements NKNComponent {
         gamePadHandler.addListener(controlScheme.firePurple(), firePurple, "Bring to firing pos (purple)");
         gamePadHandler.addListener(controlScheme.fireGreen(), fireGreen, "Bring to firing pos (green)");
         gamePadHandler.addListener(controlScheme.findColors(), findColors, "cycle through pos to find colors");
+        gamePadHandler.addListener(controlScheme.resetColor(), resetBallColor, "Reset launched color");
 //
 //        gamePadHandler.addListener(controlScheme.load1(), intakeOne, "intakeOne");
 //        gamePadHandler.addListener(controlScheme.load2(), intakeTwo, "intakeTwo");
