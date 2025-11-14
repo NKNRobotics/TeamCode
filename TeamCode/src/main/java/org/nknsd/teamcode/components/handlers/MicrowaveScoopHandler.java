@@ -13,27 +13,39 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class MicrowaveScoopHandler implements NKNComponent {
 
 
-
+// this state makes the scoop go up and down
     class ScoopActionState extends StateCore.State{
         final double SCOOPACTIONTIMEMS = 500;
+
+        private boolean scoopResting = false;
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if (runtime.milliseconds() > (startTime + SCOOPACTIONTIMEMS)) {
-                stateCore.stopAnonymous(this);
-            }
 
+            if (runtime.milliseconds() > (startTime + SCOOPACTIONTIMEMS)) {
+
+                stateCore.stopAnonymous(this);
+
+            }
+            // halfway through the scoop will start coming back down
+            if ((runtime.milliseconds() > (startTime + (SCOOPACTIONTIMEMS/2))) && !scoopResting) {
+                scoopServo.setPosition(SERVO_REST_POS);
+                // a flag just in case telling the scoop to rest over and over would create problems
+                scoopResting = true;
+            }
         }
 
         @Override
         protected void started() {
             scoopServo.setPosition(SERVO_LAUNCH_POS);
+            scoopResting = false;
         }
 
         @Override
         protected void stopped() {
-            scoopServo.setPosition(SERVO_REST_POS);
+
         }
     }
+    // this state is essentially a timer for the microwave moving
     class MicrowaveActionState extends StateCore.State{
         final double MICROWAVEACTIONTIMEMS = 500;
         @Override
@@ -46,6 +58,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
         @Override
         protected void started() {
+            // the intake has to spin during this for some reason
             intakeHandler.toggleIntake(true);
         }
 
@@ -86,6 +99,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
         return true;
     }
     public boolean isDone() {
+        // to ensure that things aren't happening before starting them
         return !(scoopActionState.isRunning() || microwaveActionState.isRunning());
     }
 
