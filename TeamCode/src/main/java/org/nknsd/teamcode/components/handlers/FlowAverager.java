@@ -46,8 +46,6 @@ public class FlowAverager implements NKNComponent {
             avPos.h = (pos1.h + pos2.h) / 2;
         }
 
-//      TODO: Test heading, may be negative
-        avPos.h = -avPos.h;
         avPos.x = (pos1.x + pos2.x) / 2;
         avPos.y = (pos1.y + pos2.y) / 2;
 

@@ -60,7 +60,7 @@ public class ColorReader implements NKNComponent {
         telemetry.addData(sensorName + " redness", rgb[0]);
         telemetry.addData(sensorName + " greenness", rgb[1]);
         telemetry.addData(sensorName + " blueness", rgb[2]);
-        RobotLog.v("hi");
+
     }
 
     public void enableLED() {

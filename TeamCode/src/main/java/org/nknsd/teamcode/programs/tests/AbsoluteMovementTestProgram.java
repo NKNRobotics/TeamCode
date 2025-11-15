@@ -31,9 +31,9 @@ public class AbsoluteMovementTestProgram extends NKNProgram {
         //telemetryEnabled.add(wheelHandler);
 
         // Flow Sensory Handler
-        FlowSensor flowSensor1 = new FlowSensor(new SparkFunOTOS.Pose2D(0,0,0), "RODOS");
+        FlowSensor flowSensor1 = new FlowSensor( "RODOS");
         components.add(flowSensor1);
-        FlowSensor flowSensor2 = new FlowSensor(new SparkFunOTOS.Pose2D(0,0,0), "LODOS");
+        FlowSensor flowSensor2 = new FlowSensor( "LODOS");
         components.add(flowSensor2);
         FlowAverager flowAverager = new FlowAverager(flowSensor1,flowSensor2);
         components.add(flowAverager);

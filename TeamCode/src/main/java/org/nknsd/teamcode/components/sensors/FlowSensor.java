@@ -14,13 +14,11 @@ public class FlowSensor implements NKNComponent {
 
 
     private SparkFunOTOS odometry;
-    private SparkFunOTOS.Pose2D pos = new SparkFunOTOS.Pose2D(0, 0, 0);
-    final SparkFunOTOS.Pose2D offset;
+    final SparkFunOTOS.Pose2D OFFSET = new SparkFunOTOS.Pose2D(0,0,0);
     final String sensorName;
 
 
-    public FlowSensor(SparkFunOTOS.Pose2D offset, String sensorName) {
-        this.offset = offset;
+    public FlowSensor( String sensorName) {
         this.sensorName = sensorName;
 
     }
@@ -28,7 +26,7 @@ public class FlowSensor implements NKNComponent {
     private void configureSensor() {
         odometry.setLinearUnit(DistanceUnit.INCH);
         odometry.setAngularUnit(AngleUnit.RADIANS);
-        odometry.setOffset(offset);
+        odometry.setOffset(OFFSET);
         odometry.setLinearScalar(1.0);
         odometry.setAngularScalar(1.0);
         odometry.calibrateImu();
@@ -36,7 +34,9 @@ public class FlowSensor implements NKNComponent {
     }
 
     public SparkFunOTOS.Pose2D getPosition() {
-        return odometry.getPosition();
+        SparkFunOTOS.Pose2D pos = odometry.getPosition();
+        pos.h = -pos.h;
+        return pos;
     }
 
     @Override
@@ -72,8 +72,8 @@ public class FlowSensor implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        getPosition();
-        telemetry.addData(sensorName + " pos", printPose2D(pos));
+
+        telemetry.addData(sensorName + " pos", printPose2D(getPosition()));
     }
 
     static public String printPose2D(SparkFunOTOS.Pose2D pos) {
