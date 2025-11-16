@@ -11,7 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class SlotTracker implements NKNComponent {
 
-    MicrowaveHandler microwaveHandler;
+    MicrowaveScoopHandler microwaveScoopHandler;
     BallColorInterpreter colorInterpreter;
 
     BallColor[] slotColors = new BallColor[]{BallColor.UNSURE, BallColor.UNSURE, BallColor.UNSURE};
@@ -54,13 +54,16 @@ public class SlotTracker implements NKNComponent {
         telemetry.addData("slot 2 color", slotColors[2]);
     }
 
-    public void link(MicrowaveHandler microwaveHandler, BallColorInterpreter colorInterpreter){
-        this.microwaveHandler = microwaveHandler;
+    public void link(MicrowaveScoopHandler microwaveScoopHandler, BallColorInterpreter colorInterpreter){
+        this.microwaveScoopHandler = microwaveScoopHandler;
         this.colorInterpreter = colorInterpreter;
     }
 
     private void findSlotColors(){
-        MicrowaveState slotState = microwaveHandler.getMicrowaveState();
+        MicrowaveState slotState = microwaveScoopHandler.getMicrowaveState();
+        if(!microwaveScoopHandler.isDone()){
+            colorInterpreter.resetGuess();
+        }
         if(slotState == MicrowaveState.LOAD0){
             slotColors[0] = colorInterpreter.getColorGuess();
         } else if(slotState == MicrowaveState.LOAD1){

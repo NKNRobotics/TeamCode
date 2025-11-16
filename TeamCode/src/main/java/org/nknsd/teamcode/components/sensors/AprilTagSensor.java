@@ -56,12 +56,6 @@ public class AprilTagSensor implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        // TODO - You should consider using :
-        // result.getDetectorResults()
-        // I think that will give you april tag details (including id).
-        // I would put the logic into a handler, where you initiate a camera and single pipeline
-        // That focuses on the 5 IDs we care about
-
         LLResult result = limelight.getLatestResult();
 
         limelight.pipelineSwitch(2);

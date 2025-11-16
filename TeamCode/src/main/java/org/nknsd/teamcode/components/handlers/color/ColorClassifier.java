@@ -12,10 +12,10 @@ public class ColorClassifier {
     }
 
     public BallColor classifyColor() {
-        if(colorReader.getDistance() >= maxDist){
+        double[] colors = colorReader.getReading();
+        if(colors[3] >= maxDist){
             return BallColor.NOTHING;
         }
-        int[] colors = colorReader.getRGB();
         if(colors[1] > colors[0]  && colors[1] > colors[2]){
            return BallColor.GREEN;
         }

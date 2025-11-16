@@ -110,8 +110,4 @@ public class LauncherHandler implements NKNComponent {
     public double getCurrentTps() {
         return currentTps;
     }
-
-    public void link(MicrowaveHandler microwaveHandler) {
-
-    }
 }

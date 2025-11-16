@@ -1,7 +1,10 @@
 package org.nknsd.teamcode.components.handlers;
 
+import com.qualcomm.robotcore.hardware.CRServoImplEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -58,26 +61,20 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
         @Override
         protected void started() {
-            // the intake has to spin during this for some reason
-            intakeHandler.toggleIntake(true);
+            toggleIntake(true);
         }
 
         @Override
         protected void stopped() {
-            intakeHandler.toggleIntake(false);
+            toggleIntake(false);
         }
     }
-
-    private BallColorInterpreter colourSensorInterpreter;
     final private String microwaveServoName = "Spin";
     final private String scoopServoName = "Scoop";
     private ScoopActionState scoopActionState = new ScoopActionState();
     private MicrowaveActionState microwaveActionState = new MicrowaveActionState();
 
     private MicrowaveState microwavePos;
-    Servo microwaveServo;
-    Servo scoopServo;
-    private IntakeHandler intakeHandler;
     private StateCore stateCore;
     private static final double SERVO_REST_POS = 0.5;
     private static final double SERVO_LAUNCH_POS = 1;
@@ -98,23 +95,37 @@ public class MicrowaveScoopHandler implements NKNComponent {
         stateCore.startAnonymous(scoopActionState);
         return true;
     }
+
+    public void toggleIntake(boolean startSpinning) {
+        spinner.setPower(startSpinning ? 1 : 0);
+    }
+
     public boolean isDone() {
         // to ensure that things aren't happening before starting them
         return !(scoopActionState.isRunning() || microwaveActionState.isRunning());
     }
 
-
     public MicrowaveState getMicrowaveState() {
         return microwavePos;
     }
 
+
+    Servo microwaveServo;
+    Servo scoopServo;
+    CRServoImplEx spinner;
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        microwaveServo = hardwareMap.servo.get(microwaveServoName);
         scoopServo = hardwareMap.servo.get(scoopServoName);
         scoopServo.setPosition(SERVO_REST_POS);
+
+        microwaveServo = hardwareMap.servo.get(microwaveServoName);
         microwaveServo.setPosition(MicrowaveState.FIRE0.microPosition);
         microwavePos = MicrowaveState.FIRE0;
+
+        spinner = hardwareMap.get(CRServoImplEx.class, "Intake");
+        spinner.setDirection(DcMotorSimple.Direction.REVERSE);
+        spinner.setPwmRange(new PwmControl.PwmRange(600, 2400)); // currently default, can be changed if needed
         return true;
     }
 
@@ -145,10 +156,6 @@ public class MicrowaveScoopHandler implements NKNComponent {
     @Override
     public void doTelemetry(Telemetry telemetry) {
         telemetry.addData("Microwave", microwavePos.name());
-    }
-
-    public void link(IntakeHandler intakeHandler) {
-        this.intakeHandler = intakeHandler;
     }
 
     public void link(StateCore stateCore) {
