@@ -59,7 +59,7 @@ public class SlotTracker implements NKNComponent {
         this.colorInterpreter = colorInterpreter;
     }
 
-    public void findSlotColors(){
+    private void findSlotColors(){
         MicrowaveState slotState = microwaveHandler.getMicrowaveState();
         if(slotState == MicrowaveState.LOAD0){
             slotColors[0] = colorInterpreter.getColorGuess();
