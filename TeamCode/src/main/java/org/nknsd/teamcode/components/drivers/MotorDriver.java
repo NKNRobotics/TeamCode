@@ -6,14 +6,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.FlowAverager;
+import org.nknsd.teamcode.components.handlers.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
 import org.nknsd.teamcode.helperClasses.feedbackcontroller.ControlLoop;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MotorDriver implements NKNComponent {
 
-    private final FlowAverager flowHandler;
+    private final AbsolutePosition flowHandler;
     private final WheelHandler wheelHandler;
 
     private ControlLoop xControlLoop;
@@ -54,7 +54,7 @@ public class MotorDriver implements NKNComponent {
     }
 
 
-    public MotorDriver(FlowAverager flowHandler, WheelHandler wheelHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
+    public MotorDriver(AbsolutePosition flowHandler, WheelHandler wheelHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
         this.flowHandler = flowHandler;
         this.wheelHandler = wheelHandler;
         this.xControlLoop = xControlLoop;

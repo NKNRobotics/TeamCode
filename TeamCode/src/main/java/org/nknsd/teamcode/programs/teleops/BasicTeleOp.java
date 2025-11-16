@@ -6,9 +6,8 @@ import org.nknsd.teamcode.components.drivers.IntakeDriver;
 import org.nknsd.teamcode.components.drivers.LauncherDriver;
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
 import org.nknsd.teamcode.components.drivers.WheelDriver;
-import org.nknsd.teamcode.components.handlers.IntakeHandler;
 import org.nknsd.teamcode.components.handlers.LauncherHandler;
-import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
+import org.nknsd.teamcode.components.handlers.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
 import org.nknsd.teamcode.components.utility.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.LauncherControlScheme;
@@ -42,16 +41,12 @@ public class BasicTeleOp extends NKNProgram {
 
 
         // MICROWAVE
-        MicrowaveHandler microwaveHandler = new MicrowaveHandler();
-        components.add(microwaveHandler);
+        MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
+        components.add(microwaveScoopHandler);
 
         MicrowaveDriver microwaveDriver = new MicrowaveDriver();
         components.add(microwaveDriver);
 
-
-        // INTAKE
-        IntakeHandler intakeHandler = new IntakeHandler();
-        components.add(intakeHandler);
 
         IntakeDriver intakeDriver = new IntakeDriver();
         components.add(intakeDriver);
@@ -77,13 +72,9 @@ public class BasicTeleOp extends NKNProgram {
 
 
         // LINK
-//        microwaveHandler.link(colourSensor);
-        microwaveHandler.link(intakeHandler);
-        launcherHandler.link(microwaveHandler);
-
+//        microwaveScoopHandler.link(colourSensor);
         wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);
-        microwaveDriver.link(gamePadHandler, microwaveHandler, microwaveControlScheme);
-        intakeDriver.link(gamePadHandler, intakeHandler, microwaveControlScheme);
+        microwaveDriver.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
         launcherDriver.link(gamePadHandler, launcherHandler, launcherControlScheme);
 
 

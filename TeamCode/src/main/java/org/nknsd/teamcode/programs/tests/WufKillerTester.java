@@ -3,7 +3,7 @@ package org.nknsd.teamcode.programs.tests;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.handlers.FlowAverager;
+import org.nknsd.teamcode.components.handlers.AbsolutePosition;
 //import org.nknsd.teamcode.components.sensors.FlowHandler;
 import org.nknsd.teamcode.components.drivers.MotorDriver;
 import org.nknsd.teamcode.components.handlers.RailHandler;
@@ -35,16 +35,16 @@ public class WufKillerTester extends NKNProgram {
         components.add(flowSensor1);
         FlowSensor flowSensor2 = new FlowSensor(new SparkFunOTOS.Pose2D(0, 0, 0), "LODOS");
         components.add(flowSensor2);
-        FlowAverager flowAverager = new FlowAverager(flowSensor1, flowSensor2);
-        components.add(flowAverager);
+        AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1, flowSensor2);
+        components.add(absolutePosition);
 
         WheelHandler motorHandler = new WheelHandler();
         StateCore stateCore = new StateCore();
         PidController xpController = new PidController(0.08, .5, 0.1, .25, true, 0.03, 0.3);
         PidController ypController = new PidController(0.08, .5, 0.1, .25, true, 0.03, 0.3);
         PidController hpController = new PidController(0.4, .5, 0.1, .2, true, 0.1, 0.5);
-        MotorDriver motorDriver = new MotorDriver(flowAverager, motorHandler, xpController, ypController, hpController);
-        WufSpotSensor wufSpotSensor = new WufSpotSensor(visionHandler, motorDriver, flowAverager);
+        MotorDriver motorDriver = new MotorDriver(absolutePosition, motorHandler, xpController, ypController, hpController);
+        WufSpotSensor wufSpotSensor = new WufSpotSensor(visionHandler, motorDriver, absolutePosition);
 
         RailHandler railHandler = new RailHandler();
         components.add(railHandler);
@@ -56,8 +56,8 @@ public class WufKillerTester extends NKNProgram {
         components.add(visionHandler);
         telemetryEnabled.add(visionHandler);
         components.add(motorHandler);
-        components.add(flowAverager);
-        telemetryEnabled.add(flowAverager);
+        components.add(absolutePosition);
+        telemetryEnabled.add(absolutePosition);
         components.add(motorDriver);
         telemetryEnabled.add(motorDriver);
         components.add(stateCore);
@@ -67,9 +67,9 @@ public class WufKillerTester extends NKNProgram {
 
         motorDriver.setTarget(new SparkFunOTOS.Pose2D(0,0,0));
 
-        WufHunter wufHunter = new WufHunter(wufSpotSensor, flowAverager, motorDriver, 35);
+        WufHunter wufHunter = new WufHunter(wufSpotSensor, absolutePosition, motorDriver, 35);
         stateCore.addState(WufHunter.STATE_NAME, wufHunter);
-        stateCore.addState(WufSpinner.STATE_NAME, new WufSpinner(wufSpotSensor, motorDriver, flowAverager));
+        stateCore.addState(WufSpinner.STATE_NAME, new WufSpinner(wufSpotSensor, motorDriver, absolutePosition));
 
         stateCore.startState(WufSpinner.STATE_NAME);
 

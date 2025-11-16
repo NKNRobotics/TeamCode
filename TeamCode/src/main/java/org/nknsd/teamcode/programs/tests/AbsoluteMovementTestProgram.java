@@ -4,7 +4,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.handlers.FlowAverager;
+import org.nknsd.teamcode.components.handlers.AbsolutePosition;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
@@ -35,8 +35,8 @@ public class AbsoluteMovementTestProgram extends NKNProgram {
         components.add(flowSensor1);
         FlowSensor flowSensor2 = new FlowSensor(new SparkFunOTOS.Pose2D(0,0,0), "LODOS");
         components.add(flowSensor2);
-        FlowAverager flowAverager = new FlowAverager(flowSensor1,flowSensor2);
-        components.add(flowAverager);
+        AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1,flowSensor2);
+        components.add(absolutePosition);
         //telemetryEnabled.add(flowSensorHandler);
 
         // IMU Handler

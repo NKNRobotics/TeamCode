@@ -13,19 +13,15 @@ public class AprilTagSensor implements NKNComponent {
 
     Limelight3A limelight;
 
-
-
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        if (limelight == null) {
+            throw new NullPointerException("No Limelight Camera Detected");
+        }
         limelight.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
-        limelight.start(); // This tells Limelight to start looking!
-        limelight.pipelineSwitch(2); // Switch to aprilTag pipeline
-
-//        Pipeline 2 is PGP
-//        Pipeline 3 is GPP
-//        Pipeline 4 is PPG
-        return true;
+        limelight.start(); // This tells Limelight to start looking!distSensor = hardwareMap.get(Rev2mDistanceSensor.class,"distanceSensor");
+        return limelight.pipelineSwitch(0);
     }
 
     @Override
@@ -51,57 +47,76 @@ public class AprilTagSensor implements NKNComponent {
     double tx; // How far left or right the target is (degrees)
     double ty; // How far up or down the target is (degrees)
     double ta; // How big the target looks (0%-100% of the image)
+    int size; // How many tags it sees
 
-    int pattern; // this should probably be an enum, it tells what pattern we have, 4 is PPG, 2 is PGP, 3 is GPP, 1 is nothing;
+    int idNum;
+
+    public Patterns getPattern() {
+        return pattern;
+    }
+
+    public enum Patterns {
+        PGP,
+        PPG,
+        GPP,
+        NONE
+    }
+
+    Patterns pattern = Patterns.NONE;
+
+    public static class VisionResult {
+        public final double tx, ty, ta;
+
+        public VisionResult(double tx, double ty, double ta) {
+            this.tx = tx;
+            this.ty = ty;
+            this.ta = ta;
+        }
+    }
+
+    public VisionResult getAprilPos() {
+        return new VisionResult(tx, ty, ta);
+    }
+
+    public boolean doesSee() {
+        return size > 0;
+    }
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
+
         LLResult result = limelight.getLatestResult();
+        size = result.getFiducialResults().size();
 
-        limelight.pipelineSwitch(2);
-        if (result != null && result.isValid()) {
-
-            pattern = 2;
-        } else {
-            limelight.pipelineSwitch(3);
-            if (result != null && result.isValid()) {
-                pattern = 3;
-            } else {
-                limelight.pipelineSwitch(4);
-                if (result != null && result.isValid()) {
-                    pattern = 4;
-                } else {
-                    pattern = 1;
-                    ta = 0;
-                }
-            }
-
-        }
-
-        if (pattern != 1) {
+        if (size > 0) {
+            idNum = result.getFiducialResults().get(0).getFiducialId();
             tx = result.getTx();
             ty = result.getTy();
             ta = result.getTa();
+            switch (idNum) {
+                case 23:
+                    pattern = Patterns.PPG;
+                    break;
+                case 22:
+                    pattern = Patterns.PGP;
+                    break;
+                case 21:
+                    pattern = Patterns.GPP;
+                    break;
+            }
+        } else {
+//            resets pattern the moment it stops seeing the tag; this is for testing purposes
+            pattern = Patterns.NONE;
         }
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        if (pattern == 1) {
+        if (size == 0) {
             telemetry.addLine("Not seen");
         } else {
-            telemetry.addData("Target X", tx);
-            telemetry.addData("Target Y", ty);
-            telemetry.addData("Target Area", ta);
-
-            if(pattern == 2){
-                telemetry.addLine("PGP");
-            } else if(pattern == 3){
-                telemetry.addLine("GPP");
-            } else{
-                telemetry.addLine("PPG");
-            }
+            telemetry.addData("tag id", idNum);
         }
-
+        telemetry.addData("pattern", pattern);
     }
 }

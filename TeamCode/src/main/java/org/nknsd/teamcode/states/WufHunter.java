@@ -4,7 +4,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.FlowAverager;
+import org.nknsd.teamcode.components.handlers.AbsolutePosition;
 //import org.nknsd.teamcode.components.sensors.FlowHandler;
 import org.nknsd.teamcode.components.drivers.MotorDriver;
 import org.nknsd.teamcode.components.sensors.WufSpotSensor;
@@ -19,14 +19,14 @@ public class WufHunter extends StateCore.State {
 
 
     private final WufSpotSensor wufSpotSensor;
-    final FlowAverager flowHandler;
+    final AbsolutePosition flowHandler;
     final MotorDriver motorDriver;
     final double targetDistToWuf;
     private double lastWufSeenTime;
     private double lastNotReadyTime;
 
 
-    public WufHunter(WufSpotSensor wufSpotSensor, FlowAverager flowHandler, MotorDriver motorDriver, double targetDistToWuf) {
+    public WufHunter(WufSpotSensor wufSpotSensor, AbsolutePosition flowHandler, MotorDriver motorDriver, double targetDistToWuf) {
         this.wufSpotSensor = wufSpotSensor;
         this.flowHandler = flowHandler;
         this.motorDriver = motorDriver;

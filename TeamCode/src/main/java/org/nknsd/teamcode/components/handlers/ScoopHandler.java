@@ -13,7 +13,7 @@ public class ScoopHandler extends NKNStateBasedComponent {
     static final double SERVO_LAUNCH_POS = 1;
 
     private Servo scoopServo;
-    private MicrowaveHandler microwaveHandler;
+    private MicrowaveScoopHandler microwaveScoopHandler;
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
@@ -42,8 +42,8 @@ public class ScoopHandler extends NKNStateBasedComponent {
 
     }
 
-    public void link(MicrowaveHandler microwaveHandler) {
-        this.microwaveHandler = microwaveHandler;
+    public void link(MicrowaveScoopHandler microwaveScoopHandler) {
+        this.microwaveScoopHandler = microwaveScoopHandler;
     }
 
     // SETTERS
@@ -102,7 +102,7 @@ public class ScoopHandler extends NKNStateBasedComponent {
         @Override
         public void onStart() {
 //            // if the microwave wasn't in the right position for firing, quickly go back to rest lol
-//            if (!master.microwaveHandler.isInFirePosition()) {
+//            if (!master.microwaveScoopHandler.isInFirePosition()) {
 //                master.returnScoopToRest();
 //            }
 //            servo.setPosition(SERVO_LAUNCH_POS);

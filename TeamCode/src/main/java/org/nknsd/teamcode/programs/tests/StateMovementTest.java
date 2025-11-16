@@ -3,7 +3,7 @@ package org.nknsd.teamcode.programs.tests;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.handlers.FlowAverager;
+import org.nknsd.teamcode.components.handlers.AbsolutePosition;
 //import org.nknsd.teamcode.components.sensors.FlowHandler;
 import org.nknsd.teamcode.components.drivers.MotorDriver;
 import org.nknsd.teamcode.components.handlers.WheelHandler;
@@ -27,8 +27,8 @@ public class StateMovementTest extends NKNProgram {
         components.add(flowSensor1);
         FlowSensor flowSensor2 = new FlowSensor(new SparkFunOTOS.Pose2D(0, 0, 0), "LODOS");
         components.add(flowSensor2);
-        FlowAverager flowAverager = new FlowAverager(flowSensor1, flowSensor2);
-        components.add(flowAverager);
+        AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1, flowSensor2);
+        components.add(absolutePosition);
 
         WheelHandler motorHandler = new WheelHandler();
 
@@ -36,12 +36,12 @@ public class StateMovementTest extends NKNProgram {
         PidController ypController = new PidController(0.06     , .75, 0.1, .25, true, 0.03, 0.3);
         PidController hpController = new PidController(0.3, .5, 0.1, .25, true, 0.4, 0.5);
 
-        MotorDriver motorDriver = new MotorDriver(flowAverager, motorHandler, xpController, ypController, hpController);
+        MotorDriver motorDriver = new MotorDriver(absolutePosition, motorHandler, xpController, ypController, hpController);
 
         components.add(stateCore);
         telemetryEnabled.add(stateCore);
-        components.add(flowAverager);
-        telemetryEnabled.add(flowAverager);
+        components.add(absolutePosition);
+        telemetryEnabled.add(absolutePosition);
         components.add(motorHandler);
         telemetryEnabled.add(motorHandler);
         components.add(motorDriver);

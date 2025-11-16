@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
-public class FlowAverager implements NKNComponent {
+public class AbsolutePosition implements NKNComponent {
 
     private SparkFunOTOS.Pose2D pos1 = new SparkFunOTOS.Pose2D(0, 0, 0);
     private SparkFunOTOS.Pose2D pos2 = new SparkFunOTOS.Pose2D(0, 0, 0);
@@ -18,7 +18,7 @@ public class FlowAverager implements NKNComponent {
     final FlowSensor sensor1;
     final FlowSensor sensor2;
 
-    public FlowAverager(FlowSensor sensor1, FlowSensor sensor2) {
+    public AbsolutePosition(FlowSensor sensor1, FlowSensor sensor2) {
         this.sensor1 = sensor1;
         this.sensor2 = sensor2;
     }

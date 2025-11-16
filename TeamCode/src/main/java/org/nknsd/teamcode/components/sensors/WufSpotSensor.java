@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.drivers.MotorDriver;
-import org.nknsd.teamcode.components.handlers.FlowAverager;
+import org.nknsd.teamcode.components.handlers.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.VisionHandler;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
@@ -19,9 +19,9 @@ public class WufSpotSensor implements NKNComponent {
 
     final VisionHandler visionHandler;
     final MotorDriver motorDriver;
-    final FlowAverager flowHandler;
+    final AbsolutePosition flowHandler;
 
-    public WufSpotSensor(VisionHandler visionHandler, MotorDriver motorDriver, FlowAverager flowHandler) {
+    public WufSpotSensor(VisionHandler visionHandler, MotorDriver motorDriver, AbsolutePosition flowHandler) {
         this.visionHandler = visionHandler;
         this.motorDriver = motorDriver;
         this.flowHandler = flowHandler;
