@@ -69,6 +69,9 @@ public class BallColorInterpreter implements NKNComponent {
         telemetry.addData("DetectedColor ", getColorGuess());
     }
 
+    public void resetGuess(){
+         Arrays.fill(ballColorSamples, BallColor.UNSURE);
+    }
 
     public BallColor getColorGuess() {
         int[] colorCount = new int[4];
