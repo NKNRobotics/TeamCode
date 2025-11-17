@@ -25,7 +25,7 @@ public class AbsolutePosition implements NKNComponent {
 
 
     //  averages both sensors
-    public SparkFunOTOS.Pose2D getAvPos() {
+    public SparkFunOTOS.Pose2D getPosition() {
         pos1 = sensor1.getPosition();
         pos2 = sensor2.getPosition();
         avPos = new SparkFunOTOS.Pose2D();
@@ -85,7 +85,7 @@ public class AbsolutePosition implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData("pos", printPose2D(getAvPos()));
+        telemetry.addData("pos", printPose2D(getPosition()));
     }
 
     static public String printPose2D(SparkFunOTOS.Pose2D pos) {

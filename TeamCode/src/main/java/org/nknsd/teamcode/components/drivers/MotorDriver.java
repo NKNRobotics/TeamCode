@@ -117,7 +117,7 @@ public class MotorDriver implements NKNComponent {
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
 
-        SparkFunOTOS.Pose2D current = flowHandler.getAvPos();
+        SparkFunOTOS.Pose2D current = flowHandler.getPosition();
         current.h = current.h % (2 * Math.PI);
         SparkFunOTOS.Pose2D oldError = error;
         error = calcDelta(target,current);

@@ -36,7 +36,7 @@ public class WufHunter extends StateCore.State {
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
         if (wufSpotSensor.doesWufExist()) {
-            SparkFunOTOS.Pose2D curPos = flowHandler.getAvPos();
+            SparkFunOTOS.Pose2D curPos = flowHandler.getPosition();
 
 
             SparkFunOTOS.Pose2D wufPos = wufSpotSensor.getObjectPos();
@@ -70,7 +70,7 @@ public class WufHunter extends StateCore.State {
             stateCore.stopState(STATE_NAME);
             stateCore.startState(WufSpinner.STATE_NAME);
         } else if (runtime.milliseconds() - lastWufSeenTime > GIVE_UP_TIME / 3) {
-            SparkFunOTOS.Pose2D curPos = flowHandler.getAvPos();
+            SparkFunOTOS.Pose2D curPos = flowHandler.getPosition();
             SparkFunOTOS.Pose2D wufPos = wufSpotSensor.getObjectPos();
             double deltaX = wufPos.x - curPos.x;
             double deltaY = wufPos.y - curPos.y;

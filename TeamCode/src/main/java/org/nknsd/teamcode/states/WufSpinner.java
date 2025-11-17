@@ -41,7 +41,7 @@ public class WufSpinner extends StateCore.State {
 
     @Override
     protected void started() {
-        pos = flowHandler.getAvPos();
+        pos = flowHandler.getPosition();
         startH = pos.h;
     }
 

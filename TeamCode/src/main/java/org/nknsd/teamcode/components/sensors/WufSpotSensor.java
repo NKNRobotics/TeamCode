@@ -86,7 +86,7 @@ public class WufSpotSensor implements NKNComponent {
             maxTime = currentTime;
         }
 
-        SparkFunOTOS.Pose2D currentPos = flowHandler.getAvPos();
+        SparkFunOTOS.Pose2D currentPos = flowHandler.getPosition();
 
         dist= yToDist(object.yAngle)/2.54;
         objectPos.h = (object.xAngle * Math.PI / 180) + currentPos.h;
