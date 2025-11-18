@@ -15,14 +15,16 @@ public class MecanumMotorMixer implements NKNComponent {
     private DcMotor frMotor;
     private DcMotor blMotor;
     private DcMotor brMotor;
-    private boolean enabled;
+    private boolean enabled = true;
     private double blPower;
     private double flPower;
     private double frPower;
     private double brPower;
 
+    private double yPow;
 
     public void setPowers(double[] powers) {
+        yPow = powers[1];
         double magnitude;
         double x = powers[0];
         double y = powers[1];
@@ -53,15 +55,15 @@ public class MecanumMotorMixer implements NKNComponent {
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        flMotor = hardwareMap.dcMotor.get("flMotor");
+        flMotor = hardwareMap.dcMotor.get("FL");
         flMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         flMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frMotor = hardwareMap.dcMotor.get("frMotor");
+        frMotor = hardwareMap.dcMotor.get("FR");
         frMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        blMotor = hardwareMap.dcMotor.get("blMotor");
+        blMotor = hardwareMap.dcMotor.get("BL");
         blMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         blMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        brMotor = hardwareMap.dcMotor.get("brMotor");
+        brMotor = hardwareMap.dcMotor.get("BR");
         brMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         return true;
     }
@@ -97,6 +99,8 @@ public class MecanumMotorMixer implements NKNComponent {
         telemetry.addData("fr", frPower);
         telemetry.addData("bl", blPower);
         telemetry.addData("br", brPower);
+
+        telemetry.addData("y power", yPow);
     }
 
     public void setEnabled(boolean enabled) {
