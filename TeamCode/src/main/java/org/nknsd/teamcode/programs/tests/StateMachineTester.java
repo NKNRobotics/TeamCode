@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -12,7 +13,7 @@ import org.nknsd.teamcode.states.TimerState;
 import java.util.List;
 
 
-@TeleOp(name = "State Machine Tester", group = "Tests")
+@TeleOp(name = "State Machine Tester", group = "Tests") @Disabled
 public class StateMachineTester extends NKNProgram {
 
     String lastStartName = "";

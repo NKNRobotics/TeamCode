@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.programs.tests;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.handlers.AbsolutePosition;
@@ -13,7 +14,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Move To Position", group = "Tests")
+@TeleOp(name = "Move To Position", group = "Tests") @Disabled
 public class MoveToPosTest extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
@@ -23,20 +24,11 @@ public class MoveToPosTest extends NKNProgram {
         components.add(flowSensor2);
         AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1, flowSensor2);
         components.add(absolutePosition);
-        WheelHandler motorHandler = new WheelHandler();
-//        SimplePController pControllerX = pControllerY = new SimplePController(0.1,.75);
-//        SimplePController pControllerH = new SimplePController(0.5,.75);
+        telemetryEnabled.add(absolutePosition);
+
         PidController pControllerX = new PidController(0.2, .3, 0.1, .2, true, 0.01, 0.2);
         PidController pControllerY = new PidController(0.2, .3, 0.1, .2, true, 0.01, 0.2);
         PidController pControllerH = new PidController(0.6, .5, 0.1, .25, true, 0.2, 0.3);
-        MotorDriver motorDriver = new MotorDriver(absolutePosition, motorHandler, pControllerX, pControllerY, pControllerH);
-        components.add(motorHandler);
-        telemetryEnabled.add(motorHandler);
 
-        components.add(absolutePosition);
-        telemetryEnabled.add(absolutePosition);
-        components.add(motorDriver);
-        telemetryEnabled.add(motorDriver);
-        motorDriver.setTarget(new SparkFunOTOS.Pose2D(10, 0, 0));
     }
 }

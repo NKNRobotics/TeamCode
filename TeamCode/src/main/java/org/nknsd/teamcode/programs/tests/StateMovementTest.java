@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.programs.tests;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.handlers.AbsolutePosition;
@@ -17,7 +18,7 @@ import org.nknsd.teamcode.states.RobotPosWithin;
 
 import java.util.List;
 
-@TeleOp(name = "State Movement Test", group = "Tests")
+@TeleOp(name = "State Movement Test", group = "Tests") @Disabled
 public class StateMovementTest extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {

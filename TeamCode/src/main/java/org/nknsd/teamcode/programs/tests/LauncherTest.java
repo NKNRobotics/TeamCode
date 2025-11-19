@@ -18,7 +18,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Launcher Test", group="Tests")
+@TeleOp(name = "Launcher Test", group="Tests") @Disabled
 public class LauncherTest extends NKNProgram {
     private double targetTps = 1100;
     private LauncherDriver launcherDriver;
