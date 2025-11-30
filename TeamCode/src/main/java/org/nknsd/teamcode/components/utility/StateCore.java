@@ -16,7 +16,7 @@ public class StateCore implements NKNComponent {
 
 
     static public abstract class State {
-        protected double startTime = -1;
+        protected double startTimeMs = -1;
         protected boolean stopping = true;
         protected  boolean starting = false;
 
@@ -70,7 +70,7 @@ public class StateCore implements NKNComponent {
                 continue;
             }
             if (state.starting) {
-                state.startTime = runtime.milliseconds();
+                state.startTimeMs = runtime.milliseconds();
                 RobotLog.v("Actively starting %s",state.name);
                 state.started();
                 state.starting = false;
@@ -99,7 +99,7 @@ public class StateCore implements NKNComponent {
         if (state == null) {
             throw new NullPointerException("State: " + name + " not found!");
         }
-        RobotLog.v("Adding starting state %s which is %s and has time %f",name,state.name,state.startTime);
+        RobotLog.v("Adding starting state %s which is %s and has time %f",name,state.name,state.startTimeMs);
         state.stopping = false;
         state.starting = true;
         runList.add(state);

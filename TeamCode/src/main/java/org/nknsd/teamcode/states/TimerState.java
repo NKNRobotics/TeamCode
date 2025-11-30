@@ -29,7 +29,7 @@ public class TimerState extends StateCore.State {
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if (runtime.milliseconds() > (startTime + timerMS)) {
+        if (runtime.milliseconds() > (startTimeMs + timerMS)) {
             stateCore.stopAnonymous(this);
         }
     }

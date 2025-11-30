@@ -1,35 +1,34 @@
 package org.nknsd.teamcode.components.handlers;
 
-import com.qualcomm.robotcore.hardware.CRServoImplEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MicrowaveScoopHandler implements NKNComponent {
 
 
-// this state makes the scoop go up and down
-    class ScoopActionState extends StateCore.State{
-        final double SCOOPACTIONTIMEMS = 500;
+    // this state makes the scoop go up and down
+    class ScoopActionState extends StateCore.State {
+        final double SCOOPACTIONTIMEMS = 400;
 
         private boolean scoopResting = false;
+
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
 
-            if (runtime.milliseconds() > (startTime + SCOOPACTIONTIMEMS)) {
-
+            if (runtime.milliseconds() > (startTimeMs + SCOOPACTIONTIMEMS)) {
                 stateCore.stopAnonymous(this);
-
             }
             // halfway through the scoop will start coming back down
-            if ((runtime.milliseconds() > (startTime + (SCOOPACTIONTIMEMS/2))) && !scoopResting) {
+            if ((runtime.milliseconds() > (startTimeMs + (SCOOPACTIONTIMEMS / 2))) && !scoopResting) {
                 scoopServo.setPosition(SERVO_REST_POS);
                 // a flag just in case telling the scoop to rest over and over would create problems
                 scoopResting = true;
@@ -47,39 +46,47 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
         }
     }
-    // this state is essentially a timer for the microwave moving
-    class MicrowaveActionState extends StateCore.State{
-        final double MICROWAVEACTIONTIMEMS = 500;
+
+    // this state now uses the axon servo's feedback to get the position and check if has reached its target instead of using a timer
+    class MicrowaveActionState extends StateCore.State {
+
+        //        Threshold for microwave position feedback
+        private final double FEEDBACK_POSITION_THRESHOLD = 0.01;
+
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if (runtime.milliseconds() > (startTime + MICROWAVEACTIONTIMEMS)) {
+            if (Math.abs(microwavePos.powerPosition - servoPosInput.getVoltage()) < FEEDBACK_POSITION_THRESHOLD) {
                 stateCore.stopAnonymous(this);
             }
 
         }
 
+        private boolean lastIntake;
+
         @Override
         protected void started() {
+            lastIntake = intaking;
             toggleIntake(true);
         }
 
         @Override
         protected void stopped() {
-            toggleIntake(false);
+            toggleIntake(lastIntake);
         }
     }
+
     final private String microwaveServoName = "Spin";
     final private String scoopServoName = "Scoop";
     private ScoopActionState scoopActionState = new ScoopActionState();
     private MicrowaveActionState microwaveActionState = new MicrowaveActionState();
 
-    private MicrowaveState microwavePos;
+    private MicrowavePositions microwavePos;
     private StateCore stateCore;
-    private static final double SERVO_REST_POS = 0.5;
-    private static final double SERVO_LAUNCH_POS = 1;
+    private static final double SERVO_REST_POS = RobotVersion.INSTANCE.scoopRestPos;
+    private static final double SERVO_LAUNCH_POS = RobotVersion.INSTANCE.scoopLaunchPos;
 
-    public boolean setMicrowaveState(MicrowaveState position) {
-        if (!isDone()){
+    public boolean setMicrowavePosition(MicrowavePositions position) {
+        if (!isDone()) {
             return false;
         }
         microwaveServo.setPosition(position.microPosition);
@@ -87,16 +94,20 @@ public class MicrowaveScoopHandler implements NKNComponent {
         stateCore.startAnonymous(microwaveActionState);
         return true;
     }
+
     public boolean doScoopLaunch() {
-        if (!isDone()){
+        if (!isDone()) {
             return false;
         }
         stateCore.startAnonymous(scoopActionState);
         return true;
     }
 
+    boolean intaking = false;
+
     public void toggleIntake(boolean startSpinning) {
-        spinner.setPower(startSpinning ? 1 : 0);
+        intaking = startSpinning;
+        spinner.setPower(startSpinning ? -1 : 0);
     }
 
     public boolean isDone() {
@@ -104,14 +115,16 @@ public class MicrowaveScoopHandler implements NKNComponent {
         return !(scoopActionState.isRunning() || microwaveActionState.isRunning());
     }
 
-    public MicrowaveState getMicrowaveState() {
+    public MicrowavePositions getMicrowavePosition() {
         return microwavePos;
     }
 
 
     Servo microwaveServo;
     Servo scoopServo;
-    CRServoImplEx spinner;
+    CRServo spinner;
+
+    AnalogInput servoPosInput;
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
@@ -119,12 +132,14 @@ public class MicrowaveScoopHandler implements NKNComponent {
         scoopServo.setPosition(SERVO_REST_POS);
 
         microwaveServo = hardwareMap.servo.get(microwaveServoName);
-        microwaveServo.setPosition(MicrowaveState.FIRE0.microPosition);
-        microwavePos = MicrowaveState.FIRE0;
+        microwaveServo.setPosition(MicrowavePositions.FIRE0.microPosition);
+        microwavePos = MicrowavePositions.FIRE0;
 
-        spinner = hardwareMap.get(CRServoImplEx.class, "Intake");
-        spinner.setDirection(DcMotorSimple.Direction.REVERSE);
-        spinner.setPwmRange(new PwmControl.PwmRange(600, 2400)); // currently default, can be changed if needed
+        spinner = hardwareMap.get(CRServo.class, "Intake");
+        spinner.setPower(0);
+
+        servoPosInput = hardwareMap.get(AnalogInput.class,"ServoPos");
+
         return true;
     }
 
@@ -135,7 +150,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        setMicrowaveState(MicrowaveState.LOAD0);
+        setMicrowavePosition(MicrowavePositions.LOAD0);
     }
 
     @Override
@@ -155,6 +170,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
     @Override
     public void doTelemetry(Telemetry telemetry) {
         telemetry.addData("Microwave", microwavePos.name());
+        telemetry.addData("Microwave Servo Pos", servoPosInput.getVoltage());
     }
 
     public void link(StateCore stateCore) {

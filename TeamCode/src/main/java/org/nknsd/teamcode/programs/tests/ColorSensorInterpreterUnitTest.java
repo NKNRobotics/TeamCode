@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
-import org.nknsd.teamcode.components.handlers.color.ColorClassifier;
 import org.nknsd.teamcode.components.handlers.color.MockColorReader;
 import org.nknsd.teamcode.components.utility.StateCore;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -38,7 +37,7 @@ public class ColorSensorInterpreterUnitTest extends NKNProgram {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if (runtime.milliseconds() > startTime + timerTime) {
+            if (runtime.milliseconds() > startTimeMs + timerTime) {
                 stateCore.stopAnonymous(this);
             }
         }

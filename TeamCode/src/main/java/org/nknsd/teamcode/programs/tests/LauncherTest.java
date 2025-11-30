@@ -54,7 +54,7 @@ public class LauncherTest extends NKNProgram {
         wheelDriver.link(gamePadHandler, wheelHandler, wheelController);
 
         // Launcher Handler
-        LauncherHandler launcherHandler = new LauncherHandler();
+        LauncherHandler launcherHandler = new LauncherHandler(0.95,1.1);
         components.add(launcherHandler);
         telemetryEnabled.add(launcherHandler);
 

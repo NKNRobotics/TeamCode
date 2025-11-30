@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
@@ -14,14 +15,27 @@ public class LauncherHandler implements NKNComponent {
 
     private double targetTps;
     private double currentTps;
+    private double tpsError;
+
+    private int confidenceNum;
+    private boolean powerLocked;
+
     private int wMotorPositionPrevious;
     private double previousRunTime = -1;
     private double ticks; // Idk what units ticks are in
-    private double pFactor = 0.00001;
+    private double pFactor = 0.0002;
+
+    public LauncherHandler(double lowerThreshold, double upperThreshold) {
+        this.lowerThreshold = lowerThreshold;
+        this.upperThreshold = upperThreshold;
+    }
 
     public void setTargetTps(double targetTps) {
-       this.targetTps = targetTps;
+        this.targetTps = targetTps;
     }
+
+    private final double lowerThreshold;
+    private final double upperThreshold;
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
@@ -32,10 +46,12 @@ public class LauncherHandler implements NKNComponent {
     }
 
     @Override
-    public void init_loop(ElapsedTime runtime, Telemetry telemetry) {}
+    public void init_loop(ElapsedTime runtime, Telemetry telemetry) {
+    }
 
     @Override
-    public void start(ElapsedTime runtime, Telemetry telemetry) {}
+    public void start(ElapsedTime runtime, Telemetry telemetry) {
+    }
 
     @Override
     public void stop(ElapsedTime runtime, Telemetry telemetry) {
@@ -54,41 +70,55 @@ public class LauncherHandler implements NKNComponent {
             //wPower = 0;
             return;
         }
-        if (previousRunTime == -1){
+
+        if (previousRunTime == -1) {
             previousRunTime = runtime.seconds();
             wMotorPositionPrevious = wMotor.getCurrentPosition();
             return;
         }
-        double runTimeVar = runtime.seconds();
-        double timeElapsed = runTimeVar - previousRunTime;
 
-        if (timeElapsed < 0.05){
+        double timeElapsed = runtime.seconds() - previousRunTime;
+        if (timeElapsed < 0.08) {
             return;
         }
 
 
         int wMotorPosition = wMotor.getCurrentPosition();
 
-        ticks = Math.abs(wMotorPosition - wMotorPositionPrevious) ; // I don't know what ticks actually are
+        ticks = Math.abs(wMotorPosition - wMotorPositionPrevious);
         currentTps = ticks / timeElapsed;
 
-        if ((targetTps*0.75)<currentTps){
-            if (currentTps < targetTps && wPower == 1){
-                wPower = .62;
-            }
-            wPower = wPower + (pFactor*(targetTps - currentTps));
+        tpsError = currentTps - targetTps;
+
+        if (currentTps > targetTps * lowerThreshold && currentTps < targetTps * upperThreshold) {
+            confidenceNum++;
+        } else {
+            confidenceNum = 0;
+        }
+
+        if (!powerLocked) {
+            wPower = wPower + (pFactor * (targetTps - currentTps));
         }
 
         wMotorPositionPrevious = wMotorPosition;
-        previousRunTime = runTimeVar;
+        previousRunTime = runtime.seconds();
 
-        if (wPower < 0){
+        if (wPower < 0) {
             wPower = 0;
         }
-        if (wPower > 1){
+        if (wPower > 1) {
             wPower = 1;
         }
-        wMotor.setPower(wPower);
+
+//        Automatically sets the speed to full or none if too far from good. It should be noted that this doesn't change wPower
+        if (targetTps * upperThreshold  * upperThreshold < currentTps) {
+            wMotor.setPower(0);
+        } else if (targetTps * lowerThreshold * lowerThreshold  > currentTps) {
+            wMotor.setPower(1);
+        } else {
+            wMotor.setPower(wPower);
+        }
+
     }
 
     @Override
@@ -96,18 +126,37 @@ public class LauncherHandler implements NKNComponent {
         telemetry.addData("wPower", wPower);
         telemetry.addData("currentTps", currentTps);
         telemetry.addData("targetTps", targetTps);
+        telemetry.addData("confidence", confidenceNum);
     }
 
-    public void setEnabled(boolean enabled){
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-        if (enabled){
+        if (enabled) {
             wPower = 1;
-        } else{
+        } else {
             wPower = 0;
         }
     }
 
     public double getCurrentTps() {
         return currentTps;
+    }
+
+    public double getTpsError() {
+        return tpsError;
+    }
+
+//    how many times in a row the wheel has been good to launch
+    public int launchConfidence() {
+        return confidenceNum;
+    }
+
+    public void resetConfidence() {
+        confidenceNum = 0;
+    }
+
+//    stops changing the wPower and just keeps it at whatever it was
+    public void lockPower(boolean toggleLock) {
+        powerLocked = toggleLock;
     }
 }

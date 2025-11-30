@@ -53,7 +53,7 @@ public class AbsolutePowerMixer implements NKNComponent {
         double[] output = new double[3];
         double theta = absolutePosition.getPosition().h;
 
-//        shifts to absolute command to relative command
+//        shifts from absolute command to relative command
         output[0] = Math.cos(theta)*input[0] - Math.sin(theta)*input[1];
         output[1] = Math.sin(theta)*input[0] + Math.cos(theta)*input[1];
 //        heading remains unchanged
@@ -61,6 +61,12 @@ public class AbsolutePowerMixer implements NKNComponent {
 
         mecanumMotorMixer.setPowers(output);
     }
+
+    public void setDirectPowers(double[] powers){
+        mecanumMotorMixer.setPowers(powers);
+    }
+
+
 
     public void link(MecanumMotorMixer mecanumMotorMixer, AbsolutePosition absolutePosition){
         this.mecanumMotorMixer = mecanumMotorMixer;

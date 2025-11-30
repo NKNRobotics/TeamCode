@@ -60,21 +60,26 @@ public class SlotTracker implements NKNComponent {
     }
 
     private void findSlotColors(){
-        MicrowaveState slotState = microwaveScoopHandler.getMicrowaveState();
+        MicrowavePositions slotState = microwaveScoopHandler.getMicrowavePosition();
         if(!microwaveScoopHandler.isDone()){
             colorInterpreter.resetGuess();
+            return;
         }
-        if(slotState == MicrowaveState.LOAD0){
+        if(slotState == MicrowavePositions.LOAD0){
             slotColors[0] = colorInterpreter.getColorGuess();
-        } else if(slotState == MicrowaveState.LOAD1){
+        } else if(slotState == MicrowavePositions.LOAD1){
             slotColors[1] = colorInterpreter.getColorGuess();
-        } else if(slotState == MicrowaveState.LOAD2){
+        } else if(slotState == MicrowavePositions.LOAD2){
             slotColors[2] = colorInterpreter.getColorGuess();
         }
     }
 
     public BallColor getSlotColor(int slotnumber){
         return slotColors[slotnumber];
+    }
+
+    public void clearSlot(int slotNumber){
+        slotColors[slotNumber] = BallColor.NOTHING;
     }
 
 }

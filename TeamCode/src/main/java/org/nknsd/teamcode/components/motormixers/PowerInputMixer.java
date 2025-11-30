@@ -13,6 +13,8 @@ public class PowerInputMixer implements NKNComponent {
 
     double[] powers = new double[3];
     boolean[] autoEnabled = new boolean[3];
+    boolean directPower = false;
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         return true;
@@ -48,37 +50,41 @@ public class PowerInputMixer implements NKNComponent {
 
     }
 
-    public void setAutoPowers(double[] autoPowers){
-        if(autoEnabled[0]){
+    public void setAutoPowers(double[] autoPowers, boolean directPower) {
+        if (autoEnabled[0]) {
             powers[0] = autoPowers[0];
         }
-        if(autoEnabled[1]){
+        if (autoEnabled[1]) {
             powers[1] = autoPowers[1];
         }
-        if(autoEnabled[2]){
+        if (autoEnabled[2]) {
             powers[2] = autoPowers[2];
         }
-        absolutePowerMixer.setPowers(powers);
+        if (directPower) {
+            absolutePowerMixer.setDirectPowers(powers);
+        } else {
+            absolutePowerMixer.setPowers(powers);
+        }
     }
 
-    public void setManualPowers(double[] manualPowers){
-        if(!autoEnabled[0]){
+    public void setManualPowers(double[] manualPowers, boolean directPower) {
+        if (!autoEnabled[0]) {
             powers[0] = manualPowers[0];
         }
-        if(!autoEnabled[1]){
+        if (!autoEnabled[1]) {
             powers[1] = manualPowers[1];
         }
-        if(!autoEnabled[2]){
+        if (!autoEnabled[2]) {
             powers[2] = manualPowers[2];
         }
         absolutePowerMixer.setPowers(powers);
     }
 
-    public void setAutoEnabled(boolean[] autoEnable){
+    public void setAutoEnabled(boolean[] autoEnable) {
         this.autoEnabled = autoEnable;
     }
 
-    public void link(AbsolutePowerMixer absolutePowerMixer){
+    public void link(AbsolutePowerMixer absolutePowerMixer) {
         this.absolutePowerMixer = absolutePowerMixer;
     }
 }

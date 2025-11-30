@@ -53,7 +53,7 @@ public class BasicTeleOp extends NKNProgram {
 
 
         // LAUNCHER
-        LauncherHandler launcherHandler = new LauncherHandler();
+        LauncherHandler launcherHandler = new LauncherHandler(0.95, 1.1);
         components.add(launcherHandler);
 
         LauncherDriver launcherDriver = new LauncherDriver();

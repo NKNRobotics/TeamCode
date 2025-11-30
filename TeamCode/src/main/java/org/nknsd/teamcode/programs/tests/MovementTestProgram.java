@@ -28,8 +28,8 @@ public class MovementTestProgram extends NKNProgram {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            mixer.setAutoPowers(new double[]{0.3,0.3,0.3});
-            mixer.setManualPowers(new double[]{-0.3,-0.3,0});
+//            mixer.setAutoPowers(new double[]{0.3,0.3,0.3});
+//            mixer.setManualPowers(new double[]{-0.3,-0.3,0});
         }
 
         @Override

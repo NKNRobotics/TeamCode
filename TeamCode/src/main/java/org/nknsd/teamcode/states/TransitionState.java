@@ -49,7 +49,7 @@ public abstract class TransitionState extends StateCore.State {
             RobotLog.v(String.format("Starting: '%s' ", stateName));
             stateCore.startState(stateName);
         }
-        lastTime = startTime;
+        lastTime = startTimeMs;
     }
 
     @Override

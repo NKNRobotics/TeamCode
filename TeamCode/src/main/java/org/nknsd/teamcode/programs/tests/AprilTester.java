@@ -2,7 +2,9 @@ package org.nknsd.teamcode.programs.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.nknsd.teamcode.components.handlers.BasketLocator;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
+import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
@@ -13,5 +15,10 @@ public class AprilTester extends NKNProgram {
         AprilTagSensor aprilTagSensor = new AprilTagSensor();
         components.add(aprilTagSensor);
         telemetryEnabled.add(aprilTagSensor);
+
+        BasketLocator basketLocator = new BasketLocator(RobotVersion.INSTANCE.aprilDistanceInterpolater);
+        components.add(basketLocator);
+        telemetryEnabled.add(basketLocator);
+        basketLocator.link(aprilTagSensor);
     }
 }

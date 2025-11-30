@@ -1,10 +1,12 @@
 package org.nknsd.teamcode.components.handlers.color;
 
+import org.nknsd.teamcode.components.utility.RobotVersion;
+
 public class ColorClassifier {
 
 
 
-    final double maxDist = 35;
+    final double maxDist = RobotVersion.INSTANCE.distSensorThreshold;
     final private ColorReader colorReader;
 
     public ColorClassifier(ColorReader colorReader) {
