@@ -4,11 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.AbsolutePosition;
+import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
-import org.nknsd.teamcode.components.utility.StateCore;
+import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.frameworks.NKNProgram;
@@ -18,7 +18,7 @@ import java.util.List;
 @TeleOp(name = "Absolute Movement Test", group="Tests")
 public class MovementTestProgram extends NKNProgram {
 
-    class SetMotorPower extends StateCore.State{
+    class SetMotorPower extends StateMachine.State{
 
         final PowerInputMixer mixer;
 
@@ -67,9 +67,9 @@ public class MovementTestProgram extends NKNProgram {
         components.add(powerInputMixer);
         powerInputMixer.link(absolutePowerMixer);
 
-        StateCore stateCore = new StateCore();
-        components.add(stateCore);
-        stateCore.addState("setty", new SetMotorPower(powerInputMixer));
-        stateCore.startState("setty");
+
+        components.add(StateMachine.INSTANCE);
+        StateMachine.INSTANCE.addState("setty", new SetMotorPower(powerInputMixer));
+        StateMachine.INSTANCE.startState("setty");
     }
 }

@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.WheelHandler;
+import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
 import org.nknsd.teamcode.components.sensors.IMUSensor;
-import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
@@ -20,7 +20,7 @@ public class CollyRandomWheelDriver implements NKNComponent {
     private final GamePadHandler.GamepadSticks strafeStick;
     private final GamePadHandler.GamepadSticks turnStick;
     private GamePadHandler gamePadHandler;
-    private WheelHandler wheelHandler;
+    private WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
     private WheelControlScheme controlScheme;
 
     private double moveSpeedMultiplier;
@@ -112,7 +112,7 @@ public class CollyRandomWheelDriver implements NKNComponent {
             yaw += 90;
         }
 
-        wheelHandler.absoluteVectorToMotion(strafeStick.getValue(gamepad) * moveSpeedMultiplier, forwardStick.getValue(gamepad) * moveSpeedMultiplier, turnStick.getValue(gamepad) * moveSpeedMultiplier, yaw);
+        wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER.absoluteVectorToMotion(strafeStick.getValue(gamepad) * moveSpeedMultiplier, forwardStick.getValue(gamepad) * moveSpeedMultiplier, turnStick.getValue(gamepad) * moveSpeedMultiplier, yaw);
     }
 
     @Override
@@ -122,9 +122,9 @@ public class CollyRandomWheelDriver implements NKNComponent {
         telemetry.addData("Wheel Controls", controlScheme.getName());
     }
 
-    public void link(GamePadHandler gamePadHandler, WheelHandler wheelHandler, IMUSensor imuSensor, WheelControlScheme controlScheme) {
+    public void link(GamePadHandler gamePadHandler, WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER, IMUSensor imuSensor, WheelControlScheme controlScheme) {
         this.gamePadHandler = gamePadHandler;
-        this.wheelHandler = wheelHandler;
+        this.wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER = wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
         this.imuSensor = imuSensor;
         this.controlScheme = controlScheme;
     }

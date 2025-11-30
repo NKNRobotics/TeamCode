@@ -1,6 +1,6 @@
 package org.nknsd.teamcode.controlSchemes.defaults;
 
-import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.frameworks.NKNControlScheme;
 
 import java.util.concurrent.Callable;

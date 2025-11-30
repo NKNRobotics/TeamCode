@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.nknsd.teamcode.components.drivers.IntakeDriver;
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
 import org.nknsd.teamcode.components.drivers.WheelDriver;
-import org.nknsd.teamcode.components.handlers.MicrowaveScoopHandler;
-import org.nknsd.teamcode.components.handlers.WheelHandler;
-import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -25,8 +25,8 @@ public class MicrowaveTeleOp extends NKNProgram {
 
 
         // WHEELS
-        WheelHandler wheelHandler = new WheelHandler();
-        components.add(wheelHandler);
+        WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER = new WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER();
+        components.add(wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER);
 
         WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
         components.add(wheelDriver);
@@ -55,7 +55,7 @@ public class MicrowaveTeleOp extends NKNProgram {
         MicrowaveControlScheme microwaveControlScheme = new MicrowaveControlScheme();
         microwaveControlScheme.link(gamePadHandler);
 
-        wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);
+        wheelDriver.link(gamePadHandler, wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER,wheelControlScheme);
         microwaveDriver.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
         intakeDriver.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
     }

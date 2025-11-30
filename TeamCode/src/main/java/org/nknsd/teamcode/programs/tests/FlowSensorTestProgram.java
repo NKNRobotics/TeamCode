@@ -1,10 +1,8 @@
 package org.nknsd.teamcode.programs.tests;
 
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.handlers.AbsolutePosition;
+import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.frameworks.NKNProgram;

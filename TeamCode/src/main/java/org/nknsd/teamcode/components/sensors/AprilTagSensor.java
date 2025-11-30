@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.ID;
+import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 import java.util.List;

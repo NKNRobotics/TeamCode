@@ -1,6 +1,6 @@
 package org.nknsd.teamcode.frameworks;
 
-import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 
 public abstract class NKNControlScheme {
     public GamePadHandler gamePadHandler;

@@ -4,19 +4,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.BasketLocator;
-import org.nknsd.teamcode.components.handlers.LaunchSystem;
-import org.nknsd.teamcode.components.handlers.LauncherHandler;
-import org.nknsd.teamcode.components.handlers.MicrowaveScoopHandler;
-import org.nknsd.teamcode.components.handlers.MicrowavePositions;
-import org.nknsd.teamcode.components.handlers.SlotTracker;
-import org.nknsd.teamcode.components.handlers.TrajectoryHandler;
+import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
+import org.nknsd.teamcode.components.handlers.launch.LaunchSystem;
+import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowavePositions;
+import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
+import org.nknsd.teamcode.components.handlers.launch.TrajectoryHandler;
 import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.ColorReader;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
-import org.nknsd.teamcode.components.utility.StateCore;
+import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
@@ -27,7 +27,7 @@ public class TrajectoryTest extends NKNProgram {
 
     private double distance = 130;
 
-    class IntakeState extends StateCore.State {
+    class IntakeState extends StateMachine.State {
 
         private final MicrowavePositions slot;
         private final MicrowaveScoopHandler microwaveScoopHandler;
@@ -57,7 +57,7 @@ public class TrajectoryTest extends NKNProgram {
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
             if (microwaveScoopHandler.isDone()) {
                 if (slotTracker.getSlotColor(slotNum) == BallColor.GREEN || slotTracker.getSlotColor(slotNum) == BallColor.PURPLE) {
-                    stateCore.stopAnonymous(this);
+                    StateMachine.INSTANCE.stopAnonymous(this);
                 }
             }
         }
@@ -72,15 +72,15 @@ public class TrajectoryTest extends NKNProgram {
         @Override
         protected void stopped() {
             if (slotNum != 2) {
-                stateCore.startAnonymous(new IntakeState(slotNum + 1, microwaveScoopHandler, slotTracker, launchSystem));
+                StateMachine.INSTANCE.startAnonymous(new IntakeState(slotNum + 1, microwaveScoopHandler, slotTracker, launchSystem));
             } else {
-                stateCore.startAnonymous(new LaunchState(0, microwaveScoopHandler, launchSystem, slotTracker));
+                StateMachine.INSTANCE.startAnonymous(new LaunchState(0, microwaveScoopHandler, launchSystem, slotTracker));
             }
 
         }
     }
 
-    class LaunchState extends StateCore.State {
+    class LaunchState extends StateMachine.State {
 
         private boolean hasLaunched = false;
 
@@ -115,7 +115,7 @@ public class TrajectoryTest extends NKNProgram {
             }
             if (hasLaunched && microwaveScoopHandler.isDone()) {
                 slotTracker.clearSlot(slotNum);
-                stateCore.stopAnonymous(this);
+                StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
 
@@ -128,9 +128,9 @@ public class TrajectoryTest extends NKNProgram {
         @Override
         protected void stopped() {
             if (slotNum != 2) {
-                stateCore.startAnonymous(new LaunchState(slotNum + 1, microwaveScoopHandler, launchSystem, slotTracker));
+                StateMachine.INSTANCE.startAnonymous(new LaunchState(slotNum + 1, microwaveScoopHandler, launchSystem, slotTracker));
             } else {
-                stateCore.startAnonymous(new IntakeState(0, microwaveScoopHandler, slotTracker, launchSystem));
+                StateMachine.INSTANCE.startAnonymous(new IntakeState(0, microwaveScoopHandler, slotTracker, launchSystem));
             }
         }
     }
@@ -142,14 +142,14 @@ public class TrajectoryTest extends NKNProgram {
         components.add(trajectoryHandler);
         telemetryEnabled.add(trajectoryHandler);
 
-        StateCore stateCore = new StateCore();
-        components.add(stateCore);
-//        telemetryEnabled.add(stateCore);
+
+        components.add(StateMachine.INSTANCE);
+        telemetryEnabled.add(StateMachine.INSTANCE);
 
         MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
         components.add(microwaveScoopHandler);
 //        telemetryEnabled.add(microwaveScoopHandler);
-        microwaveScoopHandler.link(stateCore);
+ 
 
         LauncherHandler launcherHandler = new LauncherHandler(0.98, 1.03);
         components.add(launcherHandler);
@@ -181,6 +181,6 @@ public class TrajectoryTest extends NKNProgram {
         telemetryEnabled.add(basketLocator);
         basketLocator.link(aprilTagSensor);
 
-        stateCore.startAnonymous(new IntakeState(0, microwaveScoopHandler, slotTracker, launchSystem));
+        StateMachine.INSTANCE.startAnonymous(new IntakeState(0, microwaveScoopHandler, slotTracker, launchSystem));
     }
 }

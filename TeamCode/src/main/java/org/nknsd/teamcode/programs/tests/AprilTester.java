@@ -2,7 +2,7 @@ package org.nknsd.teamcode.programs.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.handlers.BasketLocator;
+import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.frameworks.NKNComponent;

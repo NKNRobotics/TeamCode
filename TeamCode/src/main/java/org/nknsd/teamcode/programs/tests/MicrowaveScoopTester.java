@@ -4,11 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.MicrowavePositions;
-import org.nknsd.teamcode.components.handlers.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowavePositions;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.ColorReader;
-import org.nknsd.teamcode.components.utility.StateCore;
+import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @TeleOp(name = "Microwave Scoop Tester", group = "Tests")
 public class MicrowaveScoopTester extends NKNProgram {
 
-    class SlotSwitchState extends StateCore.State {
+    class SlotSwitchState extends StateMachine.State {
 
         final MicrowaveScoopHandler microwaveHandler;
         final MicrowavePositions state;
@@ -36,8 +36,8 @@ public class MicrowaveScoopTester extends NKNProgram {
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
             if(microwaveHandler.isDone()) {
-                stateCore.startState(toStartOnEnd);
-                stateCore.stopAnonymous(this);
+                StateMachine.INSTANCE.startState(toStartOnEnd);
+                StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
 
@@ -80,21 +80,21 @@ public class MicrowaveScoopTester extends NKNProgram {
        // slotTracker.link(microwaveHandler, ballColorInterpreter);
         ballColorInterpreter.link(colorReader);
 
-        StateCore stateCore = new StateCore();
-        components.add(stateCore);
 
-        microwaveHandler.link(stateCore);
+        components.add(StateMachine.INSTANCE);
 
-        stateCore.addState("load0", new SlotSwitchState(microwaveHandler, MicrowavePositions.LOAD0, false, "load1"));
-        stateCore.addState("load1", new SlotSwitchState(microwaveHandler, MicrowavePositions.LOAD1, false, "load2"));
-        stateCore.addState("load2", new SlotSwitchState(microwaveHandler, MicrowavePositions.LOAD2, false, "fire0"));
-        stateCore.addState("fire0", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE0, false, "fire0launch"));
-        stateCore.addState("fire1", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE1, false, "fire1launch"));
-        stateCore.addState("fire2", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE2, false, "fire2launch"));
-        stateCore.addState("fire0launch", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE0, true, "fire1"));
-        stateCore.addState("fire1launch", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE1, true, "fire2"));
-        stateCore.addState("fire2launch", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE2, true, "load0"));
 
-        stateCore.startState("load0");
+
+        StateMachine.INSTANCE.addState("load0", new SlotSwitchState(microwaveHandler, MicrowavePositions.LOAD0, false, "load1"));
+        StateMachine.INSTANCE.addState("load1", new SlotSwitchState(microwaveHandler, MicrowavePositions.LOAD1, false, "load2"));
+        StateMachine.INSTANCE.addState("load2", new SlotSwitchState(microwaveHandler, MicrowavePositions.LOAD2, false, "fire0"));
+        StateMachine.INSTANCE.addState("fire0", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE0, false, "fire0launch"));
+        StateMachine.INSTANCE.addState("fire1", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE1, false, "fire1launch"));
+        StateMachine.INSTANCE.addState("fire2", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE2, false, "fire2launch"));
+        StateMachine.INSTANCE.addState("fire0launch", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE0, true, "fire1"));
+        StateMachine.INSTANCE.addState("fire1launch", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE1, true, "fire2"));
+        StateMachine.INSTANCE.addState("fire2launch", new SlotSwitchState(microwaveHandler, MicrowavePositions.FIRE2, true, "load0"));
+
+        StateMachine.INSTANCE.startState("load0");
     }
 }

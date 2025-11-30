@@ -6,10 +6,10 @@ import org.nknsd.teamcode.components.drivers.IntakeDriver;
 import org.nknsd.teamcode.components.drivers.LauncherDriver;
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
 import org.nknsd.teamcode.components.drivers.WheelDriver;
-import org.nknsd.teamcode.components.handlers.LauncherHandler;
-import org.nknsd.teamcode.components.handlers.MicrowaveScoopHandler;
-import org.nknsd.teamcode.components.handlers.WheelHandler;
-import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.LauncherControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
@@ -28,8 +28,8 @@ public class BasicTeleOp extends NKNProgram {
 
 
         // WHEELS
-        WheelHandler wheelHandler = new WheelHandler();
-        components.add(wheelHandler);
+        WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER = new WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER();
+        components.add(wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER);
 
         WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
         components.add(wheelDriver);
@@ -73,7 +73,7 @@ public class BasicTeleOp extends NKNProgram {
 
         // LINK
 //        microwaveScoopHandler.link(colourSensor);
-        wheelDriver.link(gamePadHandler,wheelHandler,wheelControlScheme);
+        wheelDriver.link(gamePadHandler, wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER,wheelControlScheme);
         microwaveDriver.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
         launcherDriver.link(gamePadHandler, launcherHandler, launcherControlScheme);
 

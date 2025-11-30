@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.MockColorReader;
-import org.nknsd.teamcode.components.utility.StateCore;
+import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
@@ -19,7 +19,7 @@ public class ColorSensorInterpreterUnitTest extends NKNProgram {
 
     BallColorInterpreter ballColorInterpreter;
 
-    class testSwitch extends StateCore.State {
+    class testSwitch extends StateMachine.State {
 
         final MockColorReader mockColorReader;
         final double timerTime;
@@ -37,8 +37,8 @@ public class ColorSensorInterpreterUnitTest extends NKNProgram {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if (runtime.milliseconds() > startTimeMs + timerTime) {
-                stateCore.stopAnonymous(this);
+            if (runtime.milliseconds() > startTimeMS + timerTime) {
+                StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
 
@@ -49,7 +49,7 @@ public class ColorSensorInterpreterUnitTest extends NKNProgram {
 
         @Override
         protected void stopped() {
-            stateCore.startState(nextTest);
+            StateMachine.INSTANCE.startState(nextTest);
             BallColor result = ballColorInterpreter.getColorGuess();
             String message = "color test " + testNum + " saw " + result.name() + " expected " + expectedResult.name();
             RobotLog.v(message);
@@ -61,9 +61,8 @@ public class ColorSensorInterpreterUnitTest extends NKNProgram {
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
-        StateCore stateCore = new StateCore();
-        components.add(stateCore);
-        telemetryEnabled.add(stateCore);
+        components.add(StateMachine.INSTANCE);
+        telemetryEnabled.add(StateMachine.INSTANCE);
 
         MockColorReader mockColorReader = new MockColorReader("Wuf");
         components.add(mockColorReader);
@@ -75,7 +74,7 @@ public class ColorSensorInterpreterUnitTest extends NKNProgram {
 
         ballColorInterpreter.link(mockColorReader);
 
-        stateCore.addState("test0", new testSwitch(mockColorReader, 5000, 0, "test1", BallColor.PURPLE));
-        stateCore.addState("test1", new testSwitch(mockColorReader, 5000, 1, "test0", BallColor.UNSURE));
+        StateMachine.INSTANCE.addState("test0", new testSwitch(mockColorReader, 5000, 0, "test1", BallColor.PURPLE));
+        StateMachine.INSTANCE.addState("test1", new testSwitch(mockColorReader, 5000, 1, "test0", BallColor.UNSURE));
     }
 }

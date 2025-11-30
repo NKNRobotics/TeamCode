@@ -1,6 +1,6 @@
 package org.nknsd.teamcode.components.utility;
 
-import org.nknsd.teamcode.helperClasses.feedbackcontroller.PidController;
+import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 
 public class RobotVersion {
 
@@ -10,7 +10,7 @@ public class RobotVersion {
         new Interpolater(new double[][]{{16,1350}, {32,1400}, {48,1400}, {64,1500}, {80,1600}, {96, 1700}, {112,1800}, {132, 1900}}),
         new Interpolater(new double[][]{{16,1}, {32,0.75}, {48,0.65}, {64,0.5}, {80,0.4}, {96,0.3}, {112,0.2}, {132,0.2}}),
         new Interpolater(new double[][]{{0.242,14}, {0.190,24}, {0.152,26}, {0.126,48}, {0.106,60}, {0.092,72}, {0.081,84}, {0.074,96}, {0.067,108}, {0.061,120}, {0.056,132}, {0.052,144}}),
-        new PidController(1,1,0.3,0.7,true,0,0));
+        new PidController(0.8,.5,0.4,0.5,true,0,0));
 
 //  public final static RobotVersion INSTANCE= new RobotVersion(0,35,0.5,1,
 //      new Interpolater(new double[][]{{16,1400}, {32,1450}, {48,1500}, {64,1550}, {80,1650}, {96, 1850}, {112,2000}, {132, 2200}}),

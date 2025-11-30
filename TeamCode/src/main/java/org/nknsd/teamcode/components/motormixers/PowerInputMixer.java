@@ -50,7 +50,7 @@ public class PowerInputMixer implements NKNComponent {
 
     }
 
-    public void setAutoPowers(double[] autoPowers, boolean directPower) {
+    public void setAutoPowers(double[] autoPowers) {
         if (autoEnabled[0]) {
             powers[0] = autoPowers[0];
         }
@@ -60,14 +60,10 @@ public class PowerInputMixer implements NKNComponent {
         if (autoEnabled[2]) {
             powers[2] = autoPowers[2];
         }
-        if (directPower) {
-            absolutePowerMixer.setDirectPowers(powers);
-        } else {
-            absolutePowerMixer.setPowers(powers);
-        }
+        absolutePowerMixer.setPowers(powers);
     }
 
-    public void setManualPowers(double[] manualPowers, boolean directPower) {
+    public void setManualPowers(double[] manualPowers) {
         if (!autoEnabled[0]) {
             powers[0] = manualPowers[0];
         }

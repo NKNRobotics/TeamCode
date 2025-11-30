@@ -5,8 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.AbsolutePosition;
-import org.nknsd.teamcode.components.sensors.FlowSensor;
+import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class AbsolutePowerMixer implements NKNComponent {

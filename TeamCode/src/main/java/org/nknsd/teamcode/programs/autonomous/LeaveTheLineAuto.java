@@ -3,22 +3,22 @@ package org.nknsd.teamcode.programs.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.nknsd.teamcode.components.handlers.WheelHandler;
+import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
 
 @Autonomous(name="Leave the Line")
 public class LeaveTheLineAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        WheelHandler wheelHandler = new WheelHandler();
+        WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER = new WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER();
 
         waitForStart();
 
         double startTime = getRuntime();
-        wheelHandler.relativeVectorToMotion(0, 0.5, 0);
+        wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER.relativeVectorToMotion(0, 0.5, 0);
 
         while (opModeIsActive()) {
             if (getRuntime() > startTime + 1000) {
-                wheelHandler.relativeVectorToMotion(0, 0, 0);
+                wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER.relativeVectorToMotion(0, 0, 0);
                 break;
             }
         }

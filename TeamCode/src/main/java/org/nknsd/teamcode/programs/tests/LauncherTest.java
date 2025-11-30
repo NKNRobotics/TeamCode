@@ -3,14 +3,11 @@ package org.nknsd.teamcode.programs.tests;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.drivers.AdvancedWheelDriver;
 import org.nknsd.teamcode.components.drivers.LauncherDriver;
 import org.nknsd.teamcode.components.drivers.WheelDriver;
-import org.nknsd.teamcode.components.handlers.LauncherHandler;
-import org.nknsd.teamcode.components.handlers.WheelHandler;
-import org.nknsd.teamcode.components.sensors.FlowSensor;
-import org.nknsd.teamcode.components.sensors.IMUSensor;
-import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
+import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.LauncherControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -40,9 +37,9 @@ public class LauncherTest extends NKNProgram {
         telemetryEnabled.add(gamePadHandler);
 
         // Wheel Handler
-        WheelHandler wheelHandler = new WheelHandler();
-        components.add(wheelHandler);
-        //telemetryEnabled.add(wheelHandler);
+        WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER = new WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER();
+        components.add(wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER);
+        //telemetryEnabled.add(wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER);
 
         WheelControlScheme wheelController = new WheelControlScheme();
         wheelController.link(gamePadHandler);
@@ -51,7 +48,7 @@ public class LauncherTest extends NKNProgram {
         WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
         components.add(wheelDriver);
         //telemetryEnabled.add(wheelDriver);
-        wheelDriver.link(gamePadHandler, wheelHandler, wheelController);
+        wheelDriver.link(gamePadHandler, wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER, wheelController);
 
         // Launcher Handler
         LauncherHandler launcherHandler = new LauncherHandler(0.95,1.1);
