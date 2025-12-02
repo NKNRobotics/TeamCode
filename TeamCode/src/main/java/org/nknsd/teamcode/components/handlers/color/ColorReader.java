@@ -53,14 +53,12 @@ public class ColorReader implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        int[] rgb = getRGB();
-        double dist = getDistance();
+        double[] reading = getReading();
 
-        telemetry.addData(sensorName + " distance", dist);
-        telemetry.addData(sensorName + " redness", rgb[0]);
-        telemetry.addData(sensorName + " greenness", rgb[1]);
-        telemetry.addData(sensorName + " blueness", rgb[2]);
-        RobotLog.v("hi");
+        telemetry.addData(sensorName + " distance", reading[3]);
+        telemetry.addData(sensorName + " redness", reading[0]);
+        telemetry.addData(sensorName + " greenness", reading[1]);
+        telemetry.addData(sensorName + " blueness", reading[2]);
     }
 
     public void enableLED() {
@@ -71,12 +69,13 @@ public class ColorReader implements NKNComponent {
         sensor.enableLed(false);
     }
 
-    public int[] getRGB() {
-        int[] rgb = new int[3];
+    public double[] getReading() {
+        double[] rgb = new double[4];
         rgb[0] = sensor.red();
         rgb[1] = sensor.green();
         rgb[2] = sensor.blue();
-        RobotLog.v("ColorReader: R=" + rgb[0] + " G=" + rgb[1] + " B=" + rgb[2]);
+        rgb[3] = sensor.getDistance(DistanceUnit.MM);
+//        RobotLog.v("ColorReader: R=" + rgb[0] + " G=" + rgb[1] + " B=" + rgb[2]);
         return rgb;
     }
 
@@ -87,11 +86,11 @@ public class ColorReader implements NKNComponent {
 //        RobotLog.v("ColorReader: H="+hueLight[0]+" L="+hueLight[1]);
 //        return hueLight;
 //    }
-
-    public double getDistance() {
-        double dist = sensor.getDistance(DistanceUnit.MM);
-        RobotLog.v("ColorReader: D=" + dist);
-        return dist;
-    }
+//
+//    public double getDistance() {
+//        double dist = sensor.getDistance(DistanceUnit.MM);
+//        RobotLog.v("ColorReader: D=" + dist);
+//        return dist;
+//    }
 
 }

@@ -6,15 +6,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.FlowAverager;
-import org.nknsd.teamcode.components.handlers.WheelHandler;
-import org.nknsd.teamcode.helperClasses.feedbackcontroller.ControlLoop;
+import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
+import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
+import org.nknsd.teamcode.components.utility.feedbackcontroller.ControlLoop;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MotorDriver implements NKNComponent {
 
-    private final FlowAverager flowHandler;
-    private final WheelHandler wheelHandler;
+    private final AbsolutePosition flowHandler;
+    private final WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
 
     private ControlLoop xControlLoop;
     public void setxControlLoop(ControlLoop xControlLoop) {
@@ -54,9 +54,9 @@ public class MotorDriver implements NKNComponent {
     }
 
 
-    public MotorDriver(FlowAverager flowHandler, WheelHandler wheelHandler, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
+    public MotorDriver(AbsolutePosition flowHandler, WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER, ControlLoop xControlLoop, ControlLoop yControlLoop, ControlLoop hControlLoop) {
         this.flowHandler = flowHandler;
-        this.wheelHandler = wheelHandler;
+        this.wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER = wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
         this.xControlLoop = xControlLoop;
         this.yControlLoop = yControlLoop;
         this.hControlLoop = hControlLoop;
@@ -117,7 +117,7 @@ public class MotorDriver implements NKNComponent {
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
 
-        SparkFunOTOS.Pose2D current = flowHandler.getAvPos();
+        SparkFunOTOS.Pose2D current = flowHandler.getPosition();
         current.h = current.h % (2 * Math.PI);
         SparkFunOTOS.Pose2D oldError = error;
         error = calcDelta(target,current);
@@ -142,7 +142,7 @@ public class MotorDriver implements NKNComponent {
 
         getRelativeSpeeds(output, current.h);
 
-        wheelHandler.relativeVectorToMotion(output.x, output.y, output.h);
+        wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER.relativeVectorToMotion(output.x, output.y, output.h);
     }
 
     @Override

@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
 import org.nknsd.teamcode.frameworks.NKNComponent;
-import org.nknsd.teamcode.components.utility.GamePadHandler;
-import org.nknsd.teamcode.components.handlers.WheelHandler;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 
 // Adds events to gamepad to control the wheels
@@ -19,7 +19,7 @@ public class WheelDriver implements NKNComponent {
     private final GamePadHandler.GamepadSticks strafeStick;
     private final GamePadHandler.GamepadSticks turnStick;
     private GamePadHandler gamePadHandler;
-    private WheelHandler wheelHandler;
+    private WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
     private WheelControlScheme controlScheme;
 
     private double moveSpeedMultiplier;
@@ -86,7 +86,7 @@ public class WheelDriver implements NKNComponent {
         // NOTE:
         // THE STICKS ARE INVERTED UPON REQUEST BY COLLY
         // WE HAVE NO WAY TO DO THAT VIA CONTROL SCHEME
-        wheelHandler.relativeVectorToMotion(-strafeStick.getValue(gamepad) * moveSpeedMultiplier, -forwardStick.getValue(gamepad) * moveSpeedMultiplier, turnStick.getValue(gamepad) * moveSpeedMultiplier);
+        wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER.relativeVectorToMotion(-strafeStick.getValue(gamepad) * moveSpeedMultiplier, -forwardStick.getValue(gamepad) * moveSpeedMultiplier, turnStick.getValue(gamepad) * moveSpeedMultiplier);
 //        double y = 0; double x = 0;
 //        if (GamePadHandler.GamepadButtons.DPAD_UP.detect(gamepad)) {
 //            y = 0.4;
@@ -100,7 +100,7 @@ public class WheelDriver implements NKNComponent {
 //            x = -0.4;
 //        }
 //
-//        wheelHandler.relativeVectorToMotion(y * moveSpeedMultiplier, x * moveSpeedMultiplier, 0);
+//        wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER.relativeVectorToMotion(y * moveSpeedMultiplier, x * moveSpeedMultiplier, 0);
     }
 
     @Override
@@ -110,9 +110,9 @@ public class WheelDriver implements NKNComponent {
         telemetry.addData("Wheel Controls", controlScheme.getName());
     }
 
-    public void link(GamePadHandler gamePadHandler, WheelHandler wheelHandler, WheelControlScheme controlScheme) {
+    public void link(GamePadHandler gamePadHandler, WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER, WheelControlScheme controlScheme) {
         this.gamePadHandler = gamePadHandler;
-        this.wheelHandler = wheelHandler;
+        this.wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER = wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
         this.controlScheme = controlScheme;
     }
 }

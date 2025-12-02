@@ -14,13 +14,11 @@ public class FlowSensor implements NKNComponent {
 
 
     private SparkFunOTOS odometry;
-    private SparkFunOTOS.Pose2D pos = new SparkFunOTOS.Pose2D(0, 0, 0);
-    final SparkFunOTOS.Pose2D offset;
+    final SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0, 0, -Math.PI / 2);
     final String sensorName;
 
 
-    public FlowSensor(SparkFunOTOS.Pose2D offset, String sensorName) {
-        this.offset = offset;
+    public FlowSensor(String sensorName) {
         this.sensorName = sensorName;
 
     }
@@ -36,13 +34,20 @@ public class FlowSensor implements NKNComponent {
     }
 
     public SparkFunOTOS.Pose2D getPosition() {
-        return odometry.getPosition();
+        if (odometry != null)
+            return odometry.getPosition();
+        else
+            return new SparkFunOTOS.Pose2D();
     }
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         odometry = hardwareMap.get(SparkFunOTOS.class, sensorName);
-        configureSensor();
+        if (odometry == null) {
+            telemetry.addLine("CANT FIND ODOMETRY SENSOR:" + sensorName);
+        } else {
+            configureSensor();
+        }
         return true;
     }
 
@@ -72,8 +77,7 @@ public class FlowSensor implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        getPosition();
-        telemetry.addData(sensorName + " pos", printPose2D(pos));
+        telemetry.addData(sensorName + " pos", printPose2D(getPosition()));
     }
 
     static public String printPose2D(SparkFunOTOS.Pose2D pos) {

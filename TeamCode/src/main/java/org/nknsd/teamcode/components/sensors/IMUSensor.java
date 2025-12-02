@@ -12,6 +12,14 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class IMUSensor implements NKNComponent {
     IMU imu;
 
+//
+
+    private final RevHubOrientationOnRobot orientationOnRobot;
+
+    public IMUSensor(RevHubOrientationOnRobot orientationOnRobot) {
+        this.orientationOnRobot = orientationOnRobot;
+    }
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         imu = hardwareMap.get(IMU.class, "imu");
@@ -23,10 +31,7 @@ public class IMUSensor implements NKNComponent {
          *
          * To Do:  EDIT these two lines to match YOUR mounting configuration.
          */
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
         // Now initialize the IMU with this mounting orientation
         // Note: if you choose two conflicting directions, this initialization will cause a code exception.
@@ -60,6 +65,12 @@ public class IMUSensor implements NKNComponent {
 
     public double getYaw() {
         return -imu.getRobotYawPitchRollAngles().getYaw();
+    }
+    public double getPitch() {
+        return imu.getRobotYawPitchRollAngles().getPitch();
+    }
+    public double getRoll() {
+        return imu.getRobotYawPitchRollAngles().getRoll();
     }
 
     @Override

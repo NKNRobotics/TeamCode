@@ -5,81 +5,69 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.MicrowaveHandler;
-import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class MicrowaveDriver implements NKNComponent {
     private GamePadHandler gamePadHandler;
-    private MicrowaveHandler microwaveHandler;
+    private MicrowaveScoopHandler microwaveScoopHandler;
     private MicrowaveControlScheme controlScheme;
 
     Runnable loadBall = new Runnable() {
         @Override
         public void run() {
-            microwaveHandler.loadBall();
+//            microwaveScoopHandler.prepLoad();
         }
     };
 
-    Runnable firePurple = new Runnable() {
-        @Override
-        public void run() {
-            microwaveHandler.firePurple();
-        }
-    };
-
-    Runnable fireGreen = new Runnable() {
-        @Override
-        public void run() {
-            microwaveHandler.fireGreen();
-        }
-    };
-    Runnable findColors = new Runnable() {
-        @Override
-        public void run() {
-            microwaveHandler.findAllColors();
-        }
-    };
-    Runnable resetBallColor = new Runnable() {
-        @Override
-        public void run() {
-            microwaveHandler.resetLaunchedColor();
-        }
-    };
+//    Runnable firePurple = new Runnable() {
+//        @Override
+//        public void run() {
+//            microwaveScoopHandler.prepFirePurple();
+//        }
+//    };
+//
+//    Runnable fireGreen = new Runnable() {
+//        @Override
+//        public void run() {
+//            microwaveScoopHandler.prepFireGreen();
+//        }
+//    };
 //    Runnable fireOne = new Runnable() {
 //        @Override
 //        public void run() {
-//            microwaveHandler.fireOne();
+//            microwaveScoopHandler.fireOne();
 //        }
 //    };
 //    Runnable fireTwo = new Runnable() {
 //        @Override
 //        public void run() {
-//            microwaveHandler.fireTwo();
+//            microwaveScoopHandler.fireTwo();
 //        }
 //    };
 //    Runnable fireThree = new Runnable() {
 //        @Override
 //        public void run() {
-//            microwaveHandler.fireThree();
+//            microwaveScoopHandler.fireThree();
 //        }
 //    };
 //    Runnable intakeOne = new Runnable() {
 //        @Override
 //        public void run() {
-//            microwaveHandler.intakeOne();
+//            microwaveScoopHandler.intakeOne();
 //        }
 //    };
 //    Runnable intakeTwo = new Runnable() {
 //        @Override
 //        public void run() {
-//            microwaveHandler.intakeTwo();
+//            microwaveScoopHandler.intakeTwo();
 //        }
 //    };
 //    Runnable intakeThree = new Runnable() {
 //        @Override
-//        public void run() {microwaveHandler.intakeThree();}
+//        public void run() {microwaveScoopHandler.intakeThree();}
 //    };
 
     boolean controlSchemeMicrowaveState = false;
@@ -102,11 +90,9 @@ public class MicrowaveDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        gamePadHandler.addListener(controlScheme.loadBall(), loadBall, "Bring to loading pos");
-        gamePadHandler.addListener(controlScheme.firePurple(), firePurple, "Bring to firing pos (purple)");
-        gamePadHandler.addListener(controlScheme.fireGreen(), fireGreen, "Bring to firing pos (green)");
-        gamePadHandler.addListener(controlScheme.findColors(), findColors, "cycle through pos to find colors");
-        gamePadHandler.addListener(controlScheme.resetColor(), resetBallColor, "Reset launched color");
+//        gamePadHandler.addListener(controlScheme.loadBall(), loadBall, "Bring to loading pos");
+//        gamePadHandler.addListener(controlScheme.firePurple(), firePurple, "Bring to firing pos (purple)");
+//        gamePadHandler.addListener(controlScheme.fireGreen(), fireGreen, "Bring to firing pos (green)");
 //
 //        gamePadHandler.addListener(controlScheme.load1(), intakeOne, "intakeOne");
 //        gamePadHandler.addListener(controlScheme.load2(), intakeTwo, "intakeTwo");
@@ -114,8 +100,8 @@ public class MicrowaveDriver implements NKNComponent {
 //        gamePadHandler.addListener(controlScheme.fire1(), fireOne, "fireOne");
 //        gamePadHandler.addListener(controlScheme.fire2(), fireTwo, "fireTwo");
 //        gamePadHandler.addListener(controlScheme.fire3(), fireThree, "fireThree");
-//
-//        gamePadHandler.addListener(controlScheme.swapState(), swapStateTelemetry, "Swap Microwave Control State");
+
+        gamePadHandler.addListener(controlScheme.swapState(), swapStateTelemetry, "Swap Microwave Control State");
     }
 
     @Override
@@ -125,7 +111,7 @@ public class MicrowaveDriver implements NKNComponent {
 
     @Override
     public String getName() {
-        return "MicrowaveHandler";
+        return "MicrowaveScoopHandler";
     }
 
     @Override
@@ -138,9 +124,9 @@ public class MicrowaveDriver implements NKNComponent {
         telemetry.addData("Microwave Control State", controlSchemeMicrowaveState);
     }
 
-    public void link(GamePadHandler gamePadHandler, MicrowaveHandler microwaveHandler, MicrowaveControlScheme controlScheme) {
+    public void link(GamePadHandler gamePadHandler, MicrowaveScoopHandler microwaveScoopHandler, MicrowaveControlScheme controlScheme) {
         this.gamePadHandler = gamePadHandler;
-        this.microwaveHandler = microwaveHandler;
+        this.microwaveScoopHandler = microwaveScoopHandler;
         this.controlScheme = controlScheme;
     }
 }

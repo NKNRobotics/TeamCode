@@ -1,10 +1,12 @@
 package org.nknsd.teamcode.components.handlers.color;
 
+import org.nknsd.teamcode.components.utility.RobotVersion;
+
 public class ColorClassifier {
 
 
 
-    final double maxDist = 35;
+    final double maxDist = RobotVersion.INSTANCE.distSensorThreshold;
     final private ColorReader colorReader;
 
     public ColorClassifier(ColorReader colorReader) {
@@ -12,10 +14,10 @@ public class ColorClassifier {
     }
 
     public BallColor classifyColor() {
-        if(colorReader.getDistance() >= maxDist){
+        double[] colors = colorReader.getReading();
+        if(colors[3] >= maxDist){
             return BallColor.NOTHING;
         }
-        int[] colors = colorReader.getRGB();
         if(colors[1] > colors[0]  && colors[1] > colors[2]){
            return BallColor.GREEN;
         }

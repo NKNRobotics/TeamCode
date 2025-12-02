@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 public abstract class NKNProgram extends OpMode {
     private final List<NKNComponent> componentList = new LinkedList<>();
     private final List<NKNComponent> enabledTelemetryList = new LinkedList<>();
-    private final ElapsedTime runtime = new ElapsedTime();
-    private final long TELEMETRY_DELAY = 200;
-    // We use these two to delay telemetry outputs to ~200 milliseconds
+    protected final ElapsedTime runtime = new ElapsedTime();
+    private final long TELEMETRY_DELAY = 500;
+    // We use these two to delay telemetry outputs to ~500 milliseconds
     //Time counters are in milliseconds
     private long lastTelemetryCall = 0;
 

@@ -5,28 +5,26 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.IntakeHandler;
-import org.nknsd.teamcode.components.utility.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class IntakeDriver implements NKNComponent {
     private GamePadHandler gamePadHandler;
-    private IntakeHandler intakeHandler;
     private MicrowaveControlScheme controlScheme;
+    private MicrowaveScoopHandler microwaveScoopHandler;
 
     Runnable startIntakeSpin = new Runnable(){
         @Override
         public void run() {
-            intakeHandler.toggleIntake(true);
-            intakeHandler.setDontDisableFlag();
+            microwaveScoopHandler.toggleIntake(true);
         }
     };
     Runnable stopIntakeSpin = new Runnable() {
         @Override
         public void run() {
-            intakeHandler.toggleIntake(false);
-            intakeHandler.releaseDontDisableFlag();
+            microwaveScoopHandler.toggleIntake(false);
         }
     };
 
@@ -65,9 +63,9 @@ public class IntakeDriver implements NKNComponent {
     public void doTelemetry(Telemetry telemetry) {
 
     }
-    public void link(GamePadHandler gamePadHandler, IntakeHandler intakeHandler, MicrowaveControlScheme controlScheme) {
+    public void link(GamePadHandler gamePadHandler,  MicrowaveScoopHandler microwaveScoopHandler, MicrowaveControlScheme controlScheme) {
         this.gamePadHandler = gamePadHandler;
-        this.intakeHandler = intakeHandler;
         this.controlScheme = controlScheme;
+        this.microwaveScoopHandler = microwaveScoopHandler;
     }
 }

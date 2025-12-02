@@ -69,6 +69,9 @@ public class BallColorInterpreter implements NKNComponent {
         telemetry.addData("DetectedColor ", getColorGuess());
     }
 
+    public void resetGuess(){
+         Arrays.fill(ballColorSamples, BallColor.UNSURE);
+    }
 
     public BallColor getColorGuess() {
         int[] colorCount = new int[4];
@@ -103,7 +106,7 @@ public class BallColorInterpreter implements NKNComponent {
 
     private void sample() {
         ballColorSamples[sampleCounter] = colorClassifier.classifyColor();
-        RobotLog.v("sample counter " + sampleCounter + " color " + ballColorSamples[sampleCounter]);
+//        RobotLog.v("sample counter " + sampleCounter + " color " + ballColorSamples[sampleCounter]);
         sampleCounter += 1;
         if (sampleCounter >= maxSamples) {
             sampleCounter = 0;
