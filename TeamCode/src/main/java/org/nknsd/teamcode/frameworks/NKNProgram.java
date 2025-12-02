@@ -30,7 +30,7 @@ public abstract class NKNProgram extends OpMode {
             if (!component.init(telemetry,hardwareMap,gamepad1,gamepad2)){
                 telemetry.addData("Status", "Failed on "+component.getName());
                 telemetry.update();
-                throw new NullPointerException("Failed to init "+component.getName());
+                throw new NullPointerException("Failed to init "+component.getName() + component.getClass().getName());
             }
         }
 
