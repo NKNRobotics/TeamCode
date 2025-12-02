@@ -18,6 +18,10 @@ public abstract class NKNStateBasedComponent implements NKNComponent {
     }
 
     protected boolean switchState(State state) {
+        if (currentState == null) {
+            currentState = state;
+            currentState.onStart();
+        }
         if (currentState.canSwitchToState(state)) {
             currentState.onStop();
             currentState = state;
@@ -45,12 +49,12 @@ public abstract class NKNStateBasedComponent implements NKNComponent {
 
         abstract protected void finishTimer();
         public void run(ElapsedTime runtime){
-            if (runtime.milliseconds() > startTime + resetTime) {
-                finishTimer();
-            }
-
             if (startTime == -1) {
                 startTime = runtime.milliseconds();
+            }
+
+            if (runtime.milliseconds() > startTime + resetTime) {
+                finishTimer();
             }
         }
     }
