@@ -1,5 +1,6 @@
-package org.nknsd.teamcode.programs.tests.artifactSystem;
+package org.nknsd.teamcode.programs.tests.thisYear.artifactSystem;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -8,8 +9,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.artifact.MockSlotTracker;
 import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
 import org.nknsd.teamcode.components.handlers.artifact.states.IntakeBallState;
+import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.ColorReader;
 
@@ -19,64 +22,59 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
-@TeleOp(name = "ArtifactIntakeTest", group = "Tests")
-public class ArtifactIntakeTester extends NKNProgram {
+@TeleOp(name = "ArtifactLaunchTest", group = "Tests") @Disabled
+public class ArtifactLaunchingTester extends NKNProgram {
 
     ArtifactSystem artifactSystem;
     ColorReader colorReader;
     LauncherHandler launcherHandler;
     private MicrowaveScoopHandler microwaveScoopHandler;
-    private SlotTracker slotTracker;
+    private MockSlotTracker slotTracker;
     private BallColorInterpreter ballColorInterpreter;
 
 
-    private class IntakeStopTestState extends StateMachine.State {
+//    private class LaunchGreenTestState extends StateMachine.State {
+//
+//        @Override
+//        protected void run(ElapsedTime runtime, Telemetry telemetry) {
+//            if(artifactSystem.isReady() && runtime.milliseconds() > startTimeMS + 1000){
+//                StateMachine.INSTANCE.stopAnonymous(this);
+//            }
+//        }
+//
+//        @Override
+//        protected void started() {
+//            launcherHandler.setTargetTps(1200);
+//            launcherHandler.setEnabled(true);
+//            boolean worked = artifactSystem.launchColor(BallColor.GREEN);
+//        }
+//
+//        @Override
+//        protected void stopped() {
+//            StateMachine.INSTANCE.startAnonymous(new LaunchAllTestState());
+//        }
+//    }
+    private class LaunchAllTestState extends StateMachine.State{
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if(runtime.milliseconds() > startTimeMS + 6000){
-                RobotLog.v("killState" + IntakeBallState.killIntake);
-                StateMachine.INSTANCE.stopAnonymous(this);
-            }
-            if(runtime.milliseconds() > startTimeMS + 5000){
-                artifactSystem.stopIntake();
-            }
-
-        }
-
-        @Override
-        protected void started() {
-            artifactSystem.intakeUntilFull();
-        }
-
-        @Override
-        protected void stopped() {
-            artifactSystem.intakeUntilFull();
-        }
-    }
-
-    private class IntakeTestState extends StateMachine.State {
-
-        @Override
-        protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            RobotLog.v("intakeTestState" + artifactSystem.isReady());
-            if(artifactSystem.isReady()){
+            if(artifactSystem.isReady() && runtime.milliseconds() > startTimeMS + 1000){
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
 
         @Override
         protected void started() {
-            RobotLog.v("killState" + IntakeBallState.killIntake);
-            StateMachine.INSTANCE.startAnonymous(new IntakeTestState());
+            launcherHandler.setTargetTps(1200);
+            launcherHandler.setEnabled(true);
+            artifactSystem.launchAll();
         }
 
         @Override
         protected void stopped() {
-//                stateCore.startAnonymous(new LaunchGreenTestState());
+
         }
     }
-
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
@@ -84,8 +82,8 @@ public class ArtifactIntakeTester extends NKNProgram {
 
         microwaveScoopHandler = new MicrowaveScoopHandler();
         components.add(microwaveScoopHandler);
-
-        slotTracker = new SlotTracker();
+        BallColor[] balls = new BallColor[] {BallColor.GREEN, BallColor.PURPLE, BallColor.NOTHING};
+        slotTracker = new MockSlotTracker(balls);
         components.add(slotTracker);
 
         components.add(StateMachine.INSTANCE);
@@ -108,6 +106,6 @@ public class ArtifactIntakeTester extends NKNProgram {
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         ballColorInterpreter.link(colorReader);
 
-        StateMachine.INSTANCE.startAnonymous(new IntakeStopTestState());
+        StateMachine.INSTANCE.startAnonymous(new LaunchAllTestState());
     }
 }

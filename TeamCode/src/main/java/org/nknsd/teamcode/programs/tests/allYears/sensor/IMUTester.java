@@ -1,42 +1,28 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.allYears.sensor;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.handlers.LiftHandler;
 import org.nknsd.teamcode.components.sensors.IMUSensor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
-@TeleOp(name="Test the LiftHandler", group="Tests")
-public class LiftHandlerTest extends NKNProgram {
-    LiftHandler liftHandler;
-    IMUSensor imuSensor;
+
+@TeleOp(name = "IMU Tester", group="Tests") @Disabled
+public class IMUTester extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
-        liftHandler = new LiftHandler();
-        components.add(liftHandler);
-        telemetryEnabled.add(liftHandler);
+        // IMU
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
         RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
-        IMUSensor imuSensor = new IMUSensor(orientationOnRobot);
-
-        components.add(imuSensor);
-        telemetryEnabled.add(imuSensor);
-
-        liftHandler.link(imuSensor);
-    }
-
-    @Override
-    public void start() {
-        runtime.reset();
-        liftHandler.start(runtime, telemetry);
-        imuSensor.start(runtime, telemetry);
-        liftHandler.startRaise(runtime);
+        IMUSensor imu = new IMUSensor(orientationOnRobot);
+        components.add(imu);
+        telemetryEnabled.add(imu);
     }
 }

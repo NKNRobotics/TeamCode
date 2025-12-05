@@ -1,5 +1,6 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.thisYear.microwave;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -13,7 +14,7 @@ import org.nknsd.teamcode.components.utility.states.TimerState;
 
 import java.util.List;
 
-@TeleOp(name = "MicrowaveTester", group = "Tests")
+@TeleOp(name = "MicrowaveTester", group = "Tests") @Disabled
 public class MicrowaveTester extends NKNProgram {
 
     class TimedSlotSwitchState extends TimerState {

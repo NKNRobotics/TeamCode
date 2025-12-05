@@ -1,5 +1,6 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.thisYear.sensor;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -14,7 +15,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "ColorSensorInterpreterUnitTest", group = "Tests")
+@TeleOp(name = "ColorSensorInterpreterUnitTest", group = "Tests") @Disabled
 public class ColorSensorInterpreterUnitTest extends NKNProgram {
 
     BallColorInterpreter ballColorInterpreter;
