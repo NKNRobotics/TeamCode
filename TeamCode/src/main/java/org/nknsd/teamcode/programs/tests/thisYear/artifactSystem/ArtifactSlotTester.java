@@ -1,5 +1,6 @@
-package org.nknsd.teamcode.programs.tests.artifactSystem;
+package org.nknsd.teamcode.programs.tests.thisYear.artifactSystem;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -19,7 +20,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
-@TeleOp(name = "ArtifactSlotTest", group = "Tests")
+@TeleOp(name = "ArtifactSlotTest", group = "Tests") @Disabled
 public class ArtifactSlotTester extends NKNProgram {
 
     ArtifactSystem artifactSystem;

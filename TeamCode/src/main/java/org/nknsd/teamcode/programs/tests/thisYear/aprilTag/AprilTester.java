@@ -1,5 +1,6 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.thisYear.aprilTag;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
@@ -9,7 +10,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
-@TeleOp(name = "AprilTagTester", group="Tests")
+@TeleOp(name = "AprilTagTester", group="Tests") @Disabled
 public class AprilTester extends NKNProgram {
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         AprilTagSensor aprilTagSensor = new AprilTagSensor();

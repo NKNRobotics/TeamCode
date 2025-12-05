@@ -1,5 +1,6 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.allYears.sensor;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.handlers.srs.SRSHubHandler;
@@ -8,7 +9,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "SRSHub Test", group = "Tests")
+@TeleOp(name = "SRSHub Test", group = "Tests") @Disabled
 public class SRSHubTest extends NKNProgram {
 
     @Override

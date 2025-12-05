@@ -1,5 +1,6 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.allYears.autonomousTests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -15,7 +16,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Absolute Movement Test", group="Tests")
+@TeleOp(name = "Absolute Movement Test", group="Tests") @Disabled
 public class MovementTestProgram extends NKNProgram {
 
     class SetMotorPower extends StateMachine.State{
