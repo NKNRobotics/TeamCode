@@ -3,6 +3,7 @@ package org.nknsd.teamcode.programs.teleops;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.drivers.FiringDriver;
+import org.nknsd.teamcode.components.drivers.IntakeDriver;
 import org.nknsd.teamcode.components.drivers.MixedInputWheelDriver;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
@@ -26,6 +27,7 @@ import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.controlSchemes.defaults.FiringControlScheme;
+import org.nknsd.teamcode.controlSchemes.defaults.IntakeControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
@@ -119,6 +121,11 @@ public class BasicTeleOp extends NKNProgram {
 
         WheelControlScheme wheelControlScheme = new WheelControlScheme();
 
+        IntakeDriver intakeDriver = new IntakeDriver();
+        components.add(intakeDriver);
+
+        IntakeControlScheme intakeControlScheme = new IntakeControlScheme();
+
 
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
@@ -132,5 +139,7 @@ public class BasicTeleOp extends NKNProgram {
         firingControlScheme.link(gamePadHandler);
         mixedInputWheelDriver.link(gamePadHandler,powerInputMixer,wheelControlScheme);
         wheelControlScheme.link(gamePadHandler);
+        intakeDriver.link(gamePadHandler,artifactSystem,intakeControlScheme);
+        intakeControlScheme.link(gamePadHandler);
     }
 }
