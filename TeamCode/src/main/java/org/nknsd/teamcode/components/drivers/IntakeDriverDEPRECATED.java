@@ -10,7 +10,7 @@ import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
-public class IntakeDriver implements NKNComponent {
+public class IntakeDriverDEPRECATED implements NKNComponent {
     private GamePadHandler gamePadHandler;
     private MicrowaveControlScheme controlScheme;
     private MicrowaveScoopHandler microwaveScoopHandler;

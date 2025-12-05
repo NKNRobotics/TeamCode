@@ -2,7 +2,7 @@ package org.nknsd.teamcode.programs.teleops;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.drivers.IntakeDriver;
+import org.nknsd.teamcode.components.drivers.IntakeDriverDEPRECATED;
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
 import org.nknsd.teamcode.components.drivers.WheelDriver;
 import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
@@ -44,8 +44,8 @@ public class MicrowaveTeleOp extends NKNProgram {
         MicrowaveDriver microwaveDriver = new MicrowaveDriver();
         components.add(microwaveDriver);
 
-        IntakeDriver intakeDriver = new IntakeDriver();
-        components.add(intakeDriver);
+        IntakeDriverDEPRECATED intakeDriverDEPRECATED = new IntakeDriverDEPRECATED();
+        components.add(intakeDriverDEPRECATED);
 
 
         // CONTROL SCHEME
@@ -57,6 +57,6 @@ public class MicrowaveTeleOp extends NKNProgram {
 
         wheelDriver.link(gamePadHandler, wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER,wheelControlScheme);
         microwaveDriver.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
-        intakeDriver.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
+        intakeDriverDEPRECATED.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
     }
 }
