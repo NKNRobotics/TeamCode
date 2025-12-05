@@ -1,5 +1,6 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.thisYear.sensor;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
@@ -10,7 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "ColorSensorTest", group = "Tests")
+@TeleOp(name = "ColorSensorTest", group = "Tests") @Disabled
 public class ColourSensorTest extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {

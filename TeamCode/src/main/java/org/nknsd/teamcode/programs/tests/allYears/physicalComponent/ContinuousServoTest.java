@@ -1,10 +1,9 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.allYears.physicalComponent;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @TeleOp(name = "ContServoTest", group = "Tests") @Disabled
 public class ContinuousServoTest extends LinearOpMode {

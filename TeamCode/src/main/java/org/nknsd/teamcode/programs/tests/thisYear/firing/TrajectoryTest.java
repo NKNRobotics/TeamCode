@@ -1,27 +1,23 @@
-package org.nknsd.teamcode.programs.tests;
+package org.nknsd.teamcode.programs.tests.thisYear.firing;
 
+import android.view.ViewDebug;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
-import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.handlers.launch.LaunchSystem;
 import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
-import org.nknsd.teamcode.components.handlers.artifact.MicrowavePositions;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowavePositions;
 import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
-import org.nknsd.teamcode.components.handlers.vision.TargetingSystem;
 import org.nknsd.teamcode.components.handlers.launch.TrajectoryHandler;
 import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.ColorReader;
-import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
-import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
-import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
-import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -29,11 +25,10 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "firing system test", group = "Tests")
-public class FiringSystemTest extends NKNProgram {
+@TeleOp(name = "chute adjust test", group = "Tests") @Disabled
+public class TrajectoryTest extends NKNProgram {
 
-    TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
-    PowerInputMixer powerInputMixer = new PowerInputMixer();
+    private double distance = 130;
 
     class IntakeState extends StateMachine.State {
 
@@ -68,15 +63,13 @@ public class FiringSystemTest extends NKNProgram {
                     StateMachine.INSTANCE.stopAnonymous(this);
                 }
             }
-            if (targetingSystem.getDistance() != -1) {
-                launchSystem.setDistance(targetingSystem.getDistance());
-            }
         }
 
         @Override
         protected void started() {
-            microwaveScoopHandler.setMicrowavePosition(slot);
             microwaveScoopHandler.toggleIntake(true);
+            microwaveScoopHandler.setMicrowavePosition(slot);
+            launchSystem.setDistance(distance);
         }
 
         @Override
@@ -119,26 +112,20 @@ public class FiringSystemTest extends NKNProgram {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if (targetingSystem.targetVisible()) {
-                launchSystem.setDistance(targetingSystem.getDistance());
-            } else powerInputMixer.setManualPowers(new double[]{0,0,0});
-            if (!hasLaunched && microwaveScoopHandler.isDone() && launchSystem.isReady() && targetingSystem.targetAcquired()) {
+            if (!hasLaunched && microwaveScoopHandler.isDone() && launchSystem.isReady()) {
                 microwaveScoopHandler.doScoopLaunch();
                 hasLaunched = true;
             }
             if (hasLaunched && microwaveScoopHandler.isDone()) {
                 slotTracker.clearSlot(slotNum);
-                targetingSystem.enableAutoTargeting(false);
-                powerInputMixer.setManualPowers(new double[]{0,0,0});
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
 
         @Override
         protected void started() {
-            microwaveScoopHandler.toggleIntake(false);
-            targetingSystem.enableAutoTargeting(true);
             microwaveScoopHandler.setMicrowavePosition(slot);
+            microwaveScoopHandler.toggleIntake(false);
         }
 
         @Override
@@ -154,54 +141,39 @@ public class FiringSystemTest extends NKNProgram {
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
-
-        components.add(StateMachine.INSTANCE);
-        telemetryEnabled.add(StateMachine.INSTANCE);
-
-
         TrajectoryHandler trajectoryHandler = new TrajectoryHandler();
         components.add(trajectoryHandler);
         telemetryEnabled.add(trajectoryHandler);
 
-        LauncherHandler launcherHandler = new LauncherHandler(0.97, 1.05);
+
+        components.add(StateMachine.INSTANCE);
+        telemetryEnabled.add(StateMachine.INSTANCE);
+
+        MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
+        components.add(microwaveScoopHandler);
+//        telemetryEnabled.add(microwaveScoopHandler);
+ 
+
+        LauncherHandler launcherHandler = new LauncherHandler(0.98, 1.03);
         components.add(launcherHandler);
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);
 
-        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
+        ColorReader colorReader = new ColorReader("ColorSensor");
+        components.add(colorReader);
+//        telemetryEnabled.add(colorReader);
+        BallColorInterpreter ballColorInterpreter = new BallColorInterpreter(10, 0.01);
+        components.add(ballColorInterpreter);
+//        telemetryEnabled.add(ballColorInterpreter);
+        ballColorInterpreter.link(colorReader);
 
-
-        MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
-        components.add(microwaveScoopHandler);
+        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 3, 16, 132);
+        launchSystem.link(trajectoryHandler, launcherHandler);
 
         SlotTracker slotTracker = new SlotTracker();
         components.add(slotTracker);
         telemetryEnabled.add(slotTracker);
-
-        ColorReader colorReader = new ColorReader("ColorSensor");
-        components.add(colorReader);
-        BallColorInterpreter ballColorInterpreter = new BallColorInterpreter(10, 0.01);
-        components.add(ballColorInterpreter);
-
-
-        FlowSensor flowSensor1 = new FlowSensor( "RODOS");
-        components.add(flowSensor1);
-        FlowSensor flowSensor2 = new FlowSensor( "LODOS");
-        components.add(flowSensor2);
-        AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1,flowSensor2);
-        components.add(absolutePosition);
-        telemetryEnabled.add(absolutePosition);
-
-        MecanumMotorMixer mecanumMotorMixer = new MecanumMotorMixer();
-        components.add(mecanumMotorMixer);
-        telemetryEnabled.add(mecanumMotorMixer);
-
-        AbsolutePowerMixer absolutePowerMixer = new AbsolutePowerMixer();
-        components.add(absolutePowerMixer);
-        absolutePowerMixer.link(mecanumMotorMixer,absolutePosition);
-
-        components.add(powerInputMixer);
-
+        slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
 
         AprilTagSensor aprilTagSensor = new AprilTagSensor();
         components.add(aprilTagSensor);
@@ -210,20 +182,7 @@ public class FiringSystemTest extends NKNProgram {
         BasketLocator basketLocator = new BasketLocator(RobotVersion.INSTANCE.aprilDistanceInterpolater);
         components.add(basketLocator);
         telemetryEnabled.add(basketLocator);
-
-        components.add(targetingSystem);
-        telemetryEnabled.add(targetingSystem);
-        targetingSystem.setTargetingColor(ID.BLUE);
-
-
-        slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
-        targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
         basketLocator.link(aprilTagSensor);
-        powerInputMixer.link(absolutePowerMixer);
-        ballColorInterpreter.link(colorReader);
-
-        launchSystem.link(trajectoryHandler, launcherHandler);
-
 
         StateMachine.INSTANCE.startAnonymous(new IntakeState(0, microwaveScoopHandler, slotTracker, launchSystem));
     }
