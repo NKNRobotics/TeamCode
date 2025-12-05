@@ -92,7 +92,7 @@ public class AprilTagSensor implements NKNComponent {
 
     @Override
     public String getName() {
-        return "";
+        return "AprilTagSensor";
     }
 
     public VisionResult getVisionResultBlue() {

@@ -29,8 +29,8 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "automatic positioning tester", group = "Tests")
-public class AutomaticPositioningTest extends NKNProgram {
+@TeleOp(name = "firing system test", group = "Tests")
+public class FiringSystemTest extends NKNProgram {
 
     TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
     PowerInputMixer powerInputMixer = new PowerInputMixer();
@@ -154,6 +154,7 @@ public class AutomaticPositioningTest extends NKNProgram {
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
+
         components.add(StateMachine.INSTANCE);
         telemetryEnabled.add(StateMachine.INSTANCE);
 

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
+import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 
@@ -33,6 +34,7 @@ public class TargetingSystem implements NKNComponent {
     final private PidController pidController;
     private double power;
     private AbsolutePosition absolutePosition;
+    private double distance;
 
     public TargetingSystem(PidController pidController) {
         this.pidController = pidController;
@@ -55,7 +57,7 @@ public class TargetingSystem implements NKNComponent {
     }
 
     public double getDistance() {
-        return basketLocator.getOffset(targetingColor).distance;
+        return distance;
     }
 
     public void setTargetingColor(ID color) {
@@ -64,7 +66,7 @@ public class TargetingSystem implements NKNComponent {
         }
     }
 
-    public boolean targetVisible(){
+    public boolean targetVisible() {
         return basketLocator.getOffset(targetingColor).distance != -1;
     }
 
@@ -95,24 +97,23 @@ public class TargetingSystem implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        if (runtime.milliseconds() - lastRunTime > 50 && targetEnabled) {
-
-            if (basketLocator.getOffset(targetingColor).distance != -1) {
+        if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
+            distance = basketLocator.getOffset(targetingColor).distance;
+            if (targetEnabled && distance != -1) {
                 powerInputMixer.setAutoEnabled(new boolean[]{true, true, true});
                 double[] targetingPowers = new double[]{0, 0, 0};
                 BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
                 double currentOffset = basketData.xOffset - 0.5;
                 currentOffset += basketData.skew * SKEW_MULTIPLIER;
                 vel = (currentOffset - lastOffset) / 50;
-                targetingPowers[2] = pidController.findOutput(currentOffset, 0, vel, 50);
+                targetingPowers[2] = pidController.findOutput(currentOffset, 0, vel, runtime.milliseconds() - lastRunTime);
 //            RobotLog.v("xOffset" + shiftedOffset);
-
                 lastOffset = currentOffset;
                 power = targetingPowers[2];
                 powerInputMixer.setAutoPowers(targetingPowers);
                 powerInputMixer.setAutoEnabled(new boolean[]{false, false, false});
-            }
 
+            }
             lastRunTime = runtime.milliseconds();
         }
     }
