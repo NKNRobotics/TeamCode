@@ -107,7 +107,8 @@ public class FiringSystem implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData("alliance color", color.name());
+        if(color != null){
+        telemetry.addData("alliance color", color.name());}
     }
 
     public void link(LaunchSystem launchSystem, TargetingSystem targetingSystem, ArtifactSystem artifactSystem) {
