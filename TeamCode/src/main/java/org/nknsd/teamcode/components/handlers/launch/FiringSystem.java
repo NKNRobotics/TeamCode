@@ -16,20 +16,17 @@ public class FiringSystem implements NKNComponent {
 
     private final int WHEELSPEED_CONFIDENCE = 4;
 
-    final private LaunchSystem launchSystem;
-    final private TargetingSystem targetingSystem;
-    final private ArtifactSystem artifactSystem;
+     private LaunchSystem launchSystem;
+     private TargetingSystem targetingSystem;
+     private ArtifactSystem artifactSystem;
 
     private double lastTime;
     private boolean autoLocked;
+    private ID color;
 
-    public FiringSystem(LaunchSystem launchSystem, TargetingSystem targetingSystem, ArtifactSystem artifactSystem) {
-        this.launchSystem = launchSystem;
-        this.targetingSystem = targetingSystem;
-        this.artifactSystem = artifactSystem;
-    }
 
     public void setTargetColor(ID targetColor) {
+        color = targetColor;
         targetingSystem.setTargetingColor(targetColor);
     }
 
@@ -110,6 +107,12 @@ public class FiringSystem implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
+        telemetry.addData("alliance color", color.name());
+    }
 
+    public void link(LaunchSystem launchSystem, TargetingSystem targetingSystem, ArtifactSystem artifactSystem) {
+        this.launchSystem = launchSystem;
+        this.targetingSystem = targetingSystem;
+        this.artifactSystem = artifactSystem;
     }
 }
