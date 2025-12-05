@@ -101,7 +101,7 @@ public class MicrowaveDriver implements NKNComponent {
 //        gamePadHandler.addListener(controlScheme.fire2(), fireTwo, "fireTwo");
 //        gamePadHandler.addListener(controlScheme.fire3(), fireThree, "fireThree");
 
-        gamePadHandler.addListener(controlScheme.swapState(), swapStateTelemetry, "Swap Microwave Control State");
+//        gamePadHandler.addListener(controlScheme.swapState(), swapStateTelemetry, "Swap Microwave Control State");
     }
 
     @Override
