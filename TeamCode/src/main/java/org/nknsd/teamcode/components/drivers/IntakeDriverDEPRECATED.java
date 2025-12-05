@@ -5,31 +5,26 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
-import org.nknsd.teamcode.controlSchemes.defaults.IntakeControlScheme;
+import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
-public class IntakeDriver implements NKNComponent {
+public class IntakeDriverDEPRECATED implements NKNComponent {
     private GamePadHandler gamePadHandler;
-    private IntakeControlScheme controlScheme;
-    private ArtifactSystem artifactSystem;
+    private MicrowaveControlScheme controlScheme;
+    private MicrowaveScoopHandler microwaveScoopHandler;
 
-    Runnable startIntake = new Runnable() {
+    Runnable startIntakeSpin = new Runnable(){
         @Override
         public void run() {
-            artifactSystem.intakeUntilFull();
+            microwaveScoopHandler.toggleIntake(true);
         }
     };
-    Runnable stopIntake = new Runnable() {
-        @Override
-        public void run() {artifactSystem.stopIntake();}
-    };
-
-    Runnable scanSlots = new Runnable() {
+    Runnable stopIntakeSpin = new Runnable() {
         @Override
         public void run() {
-          artifactSystem.scanAll();
+            microwaveScoopHandler.toggleIntake(false);
         }
     };
 
@@ -45,9 +40,8 @@ public class IntakeDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        gamePadHandler.addListener(controlScheme.startIntake(), startIntake, "startIntakeSpin");
-        gamePadHandler.addListener(controlScheme.stopIntake(), stopIntake, "stopIntakeSpin");
-        gamePadHandler.addListener(controlScheme.scanSlots(), scanSlots, "scanSlots");
+        gamePadHandler.addListener(controlScheme.startIntake(), startIntakeSpin, "startIntakeSpin");
+        gamePadHandler.addListener(controlScheme.stopIntake(), stopIntakeSpin, "stopIntakeSpin");
     }
 
     @Override
@@ -69,10 +63,9 @@ public class IntakeDriver implements NKNComponent {
     public void doTelemetry(Telemetry telemetry) {
 
     }
-
-    public void link(GamePadHandler gamePadHandler, ArtifactSystem artifactSystem, IntakeControlScheme controlScheme) {
+    public void link(GamePadHandler gamePadHandler,  MicrowaveScoopHandler microwaveScoopHandler, MicrowaveControlScheme controlScheme) {
         this.gamePadHandler = gamePadHandler;
         this.controlScheme = controlScheme;
-        this.artifactSystem = artifactSystem;
+        this.microwaveScoopHandler = microwaveScoopHandler;
     }
 }
