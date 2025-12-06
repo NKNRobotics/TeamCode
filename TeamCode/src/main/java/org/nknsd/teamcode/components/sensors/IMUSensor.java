@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class IMUSensor implements NKNComponent {
-    IMU imu;
+    private IMU imu;
 
 //
 
