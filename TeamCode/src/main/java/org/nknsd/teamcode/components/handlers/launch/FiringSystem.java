@@ -16,9 +16,9 @@ public class FiringSystem implements NKNComponent {
 
     private final int WHEELSPEED_CONFIDENCE = 4;
 
-     private LaunchSystem launchSystem;
-     private TargetingSystem targetingSystem;
-     private ArtifactSystem artifactSystem;
+    private LaunchSystem launchSystem;
+    private TargetingSystem targetingSystem;
+    private ArtifactSystem artifactSystem;
 
     private double lastTime;
     private boolean autoLocked;
@@ -101,7 +101,7 @@ public class FiringSystem implements NKNComponent {
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         if (runtime.milliseconds() - lastTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
             lastTime = runtime.milliseconds();
-            launchSystem.setDistance(targetingSystem.getDistance());
+                launchSystem.setDistance(targetingSystem.getDistance());
         }
     }
 

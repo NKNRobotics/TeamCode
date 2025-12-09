@@ -30,7 +30,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "automatic positioning tester", group = "Tests") @Disabled
+@TeleOp(name = "automatic positioning tester", group = "Tests")
 public class AutomaticPositioningTest extends NKNProgram {
 
     TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
