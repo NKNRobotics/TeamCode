@@ -1,6 +1,5 @@
 package org.nknsd.teamcode.autoStates;
 
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -8,7 +7,7 @@ import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.utility.StateMachine;
 
-public class AutoMoveState extends StateMachine.State {
+public class AutoMoveToPosState extends StateMachine.State {
     final private AutoPositioner autoPositioner;
     final private AbsolutePosition absolutePosition;
     final private double xTarget;
@@ -20,7 +19,6 @@ public class AutoMoveState extends StateMachine.State {
     final private double speedError;
 
     /**
-     *
      * @param xTarget sets the absolute X target
      * @param yTarget sets the absolute Y target
      * @param hTarget sets the heading target
@@ -29,7 +27,7 @@ public class AutoMoveState extends StateMachine.State {
      * @param errorHMargin sets the heading error margin based on (SOMETHING IDK)
      * @param speedError sets the speed error margin
      */
-    public AutoMoveState(AutoPositioner autoPositioner, AbsolutePosition absolutePosition, double xTarget, double yTarget, double hTarget, double errorXMargin, double errorYMargin, double errorHMargin, double speedError){
+    public AutoMoveToPosState(AutoPositioner autoPositioner, AbsolutePosition absolutePosition, double xTarget, double yTarget, double hTarget, double errorXMargin, double errorYMargin, double errorHMargin, double speedError){
         this.autoPositioner = autoPositioner;
         this.absolutePosition = absolutePosition;
         this.xTarget = xTarget;

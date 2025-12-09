@@ -6,10 +6,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
 import org.nknsd.teamcode.components.utility.StateMachine;
 
-public class AutoPositionState extends StateMachine.State {
+public class AutoTargetState extends StateMachine.State {
     private final FiringSystem firingSystem;
 
-    public AutoPositionState(FiringSystem firingSystem) {
+    public AutoTargetState(FiringSystem firingSystem) {
         this.firingSystem = firingSystem;
     }
 

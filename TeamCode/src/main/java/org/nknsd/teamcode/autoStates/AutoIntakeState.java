@@ -27,6 +27,5 @@ public class AutoIntakeState extends StateMachine.State {
 
     @Override
     protected void stopped() {
-
     }
 }
