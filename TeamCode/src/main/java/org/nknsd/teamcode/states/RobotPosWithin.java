@@ -1,4 +1,4 @@
-package org.nknsd.teamcode.components.utility.states;
+package org.nknsd.teamcode.states;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.util.ElapsedTime;

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
-import org.nknsd.teamcode.components.utility.states.TimerState;
+import org.nknsd.teamcode.states.TimerState;
 
 import java.util.List;
 
