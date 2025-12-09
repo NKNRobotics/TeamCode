@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
@@ -27,7 +28,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Basic Tele Op (USE ME)")
+@Autonomous(name = "Far Auto")
 public class FarAuto extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
