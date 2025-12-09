@@ -6,9 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
-import org.nknsd.teamcode.components.utility.feedbackcontroller.ControlLoop;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
@@ -19,6 +17,14 @@ public class AutoPositioner implements NKNComponent {
     private final PowerInputMixer powerInputMixer;
     private final AbsolutePosition absolutePosition;
 
+    SparkFunOTOS.Pose2D errorDelta = new SparkFunOTOS.Pose2D(0, 0, 0);
+    private SparkFunOTOS.Pose2D velocity = new SparkFunOTOS.Pose2D(0, 0, 0);
+    private double lastTime = 0;
+    private SparkFunOTOS.Pose2D target = new SparkFunOTOS.Pose2D(0, 0, 0);
+    private SparkFunOTOS.Pose2D lastPos = new SparkFunOTOS.Pose2D(0, 0, 0);
+    SparkFunOTOS.Pose2D error = new SparkFunOTOS.Pose2D(0, 0, 0);
+
+
     public AutoPositioner(PidController pidControllerX, PidController pidControllerY, PidController pidControllerH, PowerInputMixer powerInputMixer, AbsolutePosition absolutePosition) {
         this.pidControllerX = pidControllerX;
         this.pidControllerY = pidControllerY;
@@ -27,37 +33,34 @@ public class AutoPositioner implements NKNComponent {
         this.absolutePosition = absolutePosition;
     }
 
-    public void setTargetX(double speed){
-
+    public void setTargetX(double targetX){
+        target.x = targetX;
     }
-    public void setTargetY(double speed){
-
+    public void setTargetY(double targetY){
+        target.y = targetY;
     }
-    public void setTargetH(double speed){
-
+    public void setTargetH(double targetH){
+        target.h = targetH;
     }
 
-
-    private SparkFunOTOS.Pose2D target = new SparkFunOTOS.Pose2D(0, 0, 0);
-    private SparkFunOTOS.Pose2D lastPos = new SparkFunOTOS.Pose2D(0, 0, 0);
-
-    SparkFunOTOS.Pose2D error = new SparkFunOTOS.Pose2D(0, 0, 0);
 
     public SparkFunOTOS.Pose2D getErrorDelta() {
         return errorDelta;
     }
-
-    SparkFunOTOS.Pose2D errorDelta = new SparkFunOTOS.Pose2D(0, 0, 0);
-
-    private SparkFunOTOS.Pose2D velocity = new SparkFunOTOS.Pose2D(0, 0, 0);
-    private double lastTime = 0;
-
-
     public SparkFunOTOS.Pose2D getError() {
         return error;
     }
     public SparkFunOTOS.Pose2D getVelocity() {
         return velocity;
+    }
+
+    private SparkFunOTOS.Pose2D calcDelta(SparkFunOTOS.Pose2D target,SparkFunOTOS.Pose2D current){
+        return new SparkFunOTOS.Pose2D(
+                target.x - current.x,
+                target.y - current.y,
+                (target.h - current.h + 3 * Math.PI) % (2 * Math.PI) - Math.PI
+        );
+
     }
 
 
@@ -86,25 +89,6 @@ public class AutoPositioner implements NKNComponent {
         return "MotorDriver";
     }
 
-    private void getRelativeSpeeds(SparkFunOTOS.Pose2D speeds, double theta) {
-        double a1 = Math.cos(theta) * speeds.x;
-        double a2 = Math.sin(theta) * -speeds.y;
-        double o1 = Math.sin(theta) * speeds.x;
-        double o2 = Math.cos(theta) * speeds.y;
-
-
-        speeds.x = (a1 + a2);
-        speeds.y = (o1 + o2);
-    }
-
-    private SparkFunOTOS.Pose2D calcDelta(SparkFunOTOS.Pose2D target,SparkFunOTOS.Pose2D current){
-        return new SparkFunOTOS.Pose2D(
-                target.x - current.x,
-                target.y - current.y,
-                (target.h - current.h + 3 * Math.PI) % (2 * Math.PI) - Math.PI
-        );
-
-    }
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
@@ -131,8 +115,6 @@ public class AutoPositioner implements NKNComponent {
 
         lastTime = runtime.milliseconds();
         lastPos = current;
-
-        getRelativeSpeeds(output, current.h);
 
         powerInputMixer.setManualPowers(new double[]{output.x, output.y, output.h});
     }
