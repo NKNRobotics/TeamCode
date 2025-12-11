@@ -53,7 +53,7 @@ public class ColorSensorInterpreterUnitTest extends NKNProgram {
             StateMachine.INSTANCE.startState(nextTest);
             BallColor result = ballColorInterpreter.getColorGuess();
             String message = "color test " + testNum + " saw " + result.name() + " expected " + expectedResult.name();
-            RobotLog.v(message);
+//            RobotLog.v(message);
             if (result != expectedResult) {
                 throw new NullPointerException(message);
             }

@@ -4,6 +4,7 @@ package org.nknsd.teamcode.components.handlers.vision;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
@@ -17,7 +18,7 @@ public class TargetingSystem implements NKNComponent {
     final private double MAX_XOFFSET = 0.1;
     final private double MAX_ANGLE_VEL = 0.05;
     final private double MAX_MOVE_VEL = 0.05;
-    final private double SKEW_MULTIPLIER = 0.01;
+    final private double SKEW_MULTIPLIER = 0;
 
     private BasketLocator basketLocator;
     PowerInputMixer powerInputMixer;
@@ -53,7 +54,7 @@ public class TargetingSystem implements NKNComponent {
             vel = 0;
         }
         targetEnabled = enable;
-
+        powerInputMixer.setAutoEnabled(new boolean[]{false, false, enable});
     }
 
     public double getDistance() {
@@ -97,10 +98,13 @@ public class TargetingSystem implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
+        if(basketLocator.getOffset(targetingColor).distance == -1 && targetEnabled && !RobotVersion.isAutonomous()){
+            powerInputMixer.setAutoEnabled(new boolean[]{false, false, false});
+            targetEnabled = false;
+        }
         if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
             distance = basketLocator.getOffset(targetingColor).distance;
             if (targetEnabled && distance != -1) {
-                powerInputMixer.setAutoEnabled(new boolean[]{true, true, true});
                 double[] targetingPowers = new double[]{0, 0, 0};
                 BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
                 double currentOffset = basketData.xOffset - 0.5;
@@ -110,8 +114,8 @@ public class TargetingSystem implements NKNComponent {
 //            RobotLog.v("xOffset" + shiftedOffset);
                 lastOffset = currentOffset;
                 power = targetingPowers[2];
+                RobotLog.v("targeting powers x: " + targetingPowers[0] + ", y: " + targetingPowers[1] + ", h: " + targetingPowers[2]);
                 powerInputMixer.setAutoPowers(targetingPowers);
-                powerInputMixer.setAutoEnabled(new boolean[]{false, false, false});
 
             }
             lastRunTime = runtime.milliseconds();

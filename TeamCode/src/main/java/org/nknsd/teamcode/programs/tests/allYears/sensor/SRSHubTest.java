@@ -41,18 +41,18 @@ public class SRSHubTest extends NKNProgram {
 
                     double c = Math.sqrt(a * a + b * b - 2 * a * b * COS_45);
                     double aAngle = Math.asin(a / (c / SIN_45));
-                    RobotLog.v("Iteration: "+i);
+//                    RobotLog.v("Iteration: "+i);
 //                    RobotLog.v("angle " + aAngle);
 
                     double cameraHeight = b * Math.sin(aAngle);
-                    RobotLog.v("cameraHeight " + cameraHeight);
+//                    RobotLog.v("cameraHeight " + cameraHeight);
 
                     double cameraAngle = Math.PI / 2 - aAngle;
-                    RobotLog.v("camera angle " + cameraAngle);
+//                    RobotLog.v("camera angle " + cameraAngle);
 
                 }
 
-                RobotLog.v("ReadHubState interval (ms):" + (runtime.milliseconds() - start));
+//                RobotLog.v("ReadHubState interval (ms):" + (runtime.milliseconds() - start));
             }
 
         }

@@ -36,7 +36,7 @@ public class ArtifactIntakeTester extends NKNProgram {
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
             if(runtime.milliseconds() > startTimeMS + 6000){
-                RobotLog.v("killState" + IntakeBallState.killIntake);
+//                RobotLog.v("killState" + IntakeBallState.killIntake);
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
             if(runtime.milliseconds() > startTimeMS + 5000){
@@ -60,7 +60,7 @@ public class ArtifactIntakeTester extends NKNProgram {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            RobotLog.v("intakeTestState" + artifactSystem.isReady());
+//            RobotLog.v("intakeTestState" + artifactSystem.isReady());
             if(artifactSystem.isReady()){
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
@@ -68,7 +68,7 @@ public class ArtifactIntakeTester extends NKNProgram {
 
         @Override
         protected void started() {
-            RobotLog.v("killState" + IntakeBallState.killIntake);
+//            RobotLog.v("killState" + IntakeBallState.killIntake);
             StateMachine.INSTANCE.startAnonymous(new IntakeTestState());
         }
 
@@ -105,7 +105,7 @@ public class ArtifactIntakeTester extends NKNProgram {
         components.add(launcherHandler);
 
         //linking
-        artifactSystem.link(microwaveScoopHandler, slotTracker);
+//        artifactSystem.link(microwaveScoopHandler, slotTracker);
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         ballColorInterpreter.link(colorReader);
 

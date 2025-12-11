@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -111,13 +112,16 @@ public class LauncherHandler implements NKNComponent {
             wPower = 1;
         }
 
-//        Automatically sets the speed to full or none if too far from good. It should be noted that this doesn't change wPower
+//        Automatically sets the speed to full or none if off by a lot. It should be noted that this doesn't change wPower
         if (targetTps * upperThreshold  * upperThreshold < currentTps) {
             wMotor.setPower(0);
+//            RobotLog.v("too high! no power");
         } else if (targetTps * lowerThreshold * lowerThreshold  > currentTps) {
             wMotor.setPower(1);
+//            RobotLog.v("too low! full power");
         } else {
             wMotor.setPower(wPower);
+//            RobotLog.v("calculating speeds to set");
         }
 
     }

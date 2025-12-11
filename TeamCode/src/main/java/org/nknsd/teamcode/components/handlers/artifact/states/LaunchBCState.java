@@ -31,12 +31,10 @@ public class LaunchBCState extends StateMachine.State{
 
     @Override
     protected void started() {
-        artifactSystem.setLaunchState(this);
         microwaveScoopHandler.setMicrowavePosition(slot);
     }
 
     @Override
     protected void stopped() {
-
     }
 }

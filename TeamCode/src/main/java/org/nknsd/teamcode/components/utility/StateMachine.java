@@ -86,6 +86,7 @@ public class StateMachine implements NKNComponent {
         String nameString = "";
         for (State state : runList) {
             nameString = nameString + "|" + state.name;
+            nameString = nameString + ", ";
         }
         telemetry.addData("States",nameString);
     }

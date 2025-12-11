@@ -30,13 +30,12 @@ public class LaunchScoopState extends StateMachine.State{
 
     @Override
     protected void started() {
-        artifactSystem.setLaunchState(this);
         microwaveScoopHandler.doScoopLaunch();
         slotTracker.clearSlot(slot.ordinal() - 3);
     }
 
     @Override
     protected void stopped() {
-
+        artifactSystem.setIsLaunching(false);
     }
 }

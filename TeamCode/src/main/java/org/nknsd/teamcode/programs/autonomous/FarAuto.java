@@ -1,8 +1,13 @@
 package org.nknsd.teamcode.programs.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.nknsd.teamcode.autoStates.AutoIntakeAllState;
+import org.nknsd.teamcode.autoStates.AutoIntakeFromLoadingZoneState;
+import org.nknsd.teamcode.autoStates.AutoLaunchAllState;
+import org.nknsd.teamcode.autoStates.AutoMoveToPosState;
+import org.nknsd.teamcode.autoStates.AutoReadPatternState;
+import org.nknsd.teamcode.autoStates.AutoTargetState;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
@@ -14,9 +19,9 @@ import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
 import org.nknsd.teamcode.components.handlers.launch.TrajectoryHandler;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
-import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.handlers.vision.TargetingSystem;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
+import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
@@ -32,10 +37,14 @@ import java.util.List;
 public class FarAuto extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
+        RobotVersion.setIsAutonomous(true);
+
+//        statemachine
         components.add(StateMachine.INSTANCE);
         telemetryEnabled.add(StateMachine.INSTANCE);
 
 
+//        firing
         TrajectoryHandler trajectoryHandler = new TrajectoryHandler();
         components.add(trajectoryHandler);
         telemetryEnabled.add(trajectoryHandler);
@@ -49,24 +58,26 @@ public class FarAuto extends NKNProgram {
 
         FiringSystem firingSystem = new FiringSystem();
         components.add(firingSystem);
-        telemetryEnabled.add(firingSystem);
+//        telemetryEnabled.add(firingSystem);
 
+
+//        microwave and artifact system
+        ColorReader colorReader = new ColorReader("ColorSensor");
+        components.add(colorReader);
+        BallColorInterpreter ballColorInterpreter = new BallColorInterpreter(10, 0.01);
+        components.add(ballColorInterpreter);
+
+        SlotTracker slotTracker = new SlotTracker();
+        components.add(slotTracker);
+        telemetryEnabled.add(slotTracker);
 
         MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
         components.add(microwaveScoopHandler);
 
         ArtifactSystem artifactSystem = new ArtifactSystem();
 
-        SlotTracker slotTracker = new SlotTracker();
-        components.add(slotTracker);
-        telemetryEnabled.add(slotTracker);
 
-        ColorReader colorReader = new ColorReader("ColorSensor");
-        components.add(colorReader);
-        BallColorInterpreter ballColorInterpreter = new BallColorInterpreter(10, 0.01);
-        components.add(ballColorInterpreter);
-
-
+//        driving
         FlowSensor flowSensor1 = new FlowSensor("RODOS");
         components.add(flowSensor1);
         FlowSensor flowSensor2 = new FlowSensor("LODOS");
@@ -81,33 +92,58 @@ public class FarAuto extends NKNProgram {
 
         AbsolutePowerMixer absolutePowerMixer = new AbsolutePowerMixer();
         components.add(absolutePowerMixer);
-        absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);
 
         PowerInputMixer powerInputMixer = new PowerInputMixer();
         components.add(powerInputMixer);
 
+        AutoPositioner autoPositioner = new AutoPositioner(RobotVersion.INSTANCE.pControllerX, RobotVersion.INSTANCE.pControllerY, RobotVersion.INSTANCE.pControllerH);
+        components.add(autoPositioner);
 
+
+//        apriltag tracking
         AprilTagSensor aprilTagSensor = new AprilTagSensor();
         components.add(aprilTagSensor);
         telemetryEnabled.add(aprilTagSensor);
 
         BasketLocator basketLocator = new BasketLocator(RobotVersion.INSTANCE.aprilDistanceInterpolater);
         components.add(basketLocator);
-        telemetryEnabled.add(basketLocator);
+//        telemetryEnabled.add(basketLocator);
 
         TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
         components.add(targetingSystem);
         telemetryEnabled.add(targetingSystem);
-        targetingSystem.setTargetingColor(ID.BLUE);
 
 
+//        all links
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
         basketLocator.link(aprilTagSensor);
         powerInputMixer.link(absolutePowerMixer);
+        absolutePowerMixer.link(mecanumMotorMixer,absolutePosition);
         ballColorInterpreter.link(colorReader);
         launchSystem.link(trajectoryHandler, launcherHandler);
         firingSystem.link(launchSystem, targetingSystem, artifactSystem);
-        artifactSystem.link(microwaveScoopHandler, slotTracker);
+        artifactSystem.link(microwaveScoopHandler, slotTracker, launchSystem);
+        autoPositioner.link(powerInputMixer, absolutePosition);
+
+
+
+//        auto states
+        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10,0.09, 0,0,0,0, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"rotate to fire pos"}));
+        StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10, -0.35, 1,1,0.05,1, new String[]{}, new String[]{"target"}));
+        StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch all"}));
+        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{"move to"}));
+
+        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,40,5,Math.PI/2, 0,0,0,1, new String[]{}, new String[]{"intake", "loading zone procedure"}));
+        StateMachine.INSTANCE.addState("intake", new AutoIntakeAllState(artifactSystem,new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState( "loading zone procedure",new AutoIntakeFromLoadingZoneState(artifactSystem,autoPositioner,5,1,new String[]{"intake"}, new String[]{"return to fire pos"}));
+
+        StateMachine.INSTANCE.addState("return to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10, 0.35, 1,1,0.05,1, new String[]{}, new String[]{"target #2"}));
+        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch all #2"}));
+        StateMachine.INSTANCE.addState("launch all #2", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{}));
+
+        StateMachine.INSTANCE.startState("start");
+        StateMachine.INSTANCE.startState("read pattern");
     }
 }

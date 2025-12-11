@@ -78,7 +78,7 @@ public class ArtifactSlotTester extends NKNProgram {
         components.add(launcherHandler);
 
         //linking
-        artifactSystem.link(microwaveScoopHandler, slotTracker);
+//        artifactSystem.link(microwaveScoopHandler, slotTracker);
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         ballColorInterpreter.link(colorReader);
 

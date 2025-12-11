@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.autoStates;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.color.BallColor;
@@ -10,12 +11,16 @@ import org.nknsd.teamcode.components.utility.StateMachine;
 public class AutoLaunchColorsState extends StateMachine.State {
     private final FiringSystem firingSystem;
     private final BallColor[] colors;
+    private final String[] toStopOnEnd;
+    private final String[] toStartOnEnd;
     private boolean launched = false;
     private int timesLaunched = 0;
 
-    public AutoLaunchColorsState(FiringSystem firingSystem, BallColor[] colors) {
+    public AutoLaunchColorsState(FiringSystem firingSystem, BallColor[] colors, String[] toStopOnEnd, String[] toStartOnEnd) {
         this.firingSystem = firingSystem;
         this.colors = colors;
+        this.toStopOnEnd = toStopOnEnd;
+        this.toStartOnEnd = toStartOnEnd;
     }
 
     @Override
@@ -50,6 +55,11 @@ public class AutoLaunchColorsState extends StateMachine.State {
 
     @Override
     protected void stopped() {
-
+        for (String stateName : this.toStopOnEnd) {
+            StateMachine.INSTANCE.stopState(stateName);
+        }
+        for (String stateName : this.toStartOnEnd) {
+            StateMachine.INSTANCE.startState(stateName);
+        }
     }
 }

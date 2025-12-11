@@ -27,6 +27,7 @@ import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
+import org.nknsd.teamcode.components.utility.Interpolater;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.controlSchemes.defaults.FiringControlScheme;
@@ -90,7 +91,7 @@ public class OldTeleOp extends NKNProgram {
 
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         ballColorInterpreter.link(colorReader);
-        artifactSystem.link(microwaveScoopHandler, slotTracker);
+//        artifactSystem.link(microwaveScoopHandler, slotTracker);
 
         wheelControlScheme.link(gamePadHandler);
         launcherControlScheme.link(gamePadHandler);

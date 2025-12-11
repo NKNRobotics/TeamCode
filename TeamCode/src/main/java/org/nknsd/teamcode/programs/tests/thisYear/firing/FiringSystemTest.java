@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
+import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
 import org.nknsd.teamcode.components.handlers.vision.ID;
@@ -27,128 +29,39 @@ import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
+import org.nknsd.teamcode.states.TimerState;
 
 import java.util.List;
 
-@TeleOp(name = "firing system test", group = "Tests") @Disabled
+@TeleOp(name = "firing system test", group = "Tests")
 public class FiringSystemTest extends NKNProgram {
 
-    TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
-    PowerInputMixer powerInputMixer = new PowerInputMixer();
+    LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
 
-    class IntakeState extends StateMachine.State {
+    class FireAllState extends StateMachine.State {
 
-        private final MicrowavePositions slot;
-        private final MicrowaveScoopHandler microwaveScoopHandler;
-        private final SlotTracker slotTracker;
-        private final LaunchSystem launchSystem;
-        private final int slotNum;
+        private final FiringSystem firingSystem;
 
-        IntakeState(int slotNum, MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, LaunchSystem launchSystem) {
-            this.launchSystem = launchSystem;
-            switch (slotNum) {
-                case 1:
-                    slot = MicrowavePositions.LOAD1;
-                    break;
-                case 2:
-                    slot = MicrowavePositions.LOAD2;
-                    break;
-                default:
-                    slot = MicrowavePositions.LOAD0;
-            }
-            this.microwaveScoopHandler = microwaveScoopHandler;
-            this.slotTracker = slotTracker;
-            this.slotNum = slotNum;
-        }
-
-
-        @Override
-        protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if (microwaveScoopHandler.isDone()) {
-                if (slotTracker.getSlotColor(slotNum) == BallColor.GREEN || slotTracker.getSlotColor(slotNum) == BallColor.PURPLE) {
-                    StateMachine.INSTANCE.stopAnonymous(this);
-                }
-            }
-            if (targetingSystem.getDistance() != -1) {
-                launchSystem.setDistance(targetingSystem.getDistance());
-            }
-        }
-
-        @Override
-        protected void started() {
-            microwaveScoopHandler.setMicrowavePosition(slot);
-            microwaveScoopHandler.toggleIntake(true);
-        }
-
-        @Override
-        protected void stopped() {
-            if (slotNum != 2) {
-                StateMachine.INSTANCE.startAnonymous(new IntakeState(slotNum + 1, microwaveScoopHandler, slotTracker, launchSystem));
-            } else {
-                StateMachine.INSTANCE.startAnonymous(new LaunchState(0, microwaveScoopHandler, launchSystem, slotTracker));
-            }
-
-        }
-    }
-
-    class LaunchState extends StateMachine.State {
-
-        private boolean hasLaunched = false;
-
-        private final MicrowavePositions slot;
-        private final MicrowaveScoopHandler microwaveScoopHandler;
-        private final LaunchSystem launchSystem;
-        private final SlotTracker slotTracker;
-        private final int slotNum;
-
-        LaunchState(int slotNum, MicrowaveScoopHandler microwaveScoopHandler, LaunchSystem launchSystem, SlotTracker slotTracker) {
-            this.launchSystem = launchSystem;
-            this.slotTracker = slotTracker;
-            switch (slotNum) {
-                case 1:
-                    slot = MicrowavePositions.FIRE1;
-                    break;
-                case 2:
-                    slot = MicrowavePositions.FIRE2;
-                    break;
-                default:
-                    slot = MicrowavePositions.FIRE0;
-            }
-            this.microwaveScoopHandler = microwaveScoopHandler;
-            this.slotNum = slotNum;
+        FireAllState(FiringSystem firingSystem) {
+            this.firingSystem = firingSystem;
         }
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if (targetingSystem.targetVisible()) {
-                launchSystem.setDistance(targetingSystem.getDistance());
-            } else powerInputMixer.setManualPowers(new double[]{0,0,0});
-            if (!hasLaunched && microwaveScoopHandler.isDone() && launchSystem.isReady() && targetingSystem.targetAcquired()) {
-                microwaveScoopHandler.doScoopLaunch();
-                hasLaunched = true;
-            }
-            if (hasLaunched && microwaveScoopHandler.isDone()) {
-                slotTracker.clearSlot(slotNum);
-                targetingSystem.enableAutoTargeting(false);
-                powerInputMixer.setManualPowers(new double[]{0,0,0});
+            if (launchSystem.isReady()) {
+                firingSystem.fireAll();
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
 
         @Override
         protected void started() {
-            microwaveScoopHandler.toggleIntake(false);
-            targetingSystem.enableAutoTargeting(true);
-            microwaveScoopHandler.setMicrowavePosition(slot);
+            firingSystem.setTargetColor(ID.BLUE);
         }
 
         @Override
         protected void stopped() {
-            if (slotNum != 2) {
-                StateMachine.INSTANCE.startAnonymous(new LaunchState(slotNum + 1, microwaveScoopHandler, launchSystem, slotTracker));
-            } else {
-                StateMachine.INSTANCE.startAnonymous(new IntakeState(0, microwaveScoopHandler, slotTracker, launchSystem));
-            }
+            StateMachine.INSTANCE.startAnonymous(new TimerState(5000, new String[]{"fire all"}, new String[]{}));
         }
     }
 
@@ -169,8 +82,6 @@ public class FiringSystemTest extends NKNProgram {
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);
 
-        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
-
 
         MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
         components.add(microwaveScoopHandler);
@@ -179,17 +90,19 @@ public class FiringSystemTest extends NKNProgram {
         components.add(slotTracker);
         telemetryEnabled.add(slotTracker);
 
+        ArtifactSystem artifactSystem = new ArtifactSystem();
+
         ColorReader colorReader = new ColorReader("ColorSensor");
         components.add(colorReader);
         BallColorInterpreter ballColorInterpreter = new BallColorInterpreter(10, 0.01);
         components.add(ballColorInterpreter);
 
 
-        FlowSensor flowSensor1 = new FlowSensor( "RODOS");
+        FlowSensor flowSensor1 = new FlowSensor("RODOS");
         components.add(flowSensor1);
-        FlowSensor flowSensor2 = new FlowSensor( "LODOS");
+        FlowSensor flowSensor2 = new FlowSensor("LODOS");
         components.add(flowSensor2);
-        AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1,flowSensor2);
+        AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1, flowSensor2);
         components.add(absolutePosition);
         telemetryEnabled.add(absolutePosition);
 
@@ -199,8 +112,9 @@ public class FiringSystemTest extends NKNProgram {
 
         AbsolutePowerMixer absolutePowerMixer = new AbsolutePowerMixer();
         components.add(absolutePowerMixer);
-        absolutePowerMixer.link(mecanumMotorMixer,absolutePosition);
+        absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);
 
+        PowerInputMixer powerInputMixer = new PowerInputMixer();
         components.add(powerInputMixer);
 
 
@@ -212,9 +126,15 @@ public class FiringSystemTest extends NKNProgram {
         components.add(basketLocator);
         telemetryEnabled.add(basketLocator);
 
+        TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
         components.add(targetingSystem);
         telemetryEnabled.add(targetingSystem);
         targetingSystem.setTargetingColor(ID.BLUE);
+
+
+        FiringSystem firingSystem = new FiringSystem();
+        components.add(firingSystem);
+        telemetryEnabled.add(firingSystem);
 
 
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
@@ -222,10 +142,12 @@ public class FiringSystemTest extends NKNProgram {
         basketLocator.link(aprilTagSensor);
         powerInputMixer.link(absolutePowerMixer);
         ballColorInterpreter.link(colorReader);
-
         launchSystem.link(trajectoryHandler, launcherHandler);
+        artifactSystem.link(microwaveScoopHandler, slotTracker, launchSystem);
+        firingSystem.link(launchSystem, targetingSystem, artifactSystem);
 
 
-        StateMachine.INSTANCE.startAnonymous(new IntakeState(0, microwaveScoopHandler, slotTracker, launchSystem));
+        StateMachine.INSTANCE.addState("fire all", new FireAllState(firingSystem));
+        StateMachine.INSTANCE.startState("fire all");
     }
 }

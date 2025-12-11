@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.autoStates;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
@@ -18,6 +19,9 @@ public class AutoMoveToPosState extends StateMachine.State {
     final private double errorHMargin;
     final private double speedError;
 
+    private final String[] toStopOnEnd;
+    private final String[] toStartOnEnd;
+
     /**
      * @param xTarget sets the absolute X target
      * @param yTarget sets the absolute Y target
@@ -27,7 +31,7 @@ public class AutoMoveToPosState extends StateMachine.State {
      * @param errorHMargin sets the heading error margin based on (SOMETHING IDK)
      * @param speedError sets the speed error margin
      */
-    public AutoMoveToPosState(AutoPositioner autoPositioner, AbsolutePosition absolutePosition, double xTarget, double yTarget, double hTarget, double errorXMargin, double errorYMargin, double errorHMargin, double speedError){
+    public AutoMoveToPosState(AutoPositioner autoPositioner, AbsolutePosition absolutePosition, double xTarget, double yTarget, double hTarget, double errorXMargin, double errorYMargin, double errorHMargin, double speedError, String[] toStopOnEnd, String[] toStartOnEnd){
         this.autoPositioner = autoPositioner;
         this.absolutePosition = absolutePosition;
         this.xTarget = xTarget;
@@ -37,6 +41,8 @@ public class AutoMoveToPosState extends StateMachine.State {
         this.errorYMargin = errorYMargin;
         this.errorHMargin = errorHMargin;
         this.speedError = speedError;
+        this.toStopOnEnd = toStopOnEnd;
+        this.toStartOnEnd = toStartOnEnd;
     }
     private boolean isWithin(double currentError, double allowedError) {
         return (Math.abs(currentError) < allowedError);
@@ -44,12 +50,11 @@ public class AutoMoveToPosState extends StateMachine.State {
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
 
-
         boolean angleCheck = false;
         boolean speedCheck = false;
         boolean xyCheck = false;
 
-        if (isWithin(xTarget - absolutePosition.getPosition().x, errorXMargin) && isWithin(yTarget - absolutePosition.getPosition().y, errorXMargin)) {
+        if (isWithin(xTarget - absolutePosition.getPosition().x, errorXMargin) && isWithin(yTarget - absolutePosition.getPosition().y, errorYMargin)) {
             xyCheck = true;
         }
         if(isWithin(hTarget - absolutePosition.getPosition().h, errorHMargin)){
@@ -60,7 +65,6 @@ public class AutoMoveToPosState extends StateMachine.State {
             speedCheck = true;
         }
 
-//        logger.info("DC:" + distCheck + " SC:" + speedCheck);
 
         if (angleCheck && speedCheck && xyCheck) {
             StateMachine.INSTANCE.stopAnonymous(this);
@@ -69,13 +73,22 @@ public class AutoMoveToPosState extends StateMachine.State {
 
     @Override
     protected void started() {
+        autoPositioner.enableAutoPositioning(true);
+        RobotLog.v("setting targets x: " + xTarget + ", y: " + yTarget + ", h: " + hTarget);
         autoPositioner.setTargetX(xTarget);
         autoPositioner.setTargetY(yTarget);
         autoPositioner.setTargetH(hTarget);
+        RobotLog.v("targets set!");
     }
 
     @Override
     protected void stopped() {
-
+        autoPositioner.enableAutoPositioning(false);
+        for (String stateName : this.toStopOnEnd) {
+            StateMachine.INSTANCE.stopState(stateName);
+        }
+        for (String stateName : this.toStartOnEnd) {
+            StateMachine.INSTANCE.startState(stateName);
+        }
     }
 }

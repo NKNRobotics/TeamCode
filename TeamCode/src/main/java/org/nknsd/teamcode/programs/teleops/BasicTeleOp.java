@@ -4,10 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.drivers.FiringDriver;
 import org.nknsd.teamcode.components.drivers.IntakeDriver;
-import org.nknsd.teamcode.components.drivers.LauncherDriver;
-import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
+import org.nknsd.teamcode.components.drivers.LiftDriver;
 import org.nknsd.teamcode.components.drivers.MixedInputWheelDriver;
-import org.nknsd.teamcode.components.drivers.WheelDriver;
+import org.nknsd.teamcode.components.handlers.BalancedLiftHandler;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
@@ -16,7 +15,6 @@ import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
 import org.nknsd.teamcode.components.handlers.launch.LaunchSystem;
 import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
-import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.components.handlers.launch.TrajectoryHandler;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
@@ -31,8 +29,8 @@ import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.controlSchemes.defaults.FiringControlScheme;
-import org.nknsd.teamcode.controlSchemes.defaults.LauncherControlScheme;
-import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
+import org.nknsd.teamcode.controlSchemes.defaults.IntakeControlScheme;
+import org.nknsd.teamcode.controlSchemes.defaults.LiftControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
@@ -102,6 +100,10 @@ public class BasicTeleOp extends NKNProgram {
         components.add(powerInputMixer);
 
 
+        BalancedLiftHandler balancedLiftHandler = new BalancedLiftHandler();
+        components.add(balancedLiftHandler);
+
+
         AprilTagSensor aprilTagSensor = new AprilTagSensor();
         components.add(aprilTagSensor);
         telemetryEnabled.add(aprilTagSensor);
@@ -126,6 +128,16 @@ public class BasicTeleOp extends NKNProgram {
 
         WheelControlScheme wheelControlScheme = new WheelControlScheme();
 
+        IntakeDriver intakeDriver = new IntakeDriver();
+        components.add(intakeDriver);
+
+        IntakeControlScheme intakeControlScheme = new IntakeControlScheme();
+
+        LiftDriver liftDriver = new LiftDriver();
+        components.add(liftDriver);
+
+        LiftControlScheme liftControlScheme = new LiftControlScheme();
+
 
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
@@ -134,10 +146,13 @@ public class BasicTeleOp extends NKNProgram {
         ballColorInterpreter.link(colorReader);
         launchSystem.link(trajectoryHandler, launcherHandler);
         firingSystem.link(launchSystem, targetingSystem, artifactSystem);
-        artifactSystem.link(microwaveScoopHandler, slotTracker);
-        firingDriver.link(gamePadHandler, firingSystem, firingControlScheme);
+        artifactSystem.link(microwaveScoopHandler, slotTracker, launchSystem);        firingDriver.link(gamePadHandler, firingSystem, firingControlScheme);
         firingControlScheme.link(gamePadHandler);
-        mixedInputWheelDriver.link(gamePadHandler,powerInputMixer,wheelControlScheme);
+        mixedInputWheelDriver.link(gamePadHandler, powerInputMixer, wheelControlScheme);
         wheelControlScheme.link(gamePadHandler);
+        intakeDriver.link(gamePadHandler, artifactSystem, intakeControlScheme);
+        intakeControlScheme.link(gamePadHandler);
+        liftDriver.link(gamePadHandler, balancedLiftHandler, liftControlScheme);
+        liftControlScheme.link(gamePadHandler);
     }
 }

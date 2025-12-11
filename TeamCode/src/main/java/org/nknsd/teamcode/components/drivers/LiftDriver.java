@@ -1,35 +1,32 @@
 package org.nknsd.teamcode.components.drivers;
 
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
+import org.nknsd.teamcode.components.handlers.BalancedLiftHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
-import org.nknsd.teamcode.controlSchemes.defaults.IntakeControlScheme;
+import org.nknsd.teamcode.controlSchemes.defaults.LiftControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
-public class IntakeDriver implements NKNComponent {
+public class LiftDriver implements NKNComponent {
     private GamePadHandler gamePadHandler;
-    private IntakeControlScheme controlScheme;
-    private ArtifactSystem artifactSystem;
+    private BalancedLiftHandler balancedLiftHandler;
+    private LiftControlScheme liftControlScheme;
 
-    Runnable startIntake = new Runnable() {
+    Runnable startLift = new Runnable() {
         @Override
         public void run() {
-            artifactSystem.intakeUntilFull();
+            balancedLiftHandler.startLift();
         }
     };
-    Runnable stopIntake = new Runnable() {
-        @Override
-        public void run() {artifactSystem.stopIntake();}
-    };
 
-    Runnable scanSlots = new Runnable() {
+    Runnable stopLift = new Runnable() {
         @Override
         public void run() {
-            artifactSystem.scanAll();
+            balancedLiftHandler.stopLift();
         }
     };
 
@@ -45,9 +42,8 @@ public class IntakeDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        gamePadHandler.addListener(controlScheme.startIntake(), startIntake, "startIntakeSpin");
-        gamePadHandler.addListener(controlScheme.stopIntake(), stopIntake, "stopIntakeSpin");
-        gamePadHandler.addListener(controlScheme.scanSlots(), scanSlots, "scanSlots");
+        gamePadHandler.addListener(liftControlScheme.startLift(), startLift, "startLift");
+        gamePadHandler.addListener(liftControlScheme.stopLift(), stopLift, "stopLift");
     }
 
     @Override
@@ -70,9 +66,9 @@ public class IntakeDriver implements NKNComponent {
 
     }
 
-    public void link(GamePadHandler gamePadHandler, ArtifactSystem artifactSystem, IntakeControlScheme controlScheme) {
+    public void link(GamePadHandler gamePadHandler, BalancedLiftHandler balancedLiftHandler, LiftControlScheme liftControlScheme) {
         this.gamePadHandler = gamePadHandler;
-        this.controlScheme = controlScheme;
-        this.artifactSystem = artifactSystem;
+        this.liftControlScheme = liftControlScheme;
+        this.balancedLiftHandler = balancedLiftHandler;
     }
 }

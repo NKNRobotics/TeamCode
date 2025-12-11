@@ -31,7 +31,7 @@ public class LaunchBCStartState extends StateMachine.State {
 
     @Override
     protected void started() {
-        artifactSystem.setLaunchState(this);
+
     }
 
     @Override

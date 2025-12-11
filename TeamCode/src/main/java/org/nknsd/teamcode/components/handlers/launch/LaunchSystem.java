@@ -1,5 +1,7 @@
 package org.nknsd.teamcode.components.handlers.launch;
 
+import com.qualcomm.robotcore.util.RobotLog;
+
 import org.nknsd.teamcode.components.utility.Interpolater;
 
 
@@ -36,7 +38,12 @@ public class LaunchSystem {
     }
 
     public boolean isReady() {
+//        RobotLog.v("checking confidence");
         return launcherHandler.launchConfidence() >= confidence;
+    }
+
+    public void resetConfidence(){
+        launcherHandler.resetConfidence();
     }
 
     public void link(TrajectoryHandler trajectoryHandler, LauncherHandler launcherHandler) {
