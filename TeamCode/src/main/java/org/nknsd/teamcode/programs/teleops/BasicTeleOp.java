@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.teleops;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.drivers.FiringDriver;
@@ -26,6 +27,7 @@ import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
+import org.nknsd.teamcode.components.sensors.IMUSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.controlSchemes.defaults.FiringControlScheme;
@@ -100,6 +102,9 @@ public class BasicTeleOp extends NKNProgram {
         components.add(powerInputMixer);
 
 
+        IMUSensor imuSensor = new IMUSensor(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+        components.add(imuSensor);
+
         BalancedLiftHandler balancedLiftHandler = new BalancedLiftHandler();
         components.add(balancedLiftHandler);
 
@@ -154,5 +159,6 @@ public class BasicTeleOp extends NKNProgram {
         intakeControlScheme.link(gamePadHandler);
         liftDriver.link(gamePadHandler, balancedLiftHandler, liftControlScheme);
         liftControlScheme.link(gamePadHandler);
+        balancedLiftHandler.link(imuSensor);
     }
 }

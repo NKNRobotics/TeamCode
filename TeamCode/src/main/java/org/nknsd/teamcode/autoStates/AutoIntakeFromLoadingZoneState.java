@@ -38,13 +38,9 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
 
         if (ballNum == 0) {
             autoPositioner.setTargetX(45);
-            autoPositioner.setTargetY(5 - ballTries);
-            if (artifactSystem.getContents()[slotNum] != BallColor.NOTHING && artifactSystem.getContents()[slotNum] != BallColor.UNSURE) {
-                ballNum = 1;
-                slotNum++;
-                return;
-            } else if (ballTries > maxTries) {
-
+            autoPositioner.setTargetY(7 - ballTries);
+             if (ballTries > maxTries) {
+                StateMachine.INSTANCE.stopAnonymous(this);
             }
             ballTries++;
         }
