@@ -10,19 +10,17 @@ import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.utility.StateMachine;
 
 public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
-    private final ArtifactSystem artifactSystem;
     private final AutoPositioner autoPositioner;
     private final int maxTries;
     private final double stepDist;
     private final String[] toStopOnEnd;
     private final String[] toStartOnEnd;
-    private int ballNum = 0;
     private int ballTries = 0;
     private double lastRunTime;
+    private boolean selfStopped = false;
 
 
-    public AutoIntakeFromLoadingZoneState(ArtifactSystem artifactSystem, AutoPositioner autoPositioner, int maxTries, double stepDist, String[] toStopOnEnd, String[] toStartOnEnd) {
-        this.artifactSystem = artifactSystem;
+    public AutoIntakeFromLoadingZoneState(AutoPositioner autoPositioner, int maxTries, double stepDist, String[] toStopOnEnd, String[] toStartOnEnd) {
         this.autoPositioner = autoPositioner;
         this.maxTries = maxTries;
         this.stepDist = stepDist;
@@ -36,9 +34,10 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
             lastRunTime = runtime.milliseconds();
 
             autoPositioner.setTargetX(45);
-            autoPositioner.setTargetY(7 - ballTries);
+            autoPositioner.setTargetY(7 - ballTries * stepDist);
             if (ballTries > maxTries) {
                 StateMachine.INSTANCE.stopAnonymous(this);
+                selfStopped = true;
             }
             ballTries++;
         }
@@ -54,8 +53,10 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
 
     @Override
     protected void stopped() {
-        for (String stateName : this.toStopOnEnd) {
-            StateMachine.INSTANCE.stopState(stateName);
+        if (selfStopped) {
+            for (String stateName : this.toStopOnEnd) {
+                StateMachine.INSTANCE.stopState(stateName);
+            }
         }
         for (String stateName : this.toStartOnEnd) {
             StateMachine.INSTANCE.startState(stateName);
