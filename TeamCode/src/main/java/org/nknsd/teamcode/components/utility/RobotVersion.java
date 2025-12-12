@@ -9,8 +9,8 @@ public class RobotVersion {
 //    as a note, all interpolater values are currently the same
 
     public final static RobotVersion INSTANCE= new RobotVersion(50,.038,60,.5,1,
-        new Interpolater(new double[][]{{16,1400}, {32,1450}, {48,1500}, {64,1550}, {80,1620}, {96, 1720}, {112,1850}, {132, 1950}}),
-        new Interpolater(new double[][]{{16,1}, {32,.8}, {48,.7}, {64,0.6}, {80,0.5}, {96,0.3}, {112,0.2}, {132,0.2}}),
+        new Interpolater(new double[][]{{16,1400}, {32,1450}, {48,1500}, {64,1550}, {80,1620}, {96, 1720}, {112,1900}, {132, 1950}}),
+        new Interpolater(new double[][]{{16,1}, {32,.8}, {48,.7}, {64,0.6}, {80,0.5}, {96,0.3}, {112,0.25}, {132,0.2}}),
         new Interpolater(new double[][]{{0.265,12}, {0.2,24}, {0.16,36}, {0.132,48}, {0.11,60}, {0.098,72}, {0.085,84}, {0.077,96}, {0.068,108}, {0.064,120}, {0.058,132}, {0.054,144},{0.05,156}}),
         new PidController(1,1,0.5,0.5,true,0,0),
         new PidController(0.2, .3, 0.1, .2, true, 0.01, 0.2),
