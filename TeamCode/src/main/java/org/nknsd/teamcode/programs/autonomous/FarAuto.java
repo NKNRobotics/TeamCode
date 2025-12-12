@@ -19,6 +19,7 @@ import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
 import org.nknsd.teamcode.components.handlers.launch.TrajectoryHandler;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
+import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.handlers.vision.TargetingSystem;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
 import org.nknsd.teamcode.components.motormixers.AutoPositioner;
@@ -38,6 +39,7 @@ public class FarAuto extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         RobotVersion.setIsAutonomous(true);
+        RobotVersion.setRobotAlliance(ID.BLUE);
 
 //        statemachine
         components.add(StateMachine.INSTANCE);

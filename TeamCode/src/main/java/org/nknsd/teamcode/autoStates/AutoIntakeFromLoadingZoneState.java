@@ -17,9 +17,7 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
     private final String[] toStopOnEnd;
     private final String[] toStartOnEnd;
     private int ballNum = 0;
-    private int ball0tries = 0;
-    private double ball1tries = 0;
-    private double ball2tries = 0;
+    private int ballTries = 0;
     private double lastRunTime;
     private int slotNum = 0;
 
@@ -35,46 +33,20 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if(runtime.milliseconds() - lastRunTime > 500)
+        if (runtime.milliseconds() - lastRunTime > 500)
             lastRunTime = runtime.milliseconds();
 
         if (ballNum == 0) {
-            autoPositioner.setTargetX(40 + ball0tries * stepDist);
-            autoPositioner.setTargetY(5);
-            if(artifactSystem.getContents()[slotNum] != BallColor.NOTHING && artifactSystem.getContents()[slotNum] != BallColor.UNSURE){
+            autoPositioner.setTargetX(45);
+            autoPositioner.setTargetY(5 - ballTries);
+            if (artifactSystem.getContents()[slotNum] != BallColor.NOTHING && artifactSystem.getContents()[slotNum] != BallColor.UNSURE) {
                 ballNum = 1;
-                slotNum ++;
+                slotNum++;
                 return;
-            } else if(ball0tries > maxTries){
-                ballNum = 1;
-                return;
-            }
-            ball0tries ++;
-        }
+            } else if (ballTries > maxTries) {
 
-        if (ballNum == 1) {
-            autoPositioner.setTargetX(40 + ball1tries * stepDist);
-            autoPositioner.setTargetY(1);
-            if(artifactSystem.getContents()[slotNum] != BallColor.NOTHING && artifactSystem.getContents()[slotNum] != BallColor.UNSURE){
-                ballNum = 2;
-                slotNum ++;
-                return;
-            } else if(ball1tries > maxTries){
-                ballNum = 2;
-                return;
             }
-            ball1tries ++;
-        }
-
-        if (ballNum == 2) {
-            autoPositioner.setTargetH(2);
-            autoPositioner.setTargetX(40 + ball2tries * stepDist);
-            autoPositioner.setTargetY(0);
-            if((artifactSystem.getContents()[slotNum] != BallColor.NOTHING && artifactSystem.getContents()[slotNum] != BallColor.UNSURE) || ball2tries > maxTries){
-                autoPositioner.enableAutoPositioning(false);
-                StateMachine.INSTANCE.stopAnonymous(this);
-            }
-            ball2tries ++;
+            ballTries++;
         }
     }
 
@@ -82,7 +54,7 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
     protected void started() {
         lastRunTime = startTimeMS;
         autoPositioner.enableAutoPositioning(true);
-        autoPositioner.setTargetH(Math.PI/2);
+        autoPositioner.setTargetH(-Math.PI / 2 - 0.05);
     }
 
     @Override

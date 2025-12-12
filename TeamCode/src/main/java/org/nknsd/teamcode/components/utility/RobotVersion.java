@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.components.utility;
 
+import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 
 public class RobotVersion {
@@ -24,6 +25,16 @@ public class RobotVersion {
 
     public static boolean isAutonomous() {
         return autoMode;
+    }
+
+    private static ID robotAlliance = ID.BLUE;
+
+    public static void setRobotAlliance(ID alliance){
+        RobotVersion.robotAlliance = alliance;
+    }
+
+    public static ID getColor() {
+        return robotAlliance;
     }
 
 //  public final static RobotVersion INSTANCE= new RobotVersion(0,35,0.5,1,

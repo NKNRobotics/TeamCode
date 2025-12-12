@@ -28,11 +28,6 @@ public class FiringSystem implements NKNComponent {
     private ID pattern = ID.NONE;
 
 
-    public void setTargetColor(ID targetColor) {
-        color = targetColor;
-        targetingSystem.setTargetingColor(targetColor);
-    }
-
     public void setPattern(ID pattern) {
         this.pattern = pattern;
     }
@@ -107,6 +102,9 @@ public class FiringSystem implements NKNComponent {
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
+        color = ID.BLUE;
+        targetingSystem.setTargetingColor(ID.BLUE);
+
         return true;
     }
 
