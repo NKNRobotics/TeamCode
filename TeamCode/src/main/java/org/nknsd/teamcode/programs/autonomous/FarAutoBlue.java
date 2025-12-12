@@ -7,6 +7,7 @@ import org.nknsd.teamcode.autoStates.AutoIntakeFromLoadingZoneState;
 import org.nknsd.teamcode.autoStates.AutoLaunchAllState;
 import org.nknsd.teamcode.autoStates.AutoMoveToPosState;
 import org.nknsd.teamcode.autoStates.AutoReadPatternState;
+import org.nknsd.teamcode.autoStates.AutoSlotCheck;
 import org.nknsd.teamcode.autoStates.AutoTargetState;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
@@ -34,7 +35,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@Autonomous(name = "Far Auto")
+@Autonomous(name = "Far Auto Blue")
 public class FarAutoBlue extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
@@ -131,21 +132,23 @@ public class FarAutoBlue extends NKNProgram {
 
 
 //        auto states
-        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10,0.09, 0,0,0,0, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,0,9,0.09, 0,0,0,0, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("check slots", new AutoSlotCheck(artifactSystem, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"rotate to fire pos"}));
-        StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10, -0.35, 1,1,0.05,1, new String[]{}, new String[]{"target"}));
+        StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,9, -0.35, 1,1,0.05,1, new String[]{}, new String[]{"target"}));
         StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch all"}));
-        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{"move to"}));
+//        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{"move to"}));
 
-        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,40,5,Math.PI/2, 0,0,0,1, new String[]{}, new String[]{"intake", "loading zone procedure"}));
-        StateMachine.INSTANCE.addState("intake", new AutoIntakeAllState(artifactSystem,new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState( "loading zone procedure",new AutoIntakeFromLoadingZoneState(autoPositioner,5,1,new String[]{"intake"}, new String[]{"return to fire pos"}));
-
-        StateMachine.INSTANCE.addState("return to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10, 0.35, 1,1,0.05,1, new String[]{}, new String[]{"target #2"}));
-        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch all #2"}));
-        StateMachine.INSTANCE.addState("launch all #2", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{}));
+//        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,40,5,Math.PI/2, 0,0,0,1, new String[]{}, new String[]{"intake", "loading zone procedure"}));
+//        StateMachine.INSTANCE.addState("intake", new AutoIntakeAllState(artifactSystem,new String[]{}, new String[]{}));
+//        StateMachine.INSTANCE.addState( "loading zone procedure",new AutoIntakeFromLoadingZoneState(autoPositioner,5,1,new String[]{"intake"}, new String[]{"return to fire pos"}));
+//
+//        StateMachine.INSTANCE.addState("return to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10, 0.35, 1,1,0.05,1, new String[]{}, new String[]{"target #2"}));
+//        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch all #2"}));
+//        StateMachine.INSTANCE.addState("launch all #2", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{}));
 
         StateMachine.INSTANCE.startState("start");
         StateMachine.INSTANCE.startState("read pattern");
+        StateMachine.INSTANCE.startState("check slots");
     }
 }

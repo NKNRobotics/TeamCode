@@ -34,7 +34,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@Autonomous(name = "Far Auto")
+@Autonomous(name = "Far Auto Red")
 public class FarAutoRed extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {

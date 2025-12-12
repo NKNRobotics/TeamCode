@@ -74,11 +74,11 @@ public class AutoMoveToPosState extends StateMachine.State {
     @Override
     protected void started() {
         autoPositioner.enableAutoPositioning(true);
-        RobotLog.v("setting targets x: " + xTarget + ", y: " + yTarget + ", h: " + hTarget);
+//        RobotLog.v("setting targets x: " + xTarget + ", y: " + yTarget + ", h: " + hTarget);
         autoPositioner.setTargetX(xTarget);
         autoPositioner.setTargetY(yTarget);
         autoPositioner.setTargetH(hTarget);
-        RobotLog.v("targets set!");
+//        RobotLog.v("targets set!");
     }
 
     @Override

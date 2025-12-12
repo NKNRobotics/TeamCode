@@ -51,20 +51,20 @@ public class PowerInputMixer implements NKNComponent {
     }
 
     public void setAutoPowers(double[] autoPowers) {
-        RobotLog.v("given auto powers x: " + autoPowers[0] + ", y: " + autoPowers[1] + ", h: " + autoPowers[2]);
+//        RobotLog.v("given auto powers x: " + autoPowers[0] + ", y: " + autoPowers[1] + ", h: " + autoPowers[2]);
         if (autoEnabled[0]) {
-            RobotLog.v("enable 0");
+//            RobotLog.v("enable 0");
             powers[0] = autoPowers[0];
         }
         if (autoEnabled[1]) {
-            RobotLog.v("enable 1");
+//            RobotLog.v("enable 1");
             powers[1] = autoPowers[1];
         }
         if (autoEnabled[2]) {
-            RobotLog.v("enable 2");
+//            RobotLog.v("enable 2");
             powers[2] = autoPowers[2];
         }
-        RobotLog.v("set auto powers x: " + powers[0] + ", y: " + powers[1] + ", h: " + powers[2]);
+//        RobotLog.v("set auto powers x: " + powers[0] + ", y: " + powers[1] + ", h: " + powers[2]);
         absolutePowerMixer.setPowers(powers);
     }
 
@@ -79,13 +79,13 @@ public class PowerInputMixer implements NKNComponent {
             powers[2] = manualPowers[2];
         }
         absolutePowerMixer.setPowers(powers);
-        RobotLog.v("manual powers x: " + powers[0] + ", y: " + powers[1] + ", h: " + powers[2]);
+//        RobotLog.v("manual powers x: " + powers[0] + ", y: " + powers[1] + ", h: " + powers[2]);
     }
 
     public void setAutoEnabled(boolean[] autoEnable) {
         this.autoEnabled = autoEnable;
         Thread.dumpStack();
-        RobotLog.v("enabling auto " + autoEnable[0] + ", " + autoEnable[1] + ", " + autoEnable[2]);
+//        RobotLog.v("enabling auto " + autoEnable[0] + ", " + autoEnable[1] + ", " + autoEnable[2]);
     }
 
     public void link(AbsolutePowerMixer absolutePowerMixer) {

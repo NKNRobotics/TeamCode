@@ -138,7 +138,7 @@ public class FiringSystem implements NKNComponent {
 
             if (targetingSystem.targetVisible() && !isFiring) {
                 launchSystem.setDistance(targetingSystem.getDistance());
-                telemetry.addData("setting distance", targetingSystem.getDistance());
+//                telemetry.addData("setting distance", targetingSystem.getDistance());
             }
         }
     }

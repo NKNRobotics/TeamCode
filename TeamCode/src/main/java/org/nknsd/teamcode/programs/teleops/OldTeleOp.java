@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.teleops;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.drivers.FiringDriver;
@@ -39,7 +40,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Basic Tele for the OLD ROBOT. DO NOT USE.")
+@TeleOp(name = "Basic Tele for the OLD ROBOT. DO NOT USE.") @Disabled
 public class OldTeleOp extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
