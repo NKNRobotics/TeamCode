@@ -25,10 +25,10 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "chute adjust test", group = "Tests")
+@TeleOp(name = "chute adjust test", group = "Tests") //@Disabled
 public class TrajectoryTest extends NKNProgram {
 
-    private double distance = 80;
+    private double distance = 140;
 
     class IntakeState extends StateMachine.State {
 
