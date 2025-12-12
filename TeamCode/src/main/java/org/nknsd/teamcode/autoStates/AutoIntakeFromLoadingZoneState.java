@@ -19,7 +19,6 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
     private int ballNum = 0;
     private int ballTries = 0;
     private double lastRunTime;
-    private int slotNum = 0;
 
 
     public AutoIntakeFromLoadingZoneState(ArtifactSystem artifactSystem, AutoPositioner autoPositioner, int maxTries, double stepDist, String[] toStopOnEnd, String[] toStartOnEnd) {
@@ -33,18 +32,18 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if (runtime.milliseconds() - lastRunTime > 500)
+        if (runtime.milliseconds() - lastRunTime > 500) {
             lastRunTime = runtime.milliseconds();
 
-        if (ballNum == 0) {
             autoPositioner.setTargetX(45);
             autoPositioner.setTargetY(7 - ballTries);
-             if (ballTries > maxTries) {
+            if (ballTries > maxTries) {
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
             ballTries++;
         }
     }
+
 
     @Override
     protected void started() {

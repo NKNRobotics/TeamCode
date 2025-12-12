@@ -56,7 +56,7 @@ public class FiringSystemTest extends NKNProgram {
 
         @Override
         protected void started() {
-            firingSystem.setTargetColor(ID.BLUE);
+//            firingSystem.setTargetColor(ID.BLUE);
         }
 
         @Override

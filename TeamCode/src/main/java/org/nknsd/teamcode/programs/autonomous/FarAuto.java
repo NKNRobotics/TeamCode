@@ -39,7 +39,6 @@ public class FarAuto extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         RobotVersion.setIsAutonomous(true);
-        RobotVersion.setRobotAlliance(ID.BLUE);
 
 //        statemachine
         components.add(StateMachine.INSTANCE);

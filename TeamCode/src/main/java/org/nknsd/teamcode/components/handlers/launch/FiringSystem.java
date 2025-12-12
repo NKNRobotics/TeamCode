@@ -102,9 +102,6 @@ public class FiringSystem implements NKNComponent {
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        color = ID.BLUE;
-        targetingSystem.setTargetingColor(ID.BLUE);
-
         return true;
     }
 
@@ -115,6 +112,8 @@ public class FiringSystem implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
+        color = RobotVersion.getRobotAlliance();
+        targetingSystem.setTargetingColor( RobotVersion.getRobotAlliance());
 
     }
 

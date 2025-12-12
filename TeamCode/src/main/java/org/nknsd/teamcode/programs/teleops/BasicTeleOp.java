@@ -120,7 +120,7 @@ public class BasicTeleOp extends NKNProgram {
         TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
         components.add(targetingSystem);
         telemetryEnabled.add(targetingSystem);
-        targetingSystem.setTargetingColor(ID.BLUE);
+        targetingSystem.setTargetingColor(RobotVersion.getRobotAlliance());
 
 
         FiringDriver firingDriver = new FiringDriver();
