@@ -42,11 +42,19 @@ public class FiringSystem implements NKNComponent {
     }
 
     public boolean isReady() {
+        boolean ready;
         if (autoLocked) {
-            return launchSystem.isReady() && launchSystem.confidence > WHEELSPEED_CONFIDENCE && artifactSystem.isReady() && targetingSystem.targetAcquired();
+            ready = launchSystem.isReady() && artifactSystem.isReady() && targetingSystem.targetAcquired();
         } else {
-            return launchSystem.isReady() && launchSystem.confidence > WHEELSPEED_CONFIDENCE && artifactSystem.isReady();
+            ready = launchSystem.isReady() && artifactSystem.isReady();
         }
+//        RobotLog.v("firing system is ready" + ready);
+        return ready;
+//        if (autoLocked) {
+//            return launchSystem.isReady() && artifactSystem.isReady() && targetingSystem.targetAcquired();
+//        } else {
+//            return launchSystem.isReady() && artifactSystem.isReady();
+//        }
     }
 
     public boolean fireGreen() {
@@ -74,7 +82,7 @@ public class FiringSystem implements NKNComponent {
     public void fireAll() {
         if (!autoLocked) {
             BallColor[] patternColors;
-            switch (pattern.ordinal()){
+            switch (pattern.ordinal()) {
                 case 0:
                     patternColors = new BallColor[]{BallColor.PURPLE, BallColor.GREEN, BallColor.PURPLE};
                     break;
@@ -99,7 +107,6 @@ public class FiringSystem implements NKNComponent {
     }
 
 
-
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         return true;
@@ -113,7 +120,7 @@ public class FiringSystem implements NKNComponent {
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
         color = RobotVersion.getRobotAlliance();
-        targetingSystem.setTargetingColor( RobotVersion.getRobotAlliance());
+        targetingSystem.setTargetingColor(RobotVersion.getRobotAlliance());
 
     }
 

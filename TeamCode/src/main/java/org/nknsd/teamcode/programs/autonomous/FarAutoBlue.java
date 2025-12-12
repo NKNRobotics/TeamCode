@@ -136,10 +136,10 @@ public class FarAutoBlue extends NKNProgram {
         StateMachine.INSTANCE.addState("check slots", new AutoSlotCheck(artifactSystem, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"rotate to fire pos"}));
         StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,9, -0.35, 1,1,0.05,1, new String[]{}, new String[]{"target"}));
-        StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch all"}));
-//        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{"move to"}));
+        StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch pattern"}));
+        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{"move to loading zone"}));
 
-//        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,40,5,Math.PI/2, 0,0,0,1, new String[]{}, new String[]{"intake", "loading zone procedure"}));
+        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,-40,5,Math.PI/2, 0,0,0,1, new String[]{}, new String[]{"intake", "loading zone procedure"}));
 //        StateMachine.INSTANCE.addState("intake", new AutoIntakeAllState(artifactSystem,new String[]{}, new String[]{}));
 //        StateMachine.INSTANCE.addState( "loading zone procedure",new AutoIntakeFromLoadingZoneState(autoPositioner,5,1,new String[]{"intake"}, new String[]{"return to fire pos"}));
 //

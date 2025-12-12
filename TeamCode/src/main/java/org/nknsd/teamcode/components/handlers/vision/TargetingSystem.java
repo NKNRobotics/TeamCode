@@ -17,7 +17,7 @@ public class TargetingSystem implements NKNComponent {
 
     final private double MAX_XOFFSET = 0.2;
     final private double MAX_ANGLE_VEL = 0.1;
-    final private double MAX_MOVE_VEL = 0.05;
+    final private double MIN_MOVE_VEL = 0.05;
     final private double SKEW_MULTIPLIER = 0;
 
     private BasketLocator basketLocator;
@@ -43,9 +43,15 @@ public class TargetingSystem implements NKNComponent {
 
 
     public boolean targetAcquired() {
-        if (Math.abs(absolutePosition.getVelocity().x) > MAX_MOVE_VEL && Math.abs(absolutePosition.getVelocity().y) > MAX_MOVE_VEL)
-            return false;
-        return Math.abs(lastOffset) < MAX_XOFFSET && Math.abs(vel) < MAX_ANGLE_VEL;
+        boolean ready;
+        if (Math.abs(absolutePosition.getVelocity().x) > MIN_MOVE_VEL && Math.abs(absolutePosition.getVelocity().y) > MIN_MOVE_VEL) {
+            ready = false;
+//            RobotLog.v("targeting ready " + ready);
+            return ready;
+        }
+        ready = Math.abs(lastOffset) < MAX_XOFFSET && Math.abs(vel) < MAX_ANGLE_VEL;
+//        RobotLog.v("targeting ready " + ready);
+        return ready;
     }
 
     public void enableAutoTargeting(boolean enable) {
@@ -98,7 +104,7 @@ public class TargetingSystem implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        if(basketLocator.getOffset(targetingColor).distance == -1 && targetEnabled && !RobotVersion.isAutonomous()){
+        if (basketLocator.getOffset(targetingColor).distance == -1 && targetEnabled && !RobotVersion.isAutonomous()) {
             powerInputMixer.setAutoEnabled(new boolean[]{false, false, false});
             targetEnabled = false;
         }
