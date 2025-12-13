@@ -51,6 +51,10 @@ public class PidController implements ControlLoop {
         return integral;
     }
 
+    public void reset(){
+        integral = 0;
+    }
+
     public double derivativeCalculator(double errorDelta, double interval) {
         double derivative = errorDelta * (1000.0 / interval) * dMultiplier;
 

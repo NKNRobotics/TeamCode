@@ -23,7 +23,7 @@ public class AutoTargetState extends StateMachine.State {
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
         if(firingSystem.isReady() && killWhenTargeted){
             StateMachine.INSTANCE.stopAnonymous(this);
-            telemetry.addData("AHA!", "target targeted");
+//            telemetry.addData("AHA!", "target targeted");
         }
     }
 

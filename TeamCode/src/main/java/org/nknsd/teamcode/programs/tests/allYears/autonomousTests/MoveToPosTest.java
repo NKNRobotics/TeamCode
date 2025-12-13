@@ -1,7 +1,6 @@
 package org.nknsd.teamcode.programs.tests.allYears.autonomousTests;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -15,7 +14,6 @@ import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
-import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
@@ -44,9 +42,9 @@ public class MoveToPosTest extends NKNProgram {
 
         @Override
         protected void started() {
-            autoPositioner.setTargetX(targetPos.x);
-            autoPositioner.setTargetY(targetPos.y);
-            autoPositioner.setTargetH(targetPos.h);
+            autoPositioner.setTargetX(targetPos.x, RobotVersion.INSTANCE.pidControllerX);
+            autoPositioner.setTargetY(targetPos.y, RobotVersion.INSTANCE.pidControllerY);
+            autoPositioner.setTargetH(targetPos.h, RobotVersion.INSTANCE.pidControllerH);
         }
 
         @Override
@@ -77,15 +75,15 @@ public class MoveToPosTest extends NKNProgram {
         components.add(powerInputMixer);
 
         absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);
-        powerInputMixer.link(absolutePowerMixer);
+        powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
 
-        AutoPositioner autoPositioner = new AutoPositioner(RobotVersion.INSTANCE.pControllerX, RobotVersion.INSTANCE.pControllerY, RobotVersion.INSTANCE.pControllerH);
+        AutoPositioner autoPositioner = new AutoPositioner();
 
         components.add(autoPositioner);
         autoPositioner.link(powerInputMixer, absolutePosition);
 
         components.add(StateMachine.INSTANCE);
-        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10,-0.09, 0,0,0,0, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,10,-0.09, 0,0,0,0,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.startState("start");
     }
 }

@@ -11,6 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class PowerInputMixer implements NKNComponent {
 
     AbsolutePowerMixer absolutePowerMixer;
+    MecanumMotorMixer mecanumMotorMixer;
 
     double[] powers = new double[]{0,0,0};
     boolean[] autoEnabled = new boolean[]{false, false, false};
@@ -78,7 +79,7 @@ public class PowerInputMixer implements NKNComponent {
         if (!autoEnabled[2]) {
             powers[2] = manualPowers[2];
         }
-        absolutePowerMixer.setPowers(powers);
+        mecanumMotorMixer.setPowers(powers);
 //        RobotLog.v("manual powers x: " + powers[0] + ", y: " + powers[1] + ", h: " + powers[2]);
     }
 
@@ -88,7 +89,8 @@ public class PowerInputMixer implements NKNComponent {
 //        RobotLog.v("enabling auto " + autoEnable[0] + ", " + autoEnable[1] + ", " + autoEnable[2]);
     }
 
-    public void link(AbsolutePowerMixer absolutePowerMixer) {
+    public void link(AbsolutePowerMixer absolutePowerMixer, MecanumMotorMixer mecanumMotorMixer) {
         this.absolutePowerMixer = absolutePowerMixer;
+        this.mecanumMotorMixer = mecanumMotorMixer;
     }
 }

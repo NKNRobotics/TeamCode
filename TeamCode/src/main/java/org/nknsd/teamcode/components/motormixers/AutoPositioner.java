@@ -12,9 +12,9 @@ import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class AutoPositioner implements NKNComponent {
-    private final PidController pidControllerX;
-    private final PidController pidControllerY;
-    private final PidController pidControllerH;
+    private  PidController pidControllerX;
+    private  PidController pidControllerY;
+    private  PidController pidControllerH;
     private PowerInputMixer powerInputMixer;
     private AbsolutePosition absolutePosition;
 
@@ -27,27 +27,31 @@ public class AutoPositioner implements NKNComponent {
     private boolean positioningEnabled;
 
 
-    public AutoPositioner(PidController pidControllerX, PidController pidControllerY, PidController pidControllerH) {
-        this.pidControllerX = pidControllerX;
-        this.pidControllerY = pidControllerY;
-        this.pidControllerH = pidControllerH;
-    }
-
     public void enableAutoPositioning(boolean enable) {
         powerInputMixer.setAutoEnabled(new boolean[]{enable, enable, enable});
         positioningEnabled = enable;
+
+        if(!enable){
+            powerInputMixer.setAutoPowers(new double[]{0, 0, 0});
+        }
     }
 
-    public void setTargetX(double targetX) {
+    public void setTargetX(double targetX, PidController pid) {
         target.x = targetX;
+        pidControllerX = pid;
+        pidControllerX.reset();
     }
 
-    public void setTargetY(double targetY) {
+    public void setTargetY(double targetY, PidController pid) {
         target.y = targetY;
+        pidControllerY = pid;
+        pidControllerY.reset();
     }
 
-    public void setTargetH(double targetH) {
+    public void setTargetH(double targetH, PidController pid) {
         target.h = targetH;
+        pidControllerH = pid;
+        pidControllerH.reset();
     }
 
 
@@ -102,6 +106,7 @@ public class AutoPositioner implements NKNComponent {
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
 
+        if (positioningEnabled) {
         SparkFunOTOS.Pose2D current = absolutePosition.getPosition();
         RobotLog.v("current: x " + current.x + ", y " + current.y + ", h " + current.h);
         RobotLog.v("target: x " + target.x + ", y " + target.y + ", h " + target.h);
@@ -129,7 +134,6 @@ public class AutoPositioner implements NKNComponent {
         lastTime = runtime.milliseconds();
         lastPos = current;
 
-        if (positioningEnabled) {
             RobotLog.v("auto postitioner x: " + output.x + ", y: " + output.y + ", h: " + output.h);
             powerInputMixer.setAutoPowers(new double[]{output.x, output.y, output.h});
         }

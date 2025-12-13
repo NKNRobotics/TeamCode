@@ -6,11 +6,14 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.motormixers.AutoPositioner;
+import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
+import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 
 public class AutoMoveToPosState extends StateMachine.State {
     final private AutoPositioner autoPositioner;
     final private AbsolutePosition absolutePosition;
+    boolean killSelf;
     final private double xTarget;
     final private double yTarget;
     final private double hTarget;
@@ -19,8 +22,12 @@ public class AutoMoveToPosState extends StateMachine.State {
     final private double errorHMargin;
     final private double speedError;
 
+    private final PidController pidControllerX;
+    private final PidController pidControllerY;
+    private final PidController pidControllerH;
     private final String[] toStopOnEnd;
     private final String[] toStartOnEnd;
+
 
     /**
      * @param xTarget sets the absolute X target
@@ -31,9 +38,10 @@ public class AutoMoveToPosState extends StateMachine.State {
      * @param errorHMargin sets the heading error margin based on (SOMETHING IDK)
      * @param speedError sets the speed error margin
      */
-    public AutoMoveToPosState(AutoPositioner autoPositioner, AbsolutePosition absolutePosition, double xTarget, double yTarget, double hTarget, double errorXMargin, double errorYMargin, double errorHMargin, double speedError, String[] toStopOnEnd, String[] toStartOnEnd){
+    public AutoMoveToPosState(AutoPositioner autoPositioner, AbsolutePosition absolutePosition, boolean killSelf, double xTarget, double yTarget, double hTarget, double errorXMargin, double errorYMargin, double errorHMargin, double speedError, PidController pidControllerX, PidController pidControllerY, PidController pidControllerH, String[] toStopOnEnd, String[] toStartOnEnd){
         this.autoPositioner = autoPositioner;
         this.absolutePosition = absolutePosition;
+        this.killSelf = killSelf;
         this.xTarget = xTarget;
         this.yTarget = yTarget;
         this.hTarget = hTarget;
@@ -41,6 +49,9 @@ public class AutoMoveToPosState extends StateMachine.State {
         this.errorYMargin = errorYMargin;
         this.errorHMargin = errorHMargin;
         this.speedError = speedError;
+        this.pidControllerX = pidControllerX;
+        this.pidControllerY = pidControllerY;
+        this.pidControllerH = pidControllerH;
         this.toStopOnEnd = toStopOnEnd;
         this.toStartOnEnd = toStartOnEnd;
     }
@@ -66,7 +77,7 @@ public class AutoMoveToPosState extends StateMachine.State {
         }
 
 
-        if (angleCheck && speedCheck && xyCheck) {
+        if (angleCheck && speedCheck && xyCheck && killSelf) {
             StateMachine.INSTANCE.stopAnonymous(this);
         }
     }
@@ -75,9 +86,9 @@ public class AutoMoveToPosState extends StateMachine.State {
     protected void started() {
         autoPositioner.enableAutoPositioning(true);
 //        RobotLog.v("setting targets x: " + xTarget + ", y: " + yTarget + ", h: " + hTarget);
-        autoPositioner.setTargetX(xTarget);
-        autoPositioner.setTargetY(yTarget);
-        autoPositioner.setTargetH(hTarget);
+        autoPositioner.setTargetX(xTarget, pidControllerX);
+        autoPositioner.setTargetY(yTarget, pidControllerY);
+        autoPositioner.setTargetH(hTarget, pidControllerH);
 //        RobotLog.v("targets set!");
     }
 

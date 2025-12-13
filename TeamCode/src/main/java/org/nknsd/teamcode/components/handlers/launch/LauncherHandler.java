@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class LauncherHandler implements NKNComponent {
-    private static final double TICK_COUNT_INTERVAL_SECONDS = .08;
+    private static final double TICK_COUNT_INTERVAL_SECONDS = .05;
     private DcMotor wMotor;
     private boolean enabled;
     private double wPower;

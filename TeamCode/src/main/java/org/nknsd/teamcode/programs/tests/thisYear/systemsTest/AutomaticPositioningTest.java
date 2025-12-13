@@ -219,7 +219,7 @@ public class AutomaticPositioningTest extends NKNProgram {
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
         basketLocator.link(aprilTagSensor);
-        powerInputMixer.link(absolutePowerMixer);
+        powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         ballColorInterpreter.link(colorReader);
 
         launchSystem.link(trajectoryHandler, launcherHandler);

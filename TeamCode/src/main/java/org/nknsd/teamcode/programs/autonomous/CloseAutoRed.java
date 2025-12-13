@@ -3,7 +3,6 @@ package org.nknsd.teamcode.programs.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.nknsd.teamcode.autoStates.AutoIntakeAllState;
-import org.nknsd.teamcode.autoStates.AutoIntakeFromLoadingZoneState;
 import org.nknsd.teamcode.autoStates.AutoLaunchAllState;
 import org.nknsd.teamcode.autoStates.AutoMoveToPosState;
 import org.nknsd.teamcode.autoStates.AutoReadPatternState;
@@ -30,17 +29,19 @@ import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
+import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
+import org.nknsd.teamcode.states.TimerState;
 
 import java.util.List;
 
-@Autonomous(name = "Far Auto Blue")
-public class FarAutoBlue extends NKNProgram {
+@Autonomous(name = "Close Auto Red")
+public class CloseAutoRed extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         RobotVersion.setIsAutonomous(true);
-        RobotVersion.setRobotAlliance(ID.BLUE);
+        RobotVersion.setRobotAlliance(ID.RED);
 
 //        statemachine
         components.add(StateMachine.INSTANCE);
@@ -117,39 +118,43 @@ public class FarAutoBlue extends NKNProgram {
         telemetryEnabled.add(targetingSystem);
 
 
-
 //        all links
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
         basketLocator.link(aprilTagSensor);
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
-        absolutePowerMixer.link(mecanumMotorMixer,absolutePosition);
+        absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);
         ballColorInterpreter.link(colorReader);
         launchSystem.link(trajectoryHandler, launcherHandler);
         firingSystem.link(launchSystem, targetingSystem, artifactSystem);
         artifactSystem.link(microwaveScoopHandler, slotTracker, launchSystem);
         autoPositioner.link(powerInputMixer, absolutePosition);
 
+        PidController[] intakePidControllers = new PidController[]{
+                new PidController(0.07, .1, 0.1, .05, true, 0.02, 0.2),
+                new PidController(0.07, .1, 0.1, .05, true, 0.02, 0.2),
+                new PidController(0.6, .5, 0.1, .25, true, 0.2, 0.3)};
 
 
 //        auto states
-        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,7.6,0.09, 0,0,0,0,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition, true, 0, -20, -Math.PI / 2, 1, 1, 0.1, 1, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("check slots", new AutoSlotCheck(artifactSystem, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"rotate to fire pos"}));
-        StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,8, -0.35, 1,1,0.05,1,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target"}));
-        StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch pattern", "target while firing"}));
-        StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to loading zone"}));
-
-        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,true,-35,8,Math.PI/2, 0.2,0.2,0.2,1,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"intake", "loading zone procedure"}));
-        StateMachine.INSTANCE.addState("intake", new AutoIntakeAllState(artifactSystem,new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState( "loading zone procedure",new AutoIntakeFromLoadingZoneState(autoPositioner,7,1, ID.BLUE, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,new String[]{"intake"}, new String[]{"return to fire pos"}));
-
-        StateMachine.INSTANCE.addState("return to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,7.2, -0.35, 1,1,0.05,1,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target #2"}));
-        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch pattern #2", "target while firing #2"}));
-        StateMachine.INSTANCE.addState("target while firing #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("launch pattern #2", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #2"}, new String[]{"move"}));
-        StateMachine.INSTANCE.addState("move", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,15,0, 0,0,0,0,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"move to fire pos"}));
+        StateMachine.INSTANCE.addState("move to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition, true, 0, -30, Math.PI / 10, 1, 1, 0.05, 1, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target"}));
+        StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{"launch pattern", "target while firing"}));
+        StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to spike"}));
+        StateMachine.INSTANCE.addState("move to spike", new AutoMoveToPosState(autoPositioner, absolutePosition, true, -0, -38, -2.37, 1, 1, 0.1, 1, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"intake", "intake 1st ball", "timer 1"}));
+        StateMachine.INSTANCE.addState("intake 1st ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false, 23.5, -32.5, -2.37, 1, 1, 0.1, 1, intakePidControllers[0], intakePidControllers[1], intakePidControllers[2], new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("timer 1", new TimerState(1000, new String[]{"intake 2nd ball", "timer 2"}, new String[]{}));
+        StateMachine.INSTANCE.addState("intake 2nd ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false, 26, -30, -2.37, 1, 1, 0.1, 1, intakePidControllers[0], intakePidControllers[1], intakePidControllers[2], new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("timer 2", new TimerState(1000, new String[]{"intake 3rd ball", "timer 3"}, new String[]{}));
+        StateMachine.INSTANCE.addState("intake 3rd ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false, 29.5, -26.2, -2.37, 1, 1, 0.1, 1, intakePidControllers[0], intakePidControllers[1], intakePidControllers[2], new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("timer 3", new TimerState(1000, new String[]{"move to fire pos #2"}, new String[]{"intake"}));
+        StateMachine.INSTANCE.addState("move to fire pos #2", new AutoMoveToPosState(autoPositioner, absolutePosition, true, 11, -44, -0.04, 1, 1, 0.05, 1, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target #2"}));
+        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{"launch pattern #2", "target while firing #2"}));
+        StateMachine.INSTANCE.addState("target while firing #2", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("launch pattern #2", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #2"}, new String[]{"die now :)"}));
 
 
         StateMachine.INSTANCE.startState("start");

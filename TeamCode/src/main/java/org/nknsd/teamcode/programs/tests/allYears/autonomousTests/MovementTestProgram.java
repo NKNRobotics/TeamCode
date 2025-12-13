@@ -66,7 +66,7 @@ public class MovementTestProgram extends NKNProgram {
 
         PowerInputMixer powerInputMixer = new PowerInputMixer();
         components.add(powerInputMixer);
-        powerInputMixer.link(absolutePowerMixer);
+        powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
 
 
         components.add(StateMachine.INSTANCE);

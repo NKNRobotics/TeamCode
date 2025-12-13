@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.drivers.LauncherDriver;
-import org.nknsd.teamcode.components.drivers.WheelDriver;
 import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
 import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
@@ -45,10 +44,10 @@ public class LauncherTest extends NKNProgram {
         wheelController.link(gamePadHandler);
 
         // Wheel Driver
-        WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
-        components.add(wheelDriver);
+//        WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
+//        components.add(wheelDriver);
         //telemetryEnabled.add(wheelDriver);
-        wheelDriver.link(gamePadHandler, wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER, wheelController);
+//        wheelDriver.link(gamePadHandler, wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER, wheelController);
 
         // Launcher Handler
         LauncherHandler launcherHandler = new LauncherHandler(0.95,1.1);

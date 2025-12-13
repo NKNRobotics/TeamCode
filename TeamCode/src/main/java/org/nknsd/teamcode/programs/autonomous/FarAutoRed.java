@@ -7,6 +7,7 @@ import org.nknsd.teamcode.autoStates.AutoIntakeFromLoadingZoneState;
 import org.nknsd.teamcode.autoStates.AutoLaunchAllState;
 import org.nknsd.teamcode.autoStates.AutoMoveToPosState;
 import org.nknsd.teamcode.autoStates.AutoReadPatternState;
+import org.nknsd.teamcode.autoStates.AutoSlotCheck;
 import org.nknsd.teamcode.autoStates.AutoTargetState;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
@@ -98,7 +99,7 @@ public class FarAutoRed extends NKNProgram {
         PowerInputMixer powerInputMixer = new PowerInputMixer();
         components.add(powerInputMixer);
 
-        AutoPositioner autoPositioner = new AutoPositioner(RobotVersion.INSTANCE.pControllerX, RobotVersion.INSTANCE.pControllerY, RobotVersion.INSTANCE.pControllerH);
+        AutoPositioner autoPositioner = new AutoPositioner();
         components.add(autoPositioner);
 
 
@@ -120,7 +121,7 @@ public class FarAutoRed extends NKNProgram {
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
         basketLocator.link(aprilTagSensor);
-        powerInputMixer.link(absolutePowerMixer);
+        powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         absolutePowerMixer.link(mecanumMotorMixer,absolutePosition);
         ballColorInterpreter.link(colorReader);
         launchSystem.link(trajectoryHandler, launcherHandler);
@@ -131,21 +132,26 @@ public class FarAutoRed extends NKNProgram {
 
 
 //        auto states
-        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10,-0.09, 0,0,0,0, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,7.6,-0.09, 0,0,0,0,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("check slots", new AutoSlotCheck(artifactSystem, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"rotate to fire pos"}));
-        StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10, 0.35, 1,1,0.05,1, new String[]{}, new String[]{"target"}));
-        StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch all"}));
-        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{"move to"}));
+        StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,8, 0.35, 1,1,0.05,1,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target"}));
+        StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch pattern", "target while firing"}));
+        StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to loading zone"}));
 
-        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,-40,5,-Math.PI/2, 0,0,0,1, new String[]{}, new String[]{"intake", "loading zone procedure"}));
+        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,true,35,8,-Math.PI/2, 0.2,0.2,0.2,1,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"intake", "loading zone procedure"}));
         StateMachine.INSTANCE.addState("intake", new AutoIntakeAllState(artifactSystem,new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState( "loading zone procedure",new AutoIntakeFromLoadingZoneState(autoPositioner,5,1,new String[]{"intake"}, new String[]{"return to fire pos"}));
+        StateMachine.INSTANCE.addState( "loading zone procedure",new AutoIntakeFromLoadingZoneState(autoPositioner,7,1, ID.RED,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{"intake"}, new String[]{"return to fire pos"}));
 
-        StateMachine.INSTANCE.addState("return to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,0,10, -0.35, 1,1,0.05,1, new String[]{}, new String[]{"target #2"}));
-        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch all #2"}));
-        StateMachine.INSTANCE.addState("launch all #2", new AutoLaunchAllState(firingSystem, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("return to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,7.2, 0.35, 1,1,0.05,1,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target #2"}));
+        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"launch pattern #2", "target while firing #2"}));
+        StateMachine.INSTANCE.addState("target while firing #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("launch pattern #2", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #2"}, new String[]{}));
+
 
         StateMachine.INSTANCE.startState("start");
         StateMachine.INSTANCE.startState("read pattern");
+        StateMachine.INSTANCE.startState("check slots");
     }
 }
