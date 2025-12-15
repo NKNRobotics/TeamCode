@@ -12,6 +12,7 @@ import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
+import org.nknsd.teamcode.components.utility.PositionTransform;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -83,7 +84,8 @@ public class MoveToPosTest extends NKNProgram {
         autoPositioner.link(powerInputMixer, absolutePosition);
 
         components.add(StateMachine.INSTANCE);
-        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,true,0,10,-0.09, 0,0,0,0,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
+        PositionTransform transform = new PositionTransform(0,0,0,1,1,1);
+        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,true,transform.adjustPos(0,10,-0.09), 0,0,0,0,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.startState("start");
     }
 }

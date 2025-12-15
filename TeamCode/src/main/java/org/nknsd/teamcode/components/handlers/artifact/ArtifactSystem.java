@@ -73,7 +73,16 @@ public class ArtifactSystem {
      */
     public boolean scanAll() {
         if (isReady()) {
-            StateMachine.INSTANCE.startAnonymous(new ScanStartState(this, microwaveScoopHandler, slotTracker));
+            StateMachine.INSTANCE.startAnonymous(new ScanStartState(this, microwaveScoopHandler, slotTracker, false));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean scanWithOverride() {
+        if (isReady()) {
+            StateMachine.INSTANCE.startAnonymous(new ScanStartState(this, microwaveScoopHandler, slotTracker, true));
             return true;
         } else {
             return false;

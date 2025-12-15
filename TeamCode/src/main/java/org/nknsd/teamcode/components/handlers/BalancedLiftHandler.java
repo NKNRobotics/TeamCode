@@ -91,6 +91,7 @@ public class BalancedLiftHandler implements NKNComponent {
 
     public void startLift(){
         isLifting = true;
+        imuSensor.resetIMU();
     }
 
     public void stopLift(){

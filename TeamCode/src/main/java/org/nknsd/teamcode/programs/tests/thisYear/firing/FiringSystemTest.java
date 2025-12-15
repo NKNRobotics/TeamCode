@@ -77,7 +77,7 @@ public class FiringSystemTest extends NKNProgram {
         components.add(trajectoryHandler);
         telemetryEnabled.add(trajectoryHandler);
 
-        LauncherHandler launcherHandler = new LauncherHandler(0.97, 1.05);
+        LauncherHandler launcherHandler = new LauncherHandler(0.95, 1.10);
         components.add(launcherHandler);
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);

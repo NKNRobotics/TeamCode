@@ -101,7 +101,7 @@ public class ArtifactIntakeTester extends NKNProgram {
         telemetryEnabled.add(microwaveScoopHandler);
         telemetryEnabled.add(ballColorInterpreter);
 
-        launcherHandler = new LauncherHandler(.97,1.03);
+        launcherHandler = new LauncherHandler(.95,1.10);
         components.add(launcherHandler);
 
         //linking

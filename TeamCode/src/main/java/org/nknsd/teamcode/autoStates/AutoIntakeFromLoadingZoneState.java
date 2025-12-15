@@ -8,6 +8,7 @@ import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.motormixers.AutoPositioner;
+import org.nknsd.teamcode.components.utility.PositionTransform;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 import org.opencv.core.Mat;
@@ -19,29 +20,21 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
     private final PidController pidX;
     private final PidController pidY;
     private final PidController pidH;
+    private final PositionTransform transform;
     private final String[] toStopOnEnd;
     private final String[] toStartOnEnd;
     private int ballTries = 0;
     private double lastRunTime;
-    private int allianceMult;
 
 
-    public AutoIntakeFromLoadingZoneState(AutoPositioner autoPositioner, int maxTries, double stepDist, ID alliance, PidController pidX, PidController pidY, PidController pidH, String[] toStopOnEnd, String[] toStartOnEnd) {
+    public AutoIntakeFromLoadingZoneState(AutoPositioner autoPositioner, int maxTries, double stepDist, PidController pidX, PidController pidY, PidController pidH, PositionTransform transform, String[] toStopOnEnd, String[] toStartOnEnd) {
         this.pidX = pidX;
         this.pidY = pidY;
         this.pidH = pidH;
-        switch (alliance.ordinal()) {
-            case 3:
-                allianceMult = 1;
-                break;
-            case 4:
-                allianceMult = -1;
-                break;
-
-        }
         this.autoPositioner = autoPositioner;
         this.maxTries = maxTries;
         this.stepDist = stepDist;
+        this.transform = transform;
         this.toStopOnEnd = toStopOnEnd;
         this.toStartOnEnd = toStartOnEnd;
     }
@@ -51,7 +44,11 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
         if (runtime.milliseconds() - lastRunTime > 500) {
             lastRunTime = runtime.milliseconds();
 
-            autoPositioner.setTargetY(8 - ballTries * stepDist, pidY);
+            double[] target = transform.adjustPos(-42, 8 - ballTries * stepDist, Math.PI / 2 - 0.35);
+            autoPositioner.setTargetX(target[0], pidX);
+            autoPositioner.setTargetY(target[1], pidY);
+            autoPositioner.setTargetH(target[2], pidH);
+
             if (ballTries > maxTries) {
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
@@ -64,8 +61,10 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
     protected void started() {
         lastRunTime = startTimeMS;
         autoPositioner.enableAutoPositioning(true);
-        autoPositioner.setTargetX((-42) * allianceMult, pidX);
-        autoPositioner.setTargetH((Math.PI / 2 - 0.35) * allianceMult, pidH);
+        double[] target = transform.adjustPos(-42, 8, Math.PI / 2 - 0.35);
+        autoPositioner.setTargetX(target[0], pidX);
+        autoPositioner.setTargetY(target[1], pidY);
+        autoPositioner.setTargetH(target[2], pidH);
     }
 
     @Override

@@ -30,21 +30,19 @@ public class AutoMoveToPosState extends StateMachine.State {
 
 
     /**
-     * @param xTarget sets the absolute X target
-     * @param yTarget sets the absolute Y target
-     * @param hTarget sets the heading target
+     * @param target sets the absolute X target, Y target, H target
      * @param errorXMargin sets the x error margin based on (SOMETHING IDK)
      * @param errorYMargin sets the y error margin based on (SOMETHING IDK)
      * @param errorHMargin sets the heading error margin based on (SOMETHING IDK)
      * @param speedError sets the speed error margin
      */
-    public AutoMoveToPosState(AutoPositioner autoPositioner, AbsolutePosition absolutePosition, boolean killSelf, double xTarget, double yTarget, double hTarget, double errorXMargin, double errorYMargin, double errorHMargin, double speedError, PidController pidControllerX, PidController pidControllerY, PidController pidControllerH, String[] toStopOnEnd, String[] toStartOnEnd){
+    public AutoMoveToPosState(AutoPositioner autoPositioner, AbsolutePosition absolutePosition, boolean killSelf, double[] target, double errorXMargin, double errorYMargin, double errorHMargin, double speedError, PidController pidControllerX, PidController pidControllerY, PidController pidControllerH, String[] toStopOnEnd, String[] toStartOnEnd){
         this.autoPositioner = autoPositioner;
         this.absolutePosition = absolutePosition;
         this.killSelf = killSelf;
-        this.xTarget = xTarget;
-        this.yTarget = yTarget;
-        this.hTarget = hTarget;
+        this.xTarget = target[0];
+        this.yTarget = target[1];
+        this.hTarget = target[2];
         this.errorXMargin = errorXMargin;
         this.errorYMargin = errorYMargin;
         this.errorHMargin = errorHMargin;

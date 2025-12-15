@@ -108,8 +108,8 @@ public class AutoPositioner implements NKNComponent {
 
         if (positioningEnabled) {
         SparkFunOTOS.Pose2D current = absolutePosition.getPosition();
-        RobotLog.v("current: x " + current.x + ", y " + current.y + ", h " + current.h);
-        RobotLog.v("target: x " + target.x + ", y " + target.y + ", h " + target.h);
+//        RobotLog.v("current: x " + current.x + ", y " + current.y + ", h " + current.h);
+//        RobotLog.v("target: x " + target.x + ", y " + target.y + ", h " + target.h);
         current.h = current.h % (2 * Math.PI);
         SparkFunOTOS.Pose2D oldError = error;
         error = calcDelta(target, current);
@@ -117,13 +117,13 @@ public class AutoPositioner implements NKNComponent {
 
 
         double interval = runtime.milliseconds() - lastTime;
-        RobotLog.v("interval: " + interval);
+//        RobotLog.v("interval: " + interval);
         velocity = new SparkFunOTOS.Pose2D(
                 (current.x - lastPos.x) * 1000 / interval,
                 (current.y - lastPos.y) * 1000 / interval,
                 ((current.h - lastPos.h + 3 * Math.PI) % (2 * Math.PI) - Math.PI) * 1000 / interval
         );
-        RobotLog.v("velocity: x " + velocity.x + ", y " + velocity.y + ", h " + velocity.h);
+//        RobotLog.v("velocity: x " + velocity.x + ", y " + velocity.y + ", h " + velocity.h);
 
         SparkFunOTOS.Pose2D output = new SparkFunOTOS.Pose2D(
                 pidControllerX.findOutput(error.x, errorDelta.x, velocity.x, interval),
@@ -134,7 +134,7 @@ public class AutoPositioner implements NKNComponent {
         lastTime = runtime.milliseconds();
         lastPos = current;
 
-            RobotLog.v("auto postitioner x: " + output.x + ", y: " + output.y + ", h: " + output.h);
+//            RobotLog.v("auto postitioner x: " + output.x + ", y: " + output.y + ", h: " + output.h);
             powerInputMixer.setAutoPowers(new double[]{output.x, output.y, output.h});
         }
     }

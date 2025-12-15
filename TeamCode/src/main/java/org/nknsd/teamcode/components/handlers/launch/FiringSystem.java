@@ -80,7 +80,7 @@ public class FiringSystem implements NKNComponent {
     }
 
     public void fireAll() {
-        if (!autoLocked) {
+        if (!autoLocked && targetingSystem.targetVisible()) {
             BallColor[] patternColors;
             switch (pattern.ordinal()) {
                 case 0:

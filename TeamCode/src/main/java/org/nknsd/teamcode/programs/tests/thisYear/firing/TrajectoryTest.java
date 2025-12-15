@@ -28,7 +28,7 @@ import java.util.List;
 @TeleOp(name = "chute adjust test", group = "Tests")
 public class TrajectoryTest extends NKNProgram {
 
-    private double distance = 80;
+    private double distance = 16;
 
     class IntakeState extends StateMachine.State {
 
@@ -154,7 +154,7 @@ public class TrajectoryTest extends NKNProgram {
 //        telemetryEnabled.add(microwaveScoopHandler);
  
 
-        LauncherHandler launcherHandler = new LauncherHandler(0.98, 1.03);
+        LauncherHandler launcherHandler = new LauncherHandler(0.95, 1.10);
         components.add(launcherHandler);
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);

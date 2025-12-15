@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.components.handlers.artifact.states;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
@@ -16,17 +17,29 @@ public class ScanState extends StateMachine.State {
     private final MicrowaveScoopHandler microwaveScoopHandler;
     private final SlotTracker slotTracker;
     private final int timesRan;
-    public ScanState(ArtifactSystem artifactSystem, MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, int timesRan){
+    private final boolean override;
+
+    public ScanState(ArtifactSystem artifactSystem, MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, int timesRan, boolean override) {
         this.artifactSystem = artifactSystem;
         this.microwaveScoopHandler = microwaveScoopHandler;
         this.slotTracker = slotTracker;
         this.timesRan = timesRan;
+        this.override = override;
     }
+
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if(microwaveScoopHandler.isDone() && slotTracker.getSlotColor(timesRan) != BallColor.UNSURE){
-            if(timesRan < 2) {
-                StateMachine.INSTANCE.startAnonymous(new ScanState(artifactSystem, microwaveScoopHandler, slotTracker, timesRan + 1));
+        if (override) {
+            if (microwaveScoopHandler.isDone()) {
+                if (timesRan < 2) {
+                    StateMachine.INSTANCE.startAnonymous(new ScanState(artifactSystem, microwaveScoopHandler, slotTracker, timesRan + 1, override));
+                }
+                StateMachine.INSTANCE.stopAnonymous(this);
+            }
+        }
+        else if (microwaveScoopHandler.isDone() && slotTracker.getSlotColor(timesRan) != BallColor.UNSURE) {
+            if (timesRan < 2) {
+                StateMachine.INSTANCE.startAnonymous(new ScanState(artifactSystem, microwaveScoopHandler, slotTracker, timesRan + 1, override));
             }
             StateMachine.INSTANCE.stopAnonymous(this);
         }
@@ -34,14 +47,18 @@ public class ScanState extends StateMachine.State {
 
     @Override
     protected void started() {
-        if(timesRan >= 0 && timesRan <= 2) {
+        if (timesRan >= 0 && timesRan <= 2) {
             microwaveScoopHandler.setMicrowavePosition(MicrowavePositions.values()[timesRan]);
         }
         artifactSystem.setScanState(this);
+        RobotLog.v("starting scanstate #" + timesRan);
     }
 
     @Override
     protected void stopped() {
-
+        RobotLog.v("stopping scanstate #" + timesRan);
+        if(timesRan == 2){
+            int x = timesRan;
+        }
     }
 }

@@ -85,7 +85,7 @@ public class PowerInputMixer implements NKNComponent {
 
     public void setAutoEnabled(boolean[] autoEnable) {
         this.autoEnabled = autoEnable;
-        Thread.dumpStack();
+//        Thread.dumpStack();
 //        RobotLog.v("enabling auto " + autoEnable[0] + ", " + autoEnable[1] + ", " + autoEnable[2]);
     }
 

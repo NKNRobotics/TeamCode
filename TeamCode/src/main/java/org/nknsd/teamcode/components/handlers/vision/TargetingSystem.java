@@ -116,13 +116,15 @@ public class TargetingSystem implements NKNComponent {
                 double currentOffset = basketData.xOffset - 0.5;
                 currentOffset += basketData.skew * SKEW_MULTIPLIER;
                 vel = (currentOffset - lastOffset) / 50;
-                targetingPowers[2] = pidController.findOutput(currentOffset, 0, vel, runtime.milliseconds() - lastRunTime);
+                targetingPowers[2] = (pidController.findOutput(currentOffset, 0, vel, runtime.milliseconds() - lastRunTime));
 //            RobotLog.v("xOffset" + shiftedOffset);
                 lastOffset = currentOffset;
                 power = targetingPowers[2];
 //                RobotLog.v("targeting powers x: " + targetingPowers[0] + ", y: " + targetingPowers[1] + ", h: " + targetingPowers[2]);
                 powerInputMixer.setAutoPowers(targetingPowers);
 
+            } else if(targetEnabled){
+                powerInputMixer.setAutoPowers(new double[]{0,0,0}) ;
             }
             lastRunTime = runtime.milliseconds();
         }
