@@ -41,6 +41,10 @@ public class FiringSystem implements NKNComponent {
         targetingSystem.enableAutoTargeting(enable);
     }
 
+    public void setManualDistance(double dist){
+        launchSystem.setDistance(dist);
+    }
+
     public boolean isReady() {
         boolean ready;
         if (autoLocked) {

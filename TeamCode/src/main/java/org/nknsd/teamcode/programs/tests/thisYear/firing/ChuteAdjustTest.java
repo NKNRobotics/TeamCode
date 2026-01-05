@@ -1,8 +1,5 @@
 package org.nknsd.teamcode.programs.tests.thisYear.firing;
 
-import android.view.ViewDebug;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -26,7 +23,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 import java.util.List;
 
 @TeleOp(name = "chute adjust test", group = "Tests")
-public class TrajectoryTest extends NKNProgram {
+public class ChuteAdjustTest extends NKNProgram {
 
     private double distance = 16;
 

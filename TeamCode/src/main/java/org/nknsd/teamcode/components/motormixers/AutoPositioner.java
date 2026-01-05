@@ -28,12 +28,11 @@ public class AutoPositioner implements NKNComponent {
 
 
     public void enableAutoPositioning(boolean enable) {
-        powerInputMixer.setAutoEnabled(new boolean[]{enable, enable, enable});
         positioningEnabled = enable;
-
         if(!enable){
             powerInputMixer.setAutoPowers(new double[]{0, 0, 0});
         }
+        powerInputMixer.setAutoEnabled(new boolean[]{enable, enable, enable});
     }
 
     public void setTargetX(double targetX, PidController pid) {
