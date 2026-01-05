@@ -94,7 +94,7 @@ public class Setup extends ProgramPart {
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);
 
-         launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
+         launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 3, 16, 132);
 
          firingSystem = new FiringSystem();
         components.add(firingSystem);

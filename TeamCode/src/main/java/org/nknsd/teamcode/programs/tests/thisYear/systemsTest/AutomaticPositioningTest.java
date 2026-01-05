@@ -168,7 +168,7 @@ public class AutomaticPositioningTest extends NKNProgram {
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);
 
-        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
+        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 3, 16, 132);
 
 
         MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
