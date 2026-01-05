@@ -5,21 +5,31 @@ import org.nknsd.teamcode.components.utility.RobotVersion;
 public enum MicrowavePositions {
 
 
-    LOAD0(0.22, 0.95),
-    LOAD1(0.99, 3.04),
-    LOAD2(0.61, 2.05),
-    FIRE0(0.8, 2.58),
-    FIRE1(0.42, 1.52),
-    FIRE2(0.03, 0.41);
+
+    LOAD0(0.22, 0.95, 0.855),
+    LOAD1(0.99, 3.04, 3.05),
+    LOAD2(0.61, 2.05, 1.97),
+    FIRE0(0.8, 2.58, 2.509),
+    FIRE1(0.42, 1.52, 1.424),
+    FIRE2(0.03, 0.41, 0.312);
 
 
 
     public final double ROBOT_OFFSET = RobotVersion.INSTANCE.microwaveOffset;
+    public final boolean OLD_VOLTAGE_POSITIONS = RobotVersion.INSTANCE.oldVoltagePositions;
+
+
     public final double microPosition;
     public final double powerPosition;
 
-    MicrowavePositions(double microPositions, double powerPosition) {
+
+
+    MicrowavePositions(double microPositions, double powerPosition, double oldPowerPosition) {
         this.microPosition = microPositions + ROBOT_OFFSET;
-        this.powerPosition = powerPosition;
+        if(!OLD_VOLTAGE_POSITIONS){
+        this.powerPosition = powerPosition;}
+        else{
+            this.powerPosition = oldPowerPosition;
+        }
     }
 }

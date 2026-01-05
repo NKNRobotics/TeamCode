@@ -22,7 +22,7 @@ public class CloseAutoRed extends NKNProgram {
         Setup setup = new Setup();
         setup.createComponents(components, telemetryEnabled);
 
-        PositionTransform transform = new PositionTransform(0,0,0,1,1,1);
+        PositionTransform transform = new PositionTransform(0,0,0,-1,1,-1);
         CloseAutoPart closeAutoPart = new CloseAutoPart(transform, setup);
         closeAutoPart.createComponents(components,telemetryEnabled);
 

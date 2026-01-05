@@ -174,6 +174,9 @@ public class AprilTagSensor implements NKNComponent {
         }
         lastReadTime = runtime.milliseconds();
         LLResult sightings = limelight.getLatestResult();
+        if(sightings == null){
+            throw new NullPointerException("No Limelight Data");
+        }
 
         visionResultRed = visionResultBlue = visionResultPattern = new VisionResult();
 

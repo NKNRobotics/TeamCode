@@ -24,20 +24,22 @@ public class ScanStartState extends StateMachine.State {
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
         if(microwaveScoopHandler.isDone()){
-            RobotLog.v("starting scan");
+//            RobotLog.v("scanning done! moving on (hopefully)");
             StateMachine.INSTANCE.startAnonymous(new ScanState(artifactSystem, microwaveScoopHandler, slotTracker, 0, override));
             StateMachine.INSTANCE.stopAnonymous(this);
+        } else {
+//            RobotLog.v("is Scanning done" + microwaveScoopHandler.isDone());
         }
     }
 
     @Override
     protected void started() {
         artifactSystem.setScanState(this);
-        RobotLog.v("started startscanstate");
+//        RobotLog.v("started startscanstate");
     }
 
     @Override
     protected void stopped() {
-        RobotLog.v("stopped startscanstate");
+//        RobotLog.v("stopped startscanstate");
     }
 }

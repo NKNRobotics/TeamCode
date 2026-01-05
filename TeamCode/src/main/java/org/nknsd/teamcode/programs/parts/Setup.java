@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.parts;
 
+import org.nknsd.teamcode.components.handlers.BalancedLiftHandler;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
@@ -30,6 +31,7 @@ public class Setup extends ProgramPart {
     private FiringSystem firingSystem;
     private ArtifactSystem artifactSystem;
     private PowerInputMixer powerInputMixer;
+    private BalancedLiftHandler balancedLiftHandler;
 
     public PowerInputMixer getPowerInputMixer() {
         return powerInputMixer;
@@ -69,6 +71,10 @@ public class Setup extends ProgramPart {
     private AutoPositioner autoPositioner;
     private TargetingSystem targetingSystem;
 
+
+    public BalancedLiftHandler getBalancedLiftHandler() {
+        return balancedLiftHandler;
+    }
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
@@ -146,6 +152,10 @@ public class Setup extends ProgramPart {
          targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
         components.add(targetingSystem);
         telemetryEnabled.add(targetingSystem);
+
+
+        balancedLiftHandler = new BalancedLiftHandler();
+        components.add(basketLocator);
 
 
 
