@@ -23,4 +23,16 @@ public class DoublePoint {
     public double getY(){
         return y;
     }
+
+    public DoublePoint multiplyByScalar(double scalar) {
+        return new DoublePoint(getX() * scalar, getY() * scalar);
+    }
+
+    public DoublePoint addPointToPoint(DoublePoint otherPoint) {
+        return new DoublePoint(otherPoint.getX() + getX(), otherPoint.getY() + getY());
+    }
+
+    public DoublePoint addPairToPoint(double x, double y) {
+        return new DoublePoint(x + getX(), y + getY());
+    }
 }
