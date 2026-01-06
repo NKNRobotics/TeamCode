@@ -17,7 +17,7 @@ public class SRSHubHandler implements NKNComponent {
     private short[][] distMeans = new short[8][8];
 
     private double previousSampleTime = 0;
-    private final double sampleDelay = 500;
+    private final double sampleDelay = 100;
 
     private short[][] getDistances() {
         hub.update();
@@ -50,24 +50,19 @@ public class SRSHubHandler implements NKNComponent {
     }
 
     public DoublePoint ballLocation(){
-        DoublePoint thePlaceOfBallResting = new DoublePoint(0,0);
+        DoublePoint thePlaceOfBallResting = new DoublePoint(10,10);
         short[][] normalDists;
         normalDists = getNormalizedDists();
-        double highestPoint = 0;
+        double highestPoint = -30;
 
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                //negative because the sensor reads negative values as high
+                //greater than because the sensor reads negative values as high
                 if (highestPoint > normalDists[x][y]){
                     highestPoint = normalDists[x][y];
-                    if(x - 4 >= 0){
-                        x = x + 1;
-                    }
-                    if(y - 4 >= 0){
-                        y = y + 1;
-                    }
-                    thePlaceOfBallResting.setX(x - 4);
-                    thePlaceOfBallResting.setY(y - 4);
+
+                    thePlaceOfBallResting.setX(x - 3.5);
+                    thePlaceOfBallResting.setY(y - 3.5);
                 }
             }
         }
@@ -98,7 +93,7 @@ public class SRSHubHandler implements NKNComponent {
             getNewMean(getDistances());
             timesSampled++;
         }
-        if (timesSampled > 10){
+        if (timesSampled > 20){
             telemetry.addLine("Normal Values Found");
         }
     }
