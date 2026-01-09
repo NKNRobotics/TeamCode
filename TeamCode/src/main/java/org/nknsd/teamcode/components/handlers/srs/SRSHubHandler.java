@@ -18,6 +18,7 @@ public class SRSHubHandler implements NKNComponent {
 
     private double previousSampleTime = 0;
     private final double sampleDelay = 100;
+    private int sampleMinimum = 20;
 
     private short[][] getDistances() {
         hub.update();
@@ -93,7 +94,7 @@ public class SRSHubHandler implements NKNComponent {
             getNewMean(getDistances());
             timesSampled++;
         }
-        if (timesSampled > 20){
+        if (timesSampled >= sampleMinimum){
             telemetry.addLine("Normal Values Found");
         }
     }

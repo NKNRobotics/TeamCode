@@ -2,6 +2,7 @@ package org.nknsd.teamcode.components.handlers.srs;
 
 import android.graphics.Path;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.gamepad.AdvancedTelemetry;
 import org.nknsd.teamcode.components.utility.DoublePoint;
 import org.nknsd.teamcode.components.utility.IntPoint;
@@ -9,7 +10,8 @@ import org.nknsd.teamcode.components.utility.IntPoint;
 import java.util.ArrayList;
 
 public class PeakFindingKernel {
-    private AdvancedTelemetry telemetry;
+    private Telemetry telemetry;
+    private final int peakThreshold = 30;
     private static final IntPoint[] DIRECTION_SPIRAL = new IntPoint[]{
             new IntPoint(-1, 0),
             new IntPoint(-1, -1),
@@ -33,6 +35,9 @@ public class PeakFindingKernel {
                 for (int i = 0; i < 8; i++) {
                     int adjacentPointValue = Math.abs(safelyGetValueOfArrayAtPoint(DIRECTION_SPIRAL[i].addPairToPoint(x, y), data));
 
+                    if (currentPointValue <= peakThreshold){
+                        continue ded;
+                    }
                     // We know this isn't a peak if an adjacent point is greater
                     if (adjacentPointValue > currentPointValue) {
                         continue ded;
@@ -79,13 +84,13 @@ public class PeakFindingKernel {
         return data[y][x];
     }
 
-    public void linkTelemetry(AdvancedTelemetry telemetry) {
+    public void linkTelemetry(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
 
     private void addTelemetry(String data) {
         if (telemetry != null) {
-            telemetry.addSingleData(data);
+            telemetry.addData("data", data);
         }
     }
 }
