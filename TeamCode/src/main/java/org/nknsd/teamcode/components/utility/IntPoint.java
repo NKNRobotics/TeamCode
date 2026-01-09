@@ -39,4 +39,9 @@ public class IntPoint {
     public DoublePoint castToDoublePoint() {
         return new DoublePoint(getX(), getY());
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }

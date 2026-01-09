@@ -148,7 +148,7 @@ public class SRSHubHandler implements NKNComponent {
             for (int y = 0; y < 8; y++) {
                 StringBuilder sb = new StringBuilder();
                 for (int x = 0; x < 8; x++) {
-                    sb.append(printVals[x][y]);
+                    sb.append(normalizeIntCharacterLength(printVals[x][y], 3));
                     sb.append(", ");
                 }
                 telemetry.addData("row: " + y, sb.toString());
@@ -159,5 +159,15 @@ public class SRSHubHandler implements NKNComponent {
             telemetry.addData("x", ballSpot.getX());
             telemetry.addData("y", ballSpot.getY());
         }
+    }
+
+    private String normalizeIntCharacterLength(int number, int amountOfCharacters) {
+        StringBuilder out = new StringBuilder(String.valueOf(number));
+
+        while (out.length() < amountOfCharacters) {
+            out.insert(0, " ");
+        }
+
+        return out.toString();
     }
 }

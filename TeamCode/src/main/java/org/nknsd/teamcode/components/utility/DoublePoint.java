@@ -35,4 +35,9 @@ public class DoublePoint {
     public DoublePoint addPairToPoint(double x, double y) {
         return new DoublePoint(x + getX(), y + getY());
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }
