@@ -24,10 +24,12 @@ public class SRSPeakFindingTester extends NKNProgram {
 
     private class SRSPeakTestState implements NKNComponent {
         private final PeakFindingKernel kernel;
-        private final SRSHubHandler srsHub;
-        public SRSPeakTestState(PeakFindingKernel kernel, SRSHubHandler srsHub) {
+        //private final SRSHubHandler srsHub;
+        public SRSPeakTestState(PeakFindingKernel kernel
+        //        , SRSHubHandler srsHub
+        ) {
             this.kernel = kernel;
-            this.srsHub = srsHub;
+            //this.srsHub = srsHub;
         }
 
         @Override
@@ -69,7 +71,7 @@ public class SRSPeakFindingTester extends NKNProgram {
             for (int y = 0; y < 8; y++) {
                 StringBuilder sb = new StringBuilder();
                 for (int x = 0; x < 8; x++) {
-                    sb.append(normalizeIntCharacterLength(printVals[x][y], 3));
+                    sb.append(normalizeIntCharacterLength(printVals[x][y], 4));
                     sb.append(", ");
                 }
                 telemetry.addData("row: " + y, sb.toString());
@@ -89,14 +91,14 @@ public class SRSPeakFindingTester extends NKNProgram {
         }
 
         private short[][] fakeData = new short[][]{
-                new short[]{-100, -100, 1, 1, 1, 1, 1, 1},
-                new short[]{-100, -100, 1, 1, 1, 1, 1, 1},
-                new short[]{1, 1, 1, 1, 1, 1, 1, 1},
-                new short[]{1, 1, 1, 1, 1, 1, 1, 1},
-                new short[]{1, 1, 1, 1, 1, 1, 1, 1},
-                new short[]{1, 1, 1, 1, 1, 1, 1, 1},
-                new short[]{1, 1, 1, 1, 1, 1, 1, 1},
-                new short[]{1, 1, 1, 1, 1, 1, 1, 1},
+                new short[]{-100, -100,    1,    1,    1, 1, 1, 1},
+                new short[]{-100, -100, -101, -100, -100, 1, 1, 1},
+                new short[]{   1, -101,    1,  -87,  -98, 1, 1, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
         };
     }
     @Override
@@ -104,11 +106,11 @@ public class SRSPeakFindingTester extends NKNProgram {
 //        components.add(StateMachine.INSTANCE);
 //        StateMachine.INSTANCE.startAnonymous();
 
-        components.add(srsHub);
+//        components.add(srsHub);
 //        telemetryEnabled.add(srsHub);
         kernel.linkTelemetry(telemetry);
 
-        SRSPeakTestState testComponent = new SRSPeakTestState(kernel, srsHub);
+        SRSPeakTestState testComponent = new SRSPeakTestState(kernel);
         components.add(testComponent);
         telemetryEnabled.add(testComponent);
     }

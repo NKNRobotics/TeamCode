@@ -40,10 +40,6 @@ public class PeakFindingKernel {
                 for (int i = 0; i < 8; i++) {
                     int adjacentPointValue = Math.abs(safelyGetValueOfArrayAtPoint(DIRECTION_SPIRAL[i].addPairToPoint(x, y), data));
 
-                    if (adjacentPointValue == 0) {
-                        telemetry.addData("Zero at", DIRECTION_SPIRAL[i].addPairToPoint(x, y).toString());
-                    }
-
                     // if this value is low, discard it
                     if (currentPointValue <= PEAK_THRESHOLD){
                         continue loopOverPoints;
@@ -72,7 +68,7 @@ public class PeakFindingKernel {
 
                 // if we reach here, we know we have a peak
                 // step 1: normalize the summed offsets
-                offset = offset.multiplyByScalar(1.0 / currentPointValue);
+                offset = offset.multiplyByScalar(8.0 / currentPointValue);
 
                 // step 2: convert the offset to a POSITION
                 DoublePoint peakPoint = offset.addPairToPoint(x - 3.5, y - 3.5);
