@@ -11,6 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class IMUSensor implements NKNComponent {
     private IMU imu;
+    private HardwareMap hardwareMap;
 
 //
 
@@ -20,9 +21,15 @@ public class IMUSensor implements NKNComponent {
         this.orientationOnRobot = orientationOnRobot;
     }
 
+    public void initIMU(){
+        imu = hardwareMap.get(IMU.class, "imu");
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
+    }
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         imu = hardwareMap.get(IMU.class, "imu");
+        this.hardwareMap = hardwareMap;
         if (imu == null)
             return false;
 
@@ -35,7 +42,7 @@ public class IMUSensor implements NKNComponent {
 
         // Now initialize the IMU with this mounting orientation
         // Note: if you choose two conflicting directions, this initialization will cause a code exception.
-        return imu.initialize(new IMU.Parameters(orientationOnRobot));
+        return true;
     }
 
     @Override

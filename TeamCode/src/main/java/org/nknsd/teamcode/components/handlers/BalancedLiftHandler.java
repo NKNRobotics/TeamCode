@@ -34,8 +34,8 @@ public class BalancedLiftHandler implements NKNComponent {
         brLift = hardwareMap.crservo.get("BRlift");
         flLift = hardwareMap.crservo.get("FLlift");
 
-        brLift.setDirection(DcMotorSimple.Direction.REVERSE);
-        flLift.setDirection(DcMotorSimple.Direction.REVERSE);
+        blLift.setDirection(DcMotorSimple.Direction.REVERSE);
+
         brLift.setPower(0);
         flLift.setPower(0);
         blLift.setPower(0);
@@ -82,15 +82,19 @@ public class BalancedLiftHandler implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
+        telemetry.addData("lifting", isLifting);
         if(isLifting){
             telemetry.addData("FLlift",flLift.getPower());
             telemetry.addData("BLlift",blLift.getPower());
             telemetry.addData("BRlift",brLift.getPower());
         }
+        telemetry.addData("imu roll", imuSensor.getRoll());
+        telemetry.addData("imu pitch", imuSensor.getPitch());
     }
 
     public void startLift(){
         isLifting = true;
+        imuSensor.initIMU();
         imuSensor.resetIMU();
     }
 

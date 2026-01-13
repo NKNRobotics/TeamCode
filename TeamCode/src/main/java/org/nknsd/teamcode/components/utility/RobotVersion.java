@@ -9,22 +9,22 @@ public class RobotVersion {
 //    comment out the unwanted version, top is new robot and bottom is old robot
 
     public final static RobotVersion INSTANCE = new RobotVersion(50, .038, false, 60, .5, 1,
-            new Interpolater(new double[][]{{16, 1330}, {24, 1370}, {36, 1410}, {48, 1490}, {60, 1550}, {72, 1600}, {84, 1660}, {96, 1700}, {108, 1900}, {130, 1950}}),
-            new Interpolater(new double[][]{{16, 1}, {24, 0.9}, {36, .8}, {48, .55}, {60, 0.6}, {72, 0.55}, {84, 0.2}, {96, 0.2}, {108, 0.0}, {130, 0}}),
+            new Interpolater(new double[][]{{16, 1290}, {24, 1330}, {36, 1370}, {48, 1450}, {60, 1510}, {72, 1600}, {84, 1650}, {96, 1660}, {108, 1760}, {130, 1820}}),
+            new Interpolater(new double[][]{{16, 1}, {24, 0.9}, {36, .8}, {48, .55}, {60, 0.6}, {72, 0.55}, {84, 0.2}, {96, 0}, {108, 0.0}, {130, 0}}),
             new Interpolater(new double[][]{{0.246, 16}, {0.2, 24}, {0.16, 36}, {0.132, 48}, {0.11, 60}, {0.096, 72}, {0.085, 84}, {0.077, 96}, {0.068, 108}, {0.064, 120}, {0.058, 132}, {0.054, 144}, {0.05, 156}}),
-            new PidController(1.2, 0.62, 1, 0.4, true, 0, 0),
-            new PidController(0.15, .3, 0.1, .15, true, 0.02, 0.2),
-            new PidController(0.15, .3, 0.1, .15, true, 0.02, 0.2),
-            new PidController(0.6, .5, 0.1, .25, true, 0.2, 0.3));
+            new PidController(1.2, 0.62, 2, 0.7, true, 0, 0),
+            new PidController(0.3, .3, 0.17, .12, true, 0.02, 0.2),
+            new PidController(0.3, .3, 0.17, .12, true, 0.02, 0.2),
+            new PidController(0.68, .53, 0.17, .27, true, 0.2, 0.3));
 
-//    public final static RobotVersion INSTANCE= new RobotVersion(50,0,true,60,.5,1,
-//            new Interpolater(new double[][]{{16,1370}, {32,1440}, {48,1500}, {64,1550}, {80,1620}, {96, 1720}, {112,1900}, {132, 1940}}),
-//            new Interpolater(new double[][]{{16,1}, {32,.8}, {48,.7}, {64,0.6}, {80,0.5}, {96,0.3}, {112,0.25}, {132,0.22}}),
-//            new Interpolater(new double[][]{{0.265,12}, {0.2,24}, {0.16,36}, {0.132,48}, {0.11,60}, {0.098,72}, {0.085,84}, {0.077,96}, {0.068,108}, {0.064,120}, {0.058,132}, {0.054,144},{0.05,156}}),
-//            new PidController(1.2,0.6,1,0.4,true,0,0),
-//            new PidController(0.15, .3, 0.1, .15, true, 0.02, 0.2),
-//            new PidController(0.15, .3, 0.1, .15, true, 0.02, 0.2),
-//            new PidController(0.6, .5, 0.1, .25, true, 0.2, 0.3));
+//    public final static RobotVersion INSTANCE= new RobotVersion(50,0,true,35,.5,1,
+//            new Interpolater(new double[][]{{16, 1330}, {24, 1370}, {36, 1410}, {48, 1490}, {60, 1550}, {72, 1600}, {84, 1660}, {96, 1700}, {108, 1870}, {130, 1950}}),
+//            new Interpolater(new double[][]{{16, 1}, {24, 0.9}, {36, .8}, {48, .55}, {60, 0.6}, {72, 0.55}, {84, 0.2}, {96, 0}, {108, 0.0}, {130, 0}}),
+//            new Interpolater(new double[][]{{0.246, 16}, {0.2, 24}, {0.16, 36}, {0.132, 48}, {0.11, 60}, {0.096, 72}, {0.085, 84}, {0.077, 96}, {0.068, 108}, {0.064, 120}, {0.058, 132}, {0.054, 144}, {0.05, 156}}),
+//            new PidController(1.2, 0.62, 1, 0.4, true, 0, 0),
+//            new PidController(0.2, .26, 0.17, .12, true, 0.02, 0.2),
+//            new PidController(0.2, .26, 0.17, .12, true, 0.02, 0.2),
+//            new PidController(0.68, .53, 0.17, .27, true, 0.2, 0.3));
 
 
     private static boolean autoMode = false;

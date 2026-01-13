@@ -27,11 +27,11 @@ public class ManualLiftTest extends NKNProgram {
 
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if (runtime.milliseconds()>startTimeMS+4000) {
-                balancedLiftHandler.startLift();
-            } else if (runtime.milliseconds()>startTimeMS+1000){
-                balancedLiftHandler.stopLift();
-            }
+//            if (runtime.milliseconds()>startTimeMS+4000) {
+//                balancedLiftHandler.startLift();
+//            } else if (runtime.milliseconds()>startTimeMS+1000){
+//                balancedLiftHandler.stopLift();
+//            }
 
         }
 
