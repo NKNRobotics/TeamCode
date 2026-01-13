@@ -60,7 +60,7 @@ public class TargetingSystem implements NKNComponent {
             vel = 0;
         }
         targetEnabled = enable;
-        powerInputMixer.setAutoEnabled(new boolean[]{enable, enable, enable});
+        powerInputMixer.setAutoEnabled(new boolean[]{false, false, enable});
     }
 
     public double getDistance() {

@@ -116,8 +116,7 @@ public class ArtifactSystem {
         return launchAll(new int[]{0, 1, 2});
     }
 
-    public boolean launchAll(BallColor[] colorOrder
-    ) {
+    public boolean launchAll(BallColor[] colorOrder) {
         int[] orderToLaunch = new int[]{4,4,4};
         BallColor[] slotColors = new BallColor[3];
         for (int i = 0; i < 3; i++) {

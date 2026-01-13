@@ -32,7 +32,7 @@ public class LaunchAllState extends StateMachine.State {
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if (microwaveScoopHandler.isDone() && launchSystem.isReady()){
+        if (microwaveScoopHandler.isDone() /* && launchSystem.isReady()*/){
             if (!endNow) {
                 microwaveScoopHandler.doScoopLaunch();
                 launchSystem.resetConfidence();
