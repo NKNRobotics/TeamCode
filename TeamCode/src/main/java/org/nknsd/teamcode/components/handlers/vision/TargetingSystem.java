@@ -108,6 +108,28 @@ public class TargetingSystem implements NKNComponent {
             powerInputMixer.setAutoEnabled(new boolean[]{false, false, false});
             targetEnabled = false;
         }
+
+
+//        if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
+//            distance = basketLocator.getOffset(targetingColor).distance;
+//            if (targetEnabled && distance != -1) {
+//                double[] targetingPowers = new double[]{0, 0, 0};
+//                BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
+//                double currentOffset = basketData.xOffset - 0.5;
+//
+//
+//
+//
+//                powerInputMixer.setAutoPowers(targetingPowers);
+//
+//            } else if(targetEnabled){
+//                powerInputMixer.setAutoPowers(new double[]{0,0,0}) ;
+//            }
+//            lastRunTime = runtime.milliseconds();
+//        }
+
+
+//
         if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
             distance = basketLocator.getOffset(targetingColor).distance;
             if (targetEnabled && distance != -1) {
@@ -128,12 +150,15 @@ public class TargetingSystem implements NKNComponent {
             }
             lastRunTime = runtime.milliseconds();
         }
+
+
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
         telemetry.addData("xOffset", lastOffset);
         telemetry.addData("turning power", power);
+        telemetry.addData("SEEES", distance != -1);
     }
 
     public void link(BasketLocator basketLocator, PowerInputMixer powerInputMixer, AbsolutePosition absolutePosition) {

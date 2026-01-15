@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.components.sensors;
 
+import com.qualcomm.hardware.adafruit.AdafruitBNO055IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class IMUSensor implements NKNComponent {
-    private IMU imu;
+    private AdafruitBNO055IMU imu;
     private HardwareMap hardwareMap;
 
 //
@@ -21,15 +22,15 @@ public class IMUSensor implements NKNComponent {
         this.orientationOnRobot = orientationOnRobot;
     }
 
-    public void initIMU(){
-        imu = hardwareMap.get(IMU.class, "imu");
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+    private void initIMU(){
+        imu = hardwareMap.get(AdafruitBNO055IMU.class, "imu");
+        imu.initialize(new AdafruitBNO055IMU.Parameters());
     }
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        imu = hardwareMap.get(IMU.class, "imu");
         this.hardwareMap = hardwareMap;
+        initIMU();
         if (imu == null)
             return false;
 
@@ -52,7 +53,6 @@ public class IMUSensor implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        imu.resetYaw();
     }
 
     @Override
@@ -71,23 +71,27 @@ public class IMUSensor implements NKNComponent {
     }
 
     public double getYaw() {
-        return -imu.getRobotYawPitchRollAngles().getYaw();
+//        return -imu.getRobotYawPitchRollAngles().getYaw();
+//        return imu.get
+        return imu.getGravity().xAccel;
     }
     public double getPitch() {
-        return imu.getRobotYawPitchRollAngles().getPitch();
+//        return imu.getRobotYawPitchRollAngles().getPitch();
+        return imu.getGravity().yAccel;
     }
     public double getRoll() {
-        return imu.getRobotYawPitchRollAngles().getRoll();
+//        return imu.getRobotYawPitchRollAngles().getRoll();
+        return imu.getGravity().zAccel;
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData("Yaw", -imu.getRobotYawPitchRollAngles().getYaw());
-        telemetry.addData("Pitch", imu.getRobotYawPitchRollAngles().getPitch());
-        telemetry.addData("Roll", imu.getRobotYawPitchRollAngles().getRoll());
+//        telemetry.addData("Yaw", -imu.getRobotYawPitchRollAngles().getYaw());
+//        telemetry.addData("Pitch", imu.getRobotYawPitchRollAngles().getPitch());
+//        telemetry.addData("Roll", imu.getRobotYawPitchRollAngles().getRoll());
+
     }
 
     public void resetIMU() {
-        imu.resetYaw();
     }
 }

@@ -46,7 +46,7 @@ public class FarAutoPart extends ProgramPart {
         StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition,true,transform.adjustPos(0,8, -0.35), 1,1,0.05,1,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target", "timeToTarget"}));
         StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("timeToTarget", new TimerState(2000, new String[]{"launch pattern", "target while firing"}, new String[]{"target"}));
-        StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem,false, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to loading zone"}));
 
         StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition,true,transform.adjustPos(-35,8,Math.PI/2), 0.2,0.2,0.2,1,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"intake", "loading zone procedure"}));

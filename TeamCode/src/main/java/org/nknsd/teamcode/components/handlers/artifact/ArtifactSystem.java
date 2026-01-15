@@ -73,6 +73,7 @@ public class ArtifactSystem {
      */
     public boolean scanAll() {
         if (isReady()) {
+            RobotLog.v("Starting scan alllll");
             StateMachine.INSTANCE.startAnonymous(new ScanStartState(this, microwaveScoopHandler, slotTracker, false));
             return true;
         } else {
