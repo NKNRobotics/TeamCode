@@ -108,9 +108,9 @@ public class PeakFinder {
                     bestPos = new IntPoint(x, y);
                 }
             }
-            if (highestVal != PEAK_THRESHOLD && y > bestPos.getY()) {
+            if (highestVal != PEAK_THRESHOLD && y < bestPos.getY()) {
                 // we went a row without finding a new record, so we can stop searching
-                break;
+                return bestPos;
             }
         }
 
