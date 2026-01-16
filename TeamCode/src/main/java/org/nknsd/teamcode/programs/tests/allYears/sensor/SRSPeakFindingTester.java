@@ -75,7 +75,7 @@ public class SRSPeakFindingTester extends NKNProgram {
 //                telemetry.addData("row: " + y, sb.toString());
 //            }
 
-            telemetry.addData("peak: ", peakFinder.getPeak(printVals).toString());
+            telemetry.addData("Peak", peakFinder.altPeakFind(printVals).toString());
         }
 
         private String normalizeIntCharacterLength(int number, int amountOfCharacters) {

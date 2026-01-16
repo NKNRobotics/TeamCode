@@ -89,4 +89,31 @@ public class PeakFinder {
 
         return data[y][x];
     }
+
+
+
+
+
+
+
+
+    public IntPoint altPeakFind(short[][] data) {
+        int highestVal = PEAK_THRESHOLD;
+        bestPos = new IntPoint(-10, -10);
+
+        for (int y = 7; y >= 0; y--) {
+            for (int x = 0; x < 8; x++) {
+                if (highestVal < data[x][y]) {
+                    highestVal = data[x][y];
+                    bestPos = new IntPoint(x, y);
+                }
+            }
+            if (highestVal != PEAK_THRESHOLD && y > bestPos.getY()) {
+                // we went a row without finding a new record, so we can stop searching
+                break;
+            }
+        }
+
+        return bestPos;
+    }
 }
