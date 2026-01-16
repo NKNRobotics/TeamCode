@@ -12,9 +12,9 @@ import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class AutoPositioner implements NKNComponent {
-    private  PidController pidControllerX;
-    private  PidController pidControllerY;
-    private  PidController pidControllerH;
+    private PidController pidControllerX;
+    private PidController pidControllerY;
+    private PidController pidControllerH;
     private PowerInputMixer powerInputMixer;
     private AbsolutePosition absolutePosition;
 
@@ -29,28 +29,46 @@ public class AutoPositioner implements NKNComponent {
 
     public void enableAutoPositioning(boolean enable) {
         positioningEnabled = enable;
-        if(!enable){
+        if (!enable) {
             powerInputMixer.setAutoPowers(new double[]{0, 0, 0});
+            powerInputMixer.setAutoEnabled(new boolean[]{false, false, false});
+        } else {
+        boolean xEnabled = true;
+        if (pidControllerX == null) {
+            xEnabled = false;
         }
-        powerInputMixer.setAutoEnabled(new boolean[]{enable, enable, enable});
+        boolean yEnabled = true;
+        if (pidControllerY == null) {
+            yEnabled = false;
+        }
+        boolean hEnabled = true;
+        if (pidControllerH == null) {
+            hEnabled = false;
+        }
+
+        powerInputMixer.setAutoEnabled(new boolean[]{xEnabled, yEnabled, hEnabled});}
     }
 
     public void setTargetX(double targetX, PidController pid) {
         target.x = targetX;
         pidControllerX = pid;
-        pidControllerX.reset();
+        if (pid != null) {
+            pidControllerX.reset();
+        }
     }
 
     public void setTargetY(double targetY, PidController pid) {
         target.y = targetY;
         pidControllerY = pid;
-        pidControllerY.reset();
+        if (pid != null) {
+        pidControllerY.reset();}
     }
 
     public void setTargetH(double targetH, PidController pid) {
         target.h = targetH;
         pidControllerH = pid;
-        pidControllerH.reset();
+        if (pid != null) {
+        pidControllerH.reset();}
     }
 
 
@@ -106,35 +124,44 @@ public class AutoPositioner implements NKNComponent {
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
 
         if (positioningEnabled) {
-        SparkFunOTOS.Pose2D current = absolutePosition.getPosition();
+            SparkFunOTOS.Pose2D current = absolutePosition.getPosition();
 //        RobotLog.v("current: x " + current.x + ", y " + current.y + ", h " + current.h);
 //        RobotLog.v("target: x " + target.x + ", y " + target.y + ", h " + target.h);
-        current.h = current.h % (2 * Math.PI);
-        SparkFunOTOS.Pose2D oldError = error;
-        error = calcDelta(target, current);
-        errorDelta = calcDelta(error, oldError);
+            current.h = current.h % (2 * Math.PI);
+            SparkFunOTOS.Pose2D oldError = error;
+            error = calcDelta(target, current);
+            errorDelta = calcDelta(error, oldError);
 
 
-        double interval = runtime.milliseconds() - lastTime;
+            double interval = runtime.milliseconds() - lastTime;
 //        RobotLog.v("interval: " + interval);
-        velocity = new SparkFunOTOS.Pose2D(
-                (current.x - lastPos.x) * 1000 / interval,
-                (current.y - lastPos.y) * 1000 / interval,
-                ((current.h - lastPos.h + 3 * Math.PI) % (2 * Math.PI) - Math.PI) * 1000 / interval
-        );
+            velocity = new SparkFunOTOS.Pose2D(
+                    (current.x - lastPos.x) * 1000 / interval,
+                    (current.y - lastPos.y) * 1000 / interval,
+                    ((current.h - lastPos.h + 3 * Math.PI) % (2 * Math.PI) - Math.PI) * 1000 / interval
+            );
 //        RobotLog.v("velocity: x " + velocity.x + ", y " + velocity.y + ", h " + velocity.h);
 
-        SparkFunOTOS.Pose2D output = new SparkFunOTOS.Pose2D(
-                pidControllerX.findOutput(error.x, errorDelta.x, velocity.x, interval),
-                pidControllerY.findOutput(error.y, errorDelta.y, velocity.y, interval),
-                pidControllerH.findOutput(error.h, errorDelta.h, velocity.h, interval)
-        );
+            double xSpeed = 0;
+            if (pidControllerX != null) {
+                xSpeed = pidControllerX.findOutput(error.x, errorDelta.x, velocity.x, interval);
+            }
 
-        lastTime = runtime.milliseconds();
-        lastPos = current;
+            double ySpeed = 0;
+            if (pidControllerY != null) {
+                ySpeed = pidControllerY.findOutput(error.x, errorDelta.x, velocity.x, interval);
+            }
+
+            double hSpeed = 0;
+            if (pidControllerH != null) {
+                hSpeed = pidControllerH.findOutput(error.x, errorDelta.x, velocity.x, interval);
+            }
+
+            lastTime = runtime.milliseconds();
+            lastPos = current;
 
 //            RobotLog.v("auto postitioner x: " + output.x + ", y: " + output.y + ", h: " + output.h);
-            powerInputMixer.setAutoPowers(new double[]{output.x, output.y, output.h});
+            powerInputMixer.setAutoPowers(new double[]{xSpeed, ySpeed, hSpeed});
         }
     }
 

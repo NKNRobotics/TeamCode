@@ -168,7 +168,7 @@ public class Setup extends ProgramPart {
 
 //        all links
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
-        targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
+        targetingSystem.link(basketLocator, absolutePosition, autoPositioner);
         basketLocator.link(aprilTagSensor);
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         absolutePowerMixer.link(mecanumMotorMixer,absolutePosition);

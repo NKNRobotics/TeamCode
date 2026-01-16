@@ -21,6 +21,7 @@ import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.ColorReader;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
+import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
@@ -117,6 +118,9 @@ public class FiringSystemTest extends NKNProgram {
         PowerInputMixer powerInputMixer = new PowerInputMixer();
         components.add(powerInputMixer);
 
+        AutoPositioner autoPositioner = new AutoPositioner();
+        components.add(autoPositioner);
+
 
         AprilTagSensor aprilTagSensor = new AprilTagSensor();
         components.add(aprilTagSensor);
@@ -138,13 +142,14 @@ public class FiringSystemTest extends NKNProgram {
 
 
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
-        targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
+        targetingSystem.link(basketLocator, absolutePosition, autoPositioner);
         basketLocator.link(aprilTagSensor);
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         ballColorInterpreter.link(colorReader);
         launchSystem.link(trajectoryHandler, launcherHandler);
         artifactSystem.link(microwaveScoopHandler, slotTracker, launchSystem);
         firingSystem.link(launchSystem, targetingSystem, artifactSystem);
+        autoPositioner.link(powerInputMixer, absolutePosition);
 
 
         StateMachine.INSTANCE.addState("fire all", new FireAllState(firingSystem));

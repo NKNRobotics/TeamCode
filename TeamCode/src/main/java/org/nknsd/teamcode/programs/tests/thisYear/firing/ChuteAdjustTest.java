@@ -25,7 +25,7 @@ import java.util.List;
 @TeleOp(name = "chute adjust test", group = "Tests")
 public class ChuteAdjustTest extends NKNProgram {
 
-    private double distance = 96;
+    private double distance = 36;
 
     class IntakeState extends StateMachine.State {
 

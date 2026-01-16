@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
+import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -21,7 +22,7 @@ public class TargetingSystem implements NKNComponent {
     final private double SKEW_MULTIPLIER = 0;
 
     private BasketLocator basketLocator;
-    PowerInputMixer powerInputMixer;
+    AutoPositioner autoPositioner;
 
     ID targetingColor;
 
@@ -33,7 +34,6 @@ public class TargetingSystem implements NKNComponent {
     boolean targetEnabled = false;
 
     final private PidController pidController;
-    private double power;
     private AbsolutePosition absolutePosition;
     private double distance;
 
@@ -60,7 +60,7 @@ public class TargetingSystem implements NKNComponent {
             vel = 0;
         }
         targetEnabled = enable;
-        powerInputMixer.setAutoEnabled(new boolean[]{enable, enable, enable});
+        autoPositioner.enableAutoPositioning(enable);
     }
 
     public double getDistance() {
@@ -105,8 +105,23 @@ public class TargetingSystem implements NKNComponent {
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         if (basketLocator.getOffset(targetingColor).distance == -1 && targetEnabled && !RobotVersion.isAutonomous()) {
-            powerInputMixer.setAutoEnabled(new boolean[]{false, false, false});
+            autoPositioner.enableAutoPositioning(false);
             targetEnabled = false;
+        }
+
+
+        if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
+            distance = basketLocator.getOffset(targetingColor).distance;
+            if (targetEnabled && distance != -1) {
+                BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
+                double currentOffset = (basketData.xOffset - 0.5) * 0.47560222;
+                lastOffset = currentOffset;
+
+                autoPositioner.setTargetX(0, null);
+                autoPositioner.setTargetY(0, null);
+                autoPositioner.setTargetH((absolutePosition.getPosition().h + currentOffset), RobotVersion.INSTANCE.pidControllerH);
+            }
+            lastRunTime = runtime.milliseconds();
         }
 
 
@@ -116,10 +131,13 @@ public class TargetingSystem implements NKNComponent {
 //                double[] targetingPowers = new double[]{0, 0, 0};
 //                BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
 //                double currentOffset = basketData.xOffset - 0.5;
-//
-//
-//
-//
+//                currentOffset += basketData.skew * SKEW_MULTIPLIER;
+//                vel = (currentOffset - lastOffset) / 50;
+//                targetingPowers[2] = (pidController.findOutput(currentOffset, 0, vel, runtime.milliseconds() - lastRunTime));
+////            RobotLog.v("xOffset" + shiftedOffset);
+//                lastOffset = currentOffset;
+//                power = targetingPowers[2];
+////                RobotLog.v("targeting powers x: " + targetingPowers[0] + ", y: " + targetingPowers[1] + ", h: " + targetingPowers[2]);
 //                powerInputMixer.setAutoPowers(targetingPowers);
 //
 //            } else if(targetEnabled){
@@ -129,41 +147,18 @@ public class TargetingSystem implements NKNComponent {
 //        }
 
 
-//
-        if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
-            distance = basketLocator.getOffset(targetingColor).distance;
-            if (targetEnabled && distance != -1) {
-                double[] targetingPowers = new double[]{0, 0, 0};
-                BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
-                double currentOffset = basketData.xOffset - 0.5;
-                currentOffset += basketData.skew * SKEW_MULTIPLIER;
-                vel = (currentOffset - lastOffset) / 50;
-                targetingPowers[2] = (pidController.findOutput(currentOffset, 0, vel, runtime.milliseconds() - lastRunTime));
-//            RobotLog.v("xOffset" + shiftedOffset);
-                lastOffset = currentOffset;
-                power = targetingPowers[2];
-//                RobotLog.v("targeting powers x: " + targetingPowers[0] + ", y: " + targetingPowers[1] + ", h: " + targetingPowers[2]);
-                powerInputMixer.setAutoPowers(targetingPowers);
-
-            } else if(targetEnabled){
-                powerInputMixer.setAutoPowers(new double[]{0,0,0}) ;
-            }
-            lastRunTime = runtime.milliseconds();
-        }
-
-
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData("xOffset", lastOffset);
-        telemetry.addData("turning power", power);
+        telemetry.addData("apriltag position", (basketLocator.getOffset(targetingColor).xOffset - 0.5));
+        telemetry.addData("last sighted angle", lastOffset);
         telemetry.addData("SEEES", distance != -1);
     }
 
-    public void link(BasketLocator basketLocator, PowerInputMixer powerInputMixer, AbsolutePosition absolutePosition) {
+    public void link(BasketLocator basketLocator, AbsolutePosition absolutePosition, AutoPositioner autoPositioner) {
         this.basketLocator = basketLocator;
-        this.powerInputMixer = powerInputMixer;
         this.absolutePosition = absolutePosition;
+        this.autoPositioner = autoPositioner;
     }
 }
