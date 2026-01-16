@@ -27,6 +27,17 @@ public class SRSPeakFindingTester extends NKNProgram {
         ) {
             this.peakFinder = peakFinder;
             //this.srsHub = srsHub;
+
+            // flip the fake data
+            if (fakeData != null) {
+                short[][] temp = new short[8][8];
+                for (int y = 0; y < 8; y++) {
+                    for (int x = 0; x < 8; x++) {
+                        temp[x][y] = fakeData[y][x];
+                    }
+                }
+                fakeData = temp;
+            }
         }
 
         @Override
@@ -64,16 +75,16 @@ public class SRSPeakFindingTester extends NKNProgram {
 //            telemetry.addData("Readings are currently fake", "");
 
             short[][] printVals;
-//            printVals = fakeData;
-            printVals = srsHub.getNormalizedDists();
-//            for (int y = 0; y < 8; y++) {
-//                StringBuilder sb = new StringBuilder();
-//                for (int x = 0; x < 8; x++) {
-//                    sb.append(normalizeIntCharacterLength(printVals[x][y], 4));
-//                    sb.append(", ");
-//                }
-//                telemetry.addData("row: " + y, sb.toString());
-//            }
+            printVals = fakeData;
+//            printVals = srsHub.getNormalizedDists();
+            for (int y = 0; y < 8; y++) {
+                StringBuilder sb = new StringBuilder();
+                for (int x = 0; x < 8; x++) {
+                    sb.append(normalizeIntCharacterLength(printVals[x][y], 4));
+                    sb.append(", ");
+                }
+                telemetry.addData("row: " + y, sb.toString());
+            }
 
             telemetry.addData("Peak", peakFinder.altPeakFind(printVals).toString());
         }
@@ -88,24 +99,24 @@ public class SRSPeakFindingTester extends NKNProgram {
             return out.toString();
         }
 
-//        private short[][] fakeData = new short[][]{
-//                new short[]{100, 100,    1,    1,    1, 1, 1, 1},
-//                new short[]{100, 100, 101, 100, 100, 1, 1, 1},
-//                new short[]{   1, 101,    1,  87,  98, 1, 1, 1},
-//                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
-//                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
-//                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
-//                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
-//                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
-//        };
+        private short[][] fakeData = new short[][]{
+                new short[]{100, 100,    1,    1,    1, 1, 1, 1},
+                new short[]{100, 100, 101, 100, 100, 1, 1, 1},
+                new short[]{   1, 101,    1,  87,  98, 1, 1, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 90, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
+                new short[]{   1,     1,   1,    90,    1, 1, 1, 1},
+                new short[]{   1,     1,   1,    1,    1, 1, 1, 1},
+        };
     }
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
 //        components.add(StateMachine.INSTANCE);
 //        StateMachine.INSTANCE.startAnonymous();
 
-        components.add(srsHub);
-        telemetryEnabled.add(srsHub);
+//        components.add(srsHub);
+//        telemetryEnabled.add(srsHub);
 
         SRSPeakTestState testComponent = new SRSPeakTestState(peakFinder);
         components.add(testComponent);
