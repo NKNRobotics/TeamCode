@@ -44,7 +44,7 @@ public class SRSHubHandler implements NKNComponent {
         short[][] normalDists = new short[8][8];
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                normalDists[x][y] = (short) (distArray[x][y] - distMeans[x][y]);
+                normalDists[x][y] = (short) ((distArray[x][y] - distMeans[x][y]) * -1);
             }
         }
         return normalDists;

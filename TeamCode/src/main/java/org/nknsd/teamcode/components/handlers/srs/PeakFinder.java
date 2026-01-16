@@ -1,7 +1,11 @@
 package org.nknsd.teamcode.components.handlers.srs;
 
+import com.qualcomm.robotcore.util.RobotLog;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.utility.IntPoint;
+
+import java.util.Arrays;
 
 public class PeakFinder {
     private Telemetry telemetry;
@@ -38,35 +42,51 @@ public class PeakFinder {
             new IntPoint(-2, -1)
     };
 
-    public IntPoint GetPeak(short[][] data){
-        bestVal = PEAK_THRESHOLD;
+    public IntPoint getPeak(short[][] data){
+        bestVal = -100;
         bestPos = new IntPoint(-10,-10);
         for(int i = 0; i < 8; i++){
-            if (data[i][7] > bestVal){
-                bestVal = data[i][7];
-                bestPos = new IntPoint(i, 7);
+            if (data[i][4] > bestVal){
+                bestVal = data[i][4];
+                bestPos = new IntPoint(i, 4);
             }
         }
-        return CalculatePeak(data, bestPos);
+        if(bestVal >= PEAK_THRESHOLD) {
+            RobotLog.v(Arrays.toString(data), bestPos);
+            return calculatePeak(data, bestPos);
+        }
+        return new IntPoint(-10,-10);
     }
-    private IntPoint CalculatePeak(short[][] data, IntPoint currentPeak){
-        for(IntPoint currentPoint : CENTRAL_SPIRAL){
-            IntPoint checkPoint = currentPoint.addPointToPoint(currentPoint);
-            if(data[currentPoint.getX()][currentPoint.getY()] > bestVal){
-                bestPos = currentPoint;
-                bestVal = data[currentPoint.getX()][currentPoint.getY()];
-                CalculatePeak(data, bestPos);
+    private IntPoint calculatePeak(short[][] data, IntPoint currentPeak){
+        for(IntPoint offset : CENTRAL_SPIRAL){
+            IntPoint checkPoint = offset.addPointToPoint(currentPeak);
+            if(safelyGetValueOfArrayAtPoint(checkPoint, data) > bestVal){
+                bestPos = checkPoint;
+                bestVal = safelyGetValueOfArrayAtPoint(checkPoint, data);
+                calculatePeak(data, bestPos);
                 break;
             }
         }
-        for(IntPoint currentPoint : OUTER_SPIRAL){
-            currentPoint.addPointToPoint(bestPos);
-            if(data[currentPoint.getX()][currentPoint.getY()] > bestVal){
-                bestPos = currentPoint;
-                bestVal = data[currentPoint.getX()][currentPoint.getY()];
-                CalculatePeak(data, bestPos);
+        for(IntPoint offset : OUTER_SPIRAL){
+            IntPoint checkPoint = offset.addPointToPoint(currentPeak);
+            if(safelyGetValueOfArrayAtPoint(checkPoint, data) > bestVal){
+                bestPos = checkPoint;
+                bestVal = safelyGetValueOfArrayAtPoint(checkPoint, data);
+                calculatePeak(data, bestPos);
             }
         }
         return bestPos;
+    }
+    private int safelyGetValueOfArrayAtPoint(IntPoint point, short[][] data) {
+        int y = point.getY(), x = point.getX();
+
+        if (y < 0 || y >= data.length) {
+            return 0;
+        }
+        if (x < 0 || x >= data[point.getY()].length) {
+            return 0;
+        }
+
+        return data[y][x];
     }
 }
