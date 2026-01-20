@@ -44,4 +44,17 @@ public class IntPoint {
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        if (!(o instanceof IntPoint)) {
+            return false;
+        }
+
+        return ((IntPoint) o).getX() == x && ((IntPoint) o).getY() == y;
+    }
 }
