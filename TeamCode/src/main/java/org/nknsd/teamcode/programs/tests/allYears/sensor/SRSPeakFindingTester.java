@@ -75,16 +75,16 @@ public class SRSPeakFindingTester extends NKNProgram {
 //            telemetry.addData("Readings are currently fake", "");
 
             short[][] printVals;
-            printVals = fakeData;
-//            printVals = srsHub.getNormalizedDists();
-            for (int y = 0; y < 8; y++) {
-                StringBuilder sb = new StringBuilder();
-                for (int x = 0; x < 8; x++) {
-                    sb.append(normalizeIntCharacterLength(printVals[x][y], 4));
-                    sb.append(", ");
-                }
-                telemetry.addData("row: " + y, sb.toString());
-            }
+//            printVals = fakeData;
+            printVals = srsHub.getNormalizedDists();
+//            for (int y = 0; y < 8; y++) {
+//                StringBuilder sb = new StringBuilder();
+//                for (int x = 0; x < 8; x++) {
+//                    sb.append(normalizeIntCharacterLength(printVals[x][y], 4));
+//                    sb.append(", ");
+//                }
+//                telemetry.addData("row: " + y, sb.toString());
+//            }
 
             telemetry.addData("Peak", peakFinder.altPeakFind(printVals).toString());
         }
@@ -115,8 +115,8 @@ public class SRSPeakFindingTester extends NKNProgram {
 //        components.add(StateMachine.INSTANCE);
 //        StateMachine.INSTANCE.startAnonymous();
 
-//        components.add(srsHub);
-//        telemetryEnabled.add(srsHub);
+        components.add(srsHub);
+        telemetryEnabled.add(srsHub);
 
         SRSPeakTestState testComponent = new SRSPeakTestState(peakFinder);
         components.add(testComponent);
