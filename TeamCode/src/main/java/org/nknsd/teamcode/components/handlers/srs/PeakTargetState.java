@@ -72,7 +72,7 @@ public class PeakTargetState extends StateMachine.State {
 
     @Override
     protected void stopped() {
-        powerInputMixer.setManualPowers(new double[]{});
+        powerInputMixer.setManualPowers(new double[]{0, 0, 0});
 //        powerInputMixer.setDirectPower(false);
     }
 }
