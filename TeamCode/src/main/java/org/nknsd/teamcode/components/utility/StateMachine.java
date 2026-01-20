@@ -131,4 +131,13 @@ public class StateMachine implements NKNComponent {
         state.stopping = true;
         runList.remove(state);
     }
+
+    public boolean isStateRunning(String stateName) {
+        for (State state : runList) {
+            if (stateName.equals(state.name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
