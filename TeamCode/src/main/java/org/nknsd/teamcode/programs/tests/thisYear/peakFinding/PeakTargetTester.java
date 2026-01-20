@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.programs.tests.thisYear.peakFinding;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -21,7 +22,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@Autonomous(name="Peak Targeting Test")
+@TeleOp(name="Peak Targeting Test", group="Tests")
 public class PeakTargetTester extends NKNProgram {
     public class PeakTargetTestState extends StateMachine.State{
 
