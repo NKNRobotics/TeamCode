@@ -42,10 +42,9 @@ public class PeakTargetTester extends NKNProgram {
         public double lastRunTime = 0;
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if(lastRunTime > runtime.milliseconds() - 10000){
+            if(lastRunTime < runtime.milliseconds() - 10000){
                 if(!PeakTargetState.killIntakeTargeting){
                     PeakTargetState.killIntakeTargeting = true;
-
                 } else {
                     PeakTargetState.killIntakeTargeting = false;
                     IntPoint point = peakFinder.getPeak(srsHubHandler.getNormalizedDists());
