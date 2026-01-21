@@ -13,13 +13,15 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class IMUSensor implements NKNComponent {
     private AdafruitBNO055IMU imu;
     private HardwareMap hardwareMap;
+    private double xOffset;
+    private double yOffset;
 
 //
 
-    private final RevHubOrientationOnRobot orientationOnRobot;
+//    private final RevHubOrientationOnRobot orientationOnRobot;
 
-    public IMUSensor(RevHubOrientationOnRobot orientationOnRobot) {
-        this.orientationOnRobot = orientationOnRobot;
+    public IMUSensor(/*RevHubOrientationOnRobot orientationOnRobot*/) {
+//        this.orientationOnRobot = orientationOnRobot;
     }
 
     private void initIMU(){
@@ -34,15 +36,6 @@ public class IMUSensor implements NKNComponent {
         if (imu == null)
             return false;
 
-        /* The next two lines define Hub orientation.
-         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
-         *
-         * To Do:  EDIT these two lines to match YOUR mounting configuration.
-         */
-
-
-        // Now initialize the IMU with this mounting orientation
-        // Note: if you choose two conflicting directions, this initialization will cause a code exception.
         return true;
     }
 
@@ -53,6 +46,8 @@ public class IMUSensor implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
+        xOffset = imu.getGravity().xAccel;
+        yOffset = imu.getGravity().yAccel;
     }
 
     @Override
@@ -70,25 +65,26 @@ public class IMUSensor implements NKNComponent {
 
     }
 
-    public double getYaw() {
-//        return -imu.getRobotYawPitchRollAngles().getYaw();
-//        return imu.get
-        return imu.getGravity().xAccel;
-    }
     public double getPitch() {
-//        return imu.getRobotYawPitchRollAngles().getPitch();
-        return imu.getGravity().yAccel;
+//        return -imu.getRobotYawPitchRollAngles().getYaw();
+        return imu.getGravity().xAccel - xOffset;
     }
     public double getRoll() {
-//        return imu.getRobotYawPitchRollAngles().getRoll();
-        return imu.getGravity().zAccel;
+//        return imu.getRobotYawPitchRollAngles().getPitch();
+        return imu.getGravity().yAccel - yOffset;
     }
+//    public double getRoll() {
+////        return imu.getRobotYawPitchRollAngles().getRoll();
+//        return imu.getGravity().zAccel - 9.49;
+//    }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
 //        telemetry.addData("Yaw", -imu.getRobotYawPitchRollAngles().getYaw());
 //        telemetry.addData("Pitch", imu.getRobotYawPitchRollAngles().getPitch());
 //        telemetry.addData("Roll", imu.getRobotYawPitchRollAngles().getRoll());
+        telemetry.addData("pitch", getPitch());
+        telemetry.addData("roll", getRoll());
 
     }
 

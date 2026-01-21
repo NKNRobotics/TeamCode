@@ -153,14 +153,14 @@ public class Setup extends ProgramPart {
         components.add(basketLocator);
 //        telemetryEnabled.add(basketLocator);
 
-         targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
+         targetingSystem = new TargetingSystem();
         components.add(targetingSystem);
         telemetryEnabled.add(targetingSystem);
 
 
         balancedLiftHandler = new BalancedLiftHandler();
         components.add(balancedLiftHandler);
-        IMUSensor imuSensor = new IMUSensor(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+        IMUSensor imuSensor = new IMUSensor(/*new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD)*/);
         components.add(imuSensor);
         telemetryEnabled.add(balancedLiftHandler);
 

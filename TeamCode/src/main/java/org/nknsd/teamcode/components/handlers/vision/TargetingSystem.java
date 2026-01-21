@@ -33,13 +33,13 @@ public class TargetingSystem implements NKNComponent {
 
     boolean targetEnabled = false;
 
-    final private PidController pidController;
+//    final private PidController pidController;
     private AbsolutePosition absolutePosition;
     private double distance;
 
-    public TargetingSystem(PidController pidController) {
-        this.pidController = pidController;
-    }
+//    public TargetingSystem(PidController pidController) {
+//        this.pidController = pidController;
+//    }
 
 
     public boolean targetAcquired() {
@@ -60,7 +60,7 @@ public class TargetingSystem implements NKNComponent {
             vel = 0;
         }
         targetEnabled = enable;
-        autoPositioner.enableAutoPositioning(enable);
+        autoPositioner.enableAutoPositioning(false, false, enable);
     }
 
     public double getDistance() {
@@ -89,6 +89,10 @@ public class TargetingSystem implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
+//                does not use x or y, sets them because it's required
+        autoPositioner.setTargetX(0, RobotVersion.INSTANCE.pidControllerX);
+        autoPositioner.setTargetY(0, RobotVersion.INSTANCE.pidControllerY);
+        autoPositioner.setTargetH(0, RobotVersion.INSTANCE.pidControllerH);
 
     }
 
@@ -104,10 +108,9 @@ public class TargetingSystem implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        if (basketLocator.getOffset(targetingColor).distance == -1 && targetEnabled && !RobotVersion.isAutonomous()) {
-            autoPositioner.enableAutoPositioning(false);
-            targetEnabled = false;
-        }
+//        if (basketLocator.getOffset(targetingColor).distance == -1 && targetEnabled && !RobotVersion.isAutonomous()) {
+//            enableAutoTargeting(false);
+//        }
 
 
         if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
@@ -117,8 +120,6 @@ public class TargetingSystem implements NKNComponent {
                 double currentOffset = (basketData.xOffset - 0.5) * 0.47560222;
                 lastOffset = currentOffset;
 
-                autoPositioner.setTargetX(0, null);
-                autoPositioner.setTargetY(0, null);
                 autoPositioner.setTargetH((absolutePosition.getPosition().h + currentOffset), RobotVersion.INSTANCE.pidControllerH);
             }
             lastRunTime = runtime.milliseconds();
@@ -154,6 +155,8 @@ public class TargetingSystem implements NKNComponent {
         telemetry.addData("apriltag position", (basketLocator.getOffset(targetingColor).xOffset - 0.5));
         telemetry.addData("last sighted angle", lastOffset);
         telemetry.addData("SEEES", distance != -1);
+        telemetry.addData("distance", distance);
+        telemetry.addData("targeting enabled", targetEnabled);
     }
 
     public void link(BasketLocator basketLocator, AbsolutePosition absolutePosition, AutoPositioner autoPositioner) {

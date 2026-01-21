@@ -82,7 +82,7 @@ public class AutoMoveToPosState extends StateMachine.State {
 
     @Override
     protected void started() {
-        autoPositioner.enableAutoPositioning(true);
+        autoPositioner.enableAutoPositioning(true, true, true);
 //        RobotLog.v("setting targets x: " + xTarget + ", y: " + yTarget + ", h: " + hTarget);
         autoPositioner.setTargetX(xTarget, pidControllerX);
         autoPositioner.setTargetY(yTarget, pidControllerY);
@@ -92,7 +92,7 @@ public class AutoMoveToPosState extends StateMachine.State {
 
     @Override
     protected void stopped() {
-        autoPositioner.enableAutoPositioning(false);
+        autoPositioner.enableAutoPositioning(false, false, false);
         for (String stateName : this.toStopOnEnd) {
             StateMachine.INSTANCE.stopState(stateName);
         }

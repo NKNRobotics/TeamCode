@@ -19,7 +19,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
     // this state makes the scoop go up and down
     class ScoopActionState extends StateMachine.State {
-        final double SCOOPACTIONTIMEMS = 400;
+        final double SCOOPACTIONTIMEMS = 300;
 
         private boolean scoopResting = false;
 
@@ -59,7 +59,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
 
 //            RobotLog.v("micromovestate running");
-            RobotLog.v("position voltage  " + servoPosInput.getVoltage() + " for slot " + microwavePos);
+//            RobotLog.v("position voltage  " + servoPosInput.getVoltage() + " for slot " + microwavePos);
             if (Math.abs(microwavePos.powerPosition - servoPosInput.getVoltage()) < FEEDBACK_POSITION_THRESHOLD) {
                 StateMachine.INSTANCE.stopAnonymous(this);
             }

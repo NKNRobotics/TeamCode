@@ -26,34 +26,6 @@ import java.util.List;
 public class MoveToPosTest extends NKNProgram {
 
 
-    class DriveToPosState extends StateMachine.State {
-
-        final AutoPositioner autoPositioner;
-        final SparkFunOTOS.Pose2D targetPos;
-
-        DriveToPosState(AutoPositioner autoPositioner, SparkFunOTOS.Pose2D targetPos) {
-            this.autoPositioner = autoPositioner;
-            this.targetPos = targetPos;
-        }
-
-        @Override
-        protected void run(ElapsedTime runtime, Telemetry telemetry) {
-
-        }
-
-        @Override
-        protected void started() {
-            autoPositioner.setTargetX(targetPos.x, RobotVersion.INSTANCE.pidControllerX);
-            autoPositioner.setTargetY(targetPos.y, RobotVersion.INSTANCE.pidControllerY);
-            autoPositioner.setTargetH(targetPos.h, RobotVersion.INSTANCE.pidControllerH);
-        }
-
-        @Override
-        protected void stopped() {
-
-        }
-    }
-
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         FlowSensor flowSensor1 = new FlowSensor("RODOS");
@@ -84,8 +56,12 @@ public class MoveToPosTest extends NKNProgram {
         autoPositioner.link(powerInputMixer, absolutePosition);
 
         components.add(StateMachine.INSTANCE);
-        PositionTransform transform = new PositionTransform(0,0,0,1,1,1);
-        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition,true,transform.adjustPos(0,10,-0.09), 0,0,0,0,RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
+        PositionTransform transform = new PositionTransform(0, 0, 0, 1, 1, 1);
+        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, 0, 0), 0.1, 0.1, 0.1, 0.05, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"next"}));
+        StateMachine.INSTANCE.addState("next", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(20, 0, Math.PI), 0.1, 0.1, 0.1, 0.05, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"then"}));
+        StateMachine.INSTANCE.addState("then", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(20, 20, 0), 0.1, 0.1, 0.1, 0.05, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"final"}));
+        StateMachine.INSTANCE.addState("final", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, 20, -Math.PI), 0.1, 0.1, 0.1, 0.05, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"start"}));
+
         StateMachine.INSTANCE.startState("start");
     }
 }

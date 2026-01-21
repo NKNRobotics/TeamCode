@@ -130,7 +130,7 @@ public class FiringSystemTest extends NKNProgram {
         components.add(basketLocator);
         telemetryEnabled.add(basketLocator);
 
-        TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
+        TargetingSystem targetingSystem = new TargetingSystem();
         components.add(targetingSystem);
         telemetryEnabled.add(targetingSystem);
         targetingSystem.setTargetingColor(ID.BLUE);

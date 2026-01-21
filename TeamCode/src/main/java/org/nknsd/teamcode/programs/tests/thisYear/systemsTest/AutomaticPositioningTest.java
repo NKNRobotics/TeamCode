@@ -34,7 +34,7 @@ import java.util.List;
 @TeleOp(name = "automatic positioning tester", group = "Tests")
 public class AutomaticPositioningTest extends NKNProgram {
 
-    TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
+    TargetingSystem targetingSystem = new TargetingSystem();
     PowerInputMixer powerInputMixer = new PowerInputMixer();
 
     class IntakeState extends StateMachine.State {

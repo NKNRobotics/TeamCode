@@ -51,7 +51,7 @@ public class ManualLiftTest extends NKNProgram {
         components.add(StateMachine.INSTANCE);
         StateMachine.INSTANCE.startAnonymous(new LiftTheServos());
 
-        imuSensor = new IMUSensor(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+        imuSensor = new IMUSensor(/*new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD)*/);
         components.add(imuSensor);
         telemetryEnabled.add(imuSensor);
 

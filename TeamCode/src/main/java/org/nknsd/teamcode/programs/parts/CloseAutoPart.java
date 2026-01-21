@@ -27,6 +27,7 @@ public class CloseAutoPart extends ProgramPart {
     final private PositionTransform transform;
 
     private final Setup setup;
+
     public CloseAutoPart(PositionTransform positionTransform, Setup setup) {
         this.transform = positionTransform;
         this.setup = setup;
@@ -42,33 +43,33 @@ public class CloseAutoPart extends ProgramPart {
         final ArtifactSystem artifactSystem = setup.getArtifactSystem();
 
         PidController[] pidControllers = new PidController[]{
-                new PidController(0.09, .26, 0.17, .12, true, 0.02, 0.2),
-                new PidController(0.09, .25, 0.17, .12, true, 0.02, 0.2),
-                new PidController(0.68, .53, 0.17, .27, true, 0.2, 0.3),
-                new PidController(0.09, .13, 0.17, .065, true, 0.02, 0.2),
-                new PidController(0.09, .13, 0.17, .065, true, 0.02, 0.2),
-                new PidController(0.68, .53, 0.17, .27, true, 0.2, 0.3)};
+                RobotVersion.INSTANCE.pidControllerX,
+                RobotVersion.INSTANCE.pidControllerY,
+                RobotVersion.INSTANCE.pidControllerH,
+                new PidController(0.08, .1, 0.1, .07, true, 0.1, 0.2),
+                new PidController(0.08, .1, 0.1, .07, true, 0.1, 0.2),
+                new PidController(0.6, 0.5, 0.7, 0.5, true, 0.1, 0.1)};
 
 
         //        auto states
-        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition, true,  transform.adjustPos(0, -20, Math.PI / 2), 1, 1, 0.1, 1, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, -20, Math.PI / 2), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"move to fire pos"}));
 
-        StateMachine.INSTANCE.addState("move to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition, true,  transform.adjustPos(0, -30, -Math.PI / 10), 1, 1, 0.05, 1, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target", "timeToTarget"}));
+        StateMachine.INSTANCE.addState("move to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, -30, 0), 1, 1, 0.05, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target", "timeToTarget"}));
         StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("timeToTarget", new TimerState(2000, new String[]{"launch pattern", "target while firing"}, new String[]{"target"}));
         StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to spike"}));
-        StateMachine.INSTANCE.addState("move to spike", new AutoMoveToPosState(autoPositioner, absolutePosition, true,  transform.adjustPos(-20, -38, 2.37), 1, 1, 0.1, 1, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"intake", "intake 1st ball", "timer 1"}));
+        StateMachine.INSTANCE.addState("move to spike", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(-20, -38, 2.37), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"intake", "intake 1st ball", "timer 1"}));
         StateMachine.INSTANCE.addState("intake", new AutoIntakeAllState(artifactSystem, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("intake 1st ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false,  transform.adjustPos(-23.5, -32.5, 2.38), 1, 1, 0.1, 1, pidControllers[3], pidControllers[4], pidControllers[5], new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("intake 1st ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false, transform.adjustPos(-23.5, -32.5, 2.38), 1, 1, 0.1, 2, pidControllers[3], pidControllers[4], pidControllers[5], new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("timer 1", new TimerState(1000, new String[]{"intake 2nd ball", "timer 2"}, new String[]{"intake 1st ball"}));
-        StateMachine.INSTANCE.addState("intake 2nd ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false,  transform.adjustPos(-26, -30, 2.38), 1, 1, 0.1, 1, pidControllers[3], pidControllers[4], pidControllers[5], new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("intake 2nd ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false, transform.adjustPos(-26, -30, 2.38), 1, 1, 0.1, 2, pidControllers[3], pidControllers[4], pidControllers[5], new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("timer 2", new TimerState(1000, new String[]{"intake 3rd ball", "timer 3"}, new String[]{"intake 2nd ball"}));
-        StateMachine.INSTANCE.addState("intake 3rd ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false,  transform.adjustPos(-30.75, -26.13, 2.38), 1, 1, 0.1, 1, pidControllers[3], pidControllers[4], pidControllers[5], new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("timer 3", new TimerState(2000, new String[]{"move to fire pos #2"}, new String[]{"intake", "intake 3rd ball"}));
-        StateMachine.INSTANCE.addState("move to fire pos #2", new AutoMoveToPosState(autoPositioner, absolutePosition, true,  transform.adjustPos(-11, -44, 0.04), 1, 1, 0.05, 1, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target #2"}));
-        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem,true, new String[]{}, new String[]{"timeToTarget #2"}));
+        StateMachine.INSTANCE.addState("intake 3rd ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false, transform.adjustPos(-30.75, -26.13, 2.38), 1, 1, 0.1, 2, pidControllers[3], pidControllers[4], pidControllers[5], new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("timer 3", new TimerState(1500, new String[]{"move to fire pos #2"}, new String[]{"intake", "intake 3rd ball"}));
+        StateMachine.INSTANCE.addState("move to fire pos #2", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, -30, 0), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target #2"}));
+        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{"timeToTarget #2"}));
         StateMachine.INSTANCE.addState("timeToTarget #2", new TimerState(2000, new String[]{"launch pattern #2", "target while firing #2"}, new String[]{"target #2"}));
         StateMachine.INSTANCE.addState("target while firing #2", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("launch pattern #2", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #2"}, new String[]{}));
@@ -77,4 +78,4 @@ public class CloseAutoPart extends ProgramPart {
         StateMachine.INSTANCE.startState("start");
         StateMachine.INSTANCE.startState("read pattern");
     }
-}
+    }

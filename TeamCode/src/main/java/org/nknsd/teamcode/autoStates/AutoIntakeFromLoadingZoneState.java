@@ -60,7 +60,7 @@ public class AutoIntakeFromLoadingZoneState extends StateMachine.State {
     @Override
     protected void started() {
         lastRunTime = startTimeMS;
-        autoPositioner.enableAutoPositioning(true);
+        autoPositioner.enableAutoPositioning(true, true, true);
         double[] target = transform.adjustPos(-47, 10, 1);
         autoPositioner.setTargetX(target[0], pidX);
         autoPositioner.setTargetY(target[1], pidY);
