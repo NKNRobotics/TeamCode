@@ -20,7 +20,7 @@ public class SRSHubHandler implements NKNComponent {
     private final double sampleDelay = 100;
     private int sampleMinimum = 20;
 
-    private short[][] getDistances() {
+    public short[][] getDistances() {
         hub.update();
         SRSHub.VL53L5CX distData = hub.getI2CDevice(1, SRSHub.VL53L5CX.class);
 
