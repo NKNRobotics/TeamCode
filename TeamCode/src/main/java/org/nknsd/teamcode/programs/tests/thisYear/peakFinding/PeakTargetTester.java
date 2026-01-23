@@ -1,7 +1,9 @@
 package org.nknsd.teamcode.programs.tests.thisYear.peakFinding;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
@@ -21,9 +23,9 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@Autonomous(name="Peak Targeting Test")
+@TeleOp(name="PeakTargetingTest", group = "Tests")
 public class PeakTargetTester extends NKNProgram {
-    public class PeakTargetTestState extends StateMachine.State{
+    private class PeakTargetTestState extends StateMachine.State{
 
         private final PowerInputMixer powerInputMixer;
         private final AbsolutePosition absPos;
@@ -39,10 +41,11 @@ public class PeakTargetTester extends NKNProgram {
 
         //        private final PidController pidController;
 
-        public double lastRunTime = 0;
+        public double lastRunTime = -10000;
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if(lastRunTime > runtime.milliseconds() - 10000){
+            if(lastRunTime < runtime.milliseconds() - 10000){
+                RobotLog.v("AttemptedTargeting");
                 if(!PeakTargetState.killIntakeTargeting){
                     PeakTargetState.killIntakeTargeting = true;
 
@@ -57,7 +60,7 @@ public class PeakTargetTester extends NKNProgram {
 
         @Override
         protected void started() {
-
+        RobotLog.v("PeakTestStateStarted");
         }
 
         @Override
@@ -86,6 +89,8 @@ public class PeakTargetTester extends NKNProgram {
         components.add(srsHubHandler);
 
         PeakFinder peakFinder = new PeakFinder();
+
+        components.add(StateMachine.INSTANCE);
 
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);
