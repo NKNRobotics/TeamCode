@@ -16,6 +16,10 @@ public class AngleCalculator {
                 Math.sin(angleFromPlane) * (ballDist / distFromOriginToBall)
         );
 
+        if (ballXPos > 3.5) {
+            headingOffset *= -1;
+        }
+
         return headingOffset;
     }
 }
