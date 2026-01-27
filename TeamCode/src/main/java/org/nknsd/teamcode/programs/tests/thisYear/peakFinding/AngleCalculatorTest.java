@@ -39,10 +39,11 @@ public class AngleCalculatorTest extends NKNProgram {
             short[][] data = srsHubHandler.getNormalizedDists();
             IntPoint ballPoint = peakFinder.altPeakFind(data);
 
-            if (ballPoint.getX() == 10 || ballPoint.getY() == 10) {
+            // IF THE DATA BECOMES NOT SQUARE WE HAVE A PROBLEM HOUSTON.
+            if (ballPoint.getX() < 0 || ballPoint.getX() > data.length || ballPoint.getY() < 0 || ballPoint.getY() > data[0].length) {
                 advancedTelemetry.modifyData("Offset Angle", "no ball :P");
-                advancedTelemetry.modifyData("Ball X", "unknown");
-                advancedTelemetry.modifyData("Ball Y", "unknown");
+                advancedTelemetry.modifyData("Ball X", "unknown (" + ballPoint.getX() + ")");
+                advancedTelemetry.modifyData("Ball Y", "unknown (" + ballPoint.getY() + ")");
                 advancedTelemetry.modifyData("Distance", "unkown");
                 return;
             }
