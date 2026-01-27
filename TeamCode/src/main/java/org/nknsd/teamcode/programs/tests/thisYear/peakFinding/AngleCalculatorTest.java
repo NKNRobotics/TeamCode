@@ -39,7 +39,7 @@ public class AngleCalculatorTest extends NKNProgram {
             short[][] data = srsHubHandler.getNormalizedDists();
             IntPoint ballPoint = peakFinder.altPeakFind(data);
 
-            if (ballPoint.getX() == -10 || ballPoint.getY() == -10) {
+            if (ballPoint.getX() == 10 || ballPoint.getY() == 10) {
                 advancedTelemetry.modifyData("Offset Angle", "no ball :P");
                 return;
             }
