@@ -41,10 +41,10 @@ public class PeakTargetTester extends NKNProgram {
 
         //        private final PidController pidController;
 
-        public double lastRunTime = -10000;
+        public double lastRunTime = -5000;
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if(lastRunTime < runtime.milliseconds() - 10000){
+            if(lastRunTime < runtime.milliseconds() - 5000){
                 RobotLog.v("AttemptedTargeting");
                 if(!PeakTargetState.killIntakeTargeting){
                     PeakTargetState.killIntakeTargeting = true;

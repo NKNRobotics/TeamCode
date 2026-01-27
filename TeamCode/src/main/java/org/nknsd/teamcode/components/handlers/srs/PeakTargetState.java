@@ -50,6 +50,7 @@ public class PeakTargetState extends StateMachine.State {
             errorDelta = error - prevError;
             double headingChange = pidController.findOutput(error, errorDelta
                     ,absPos.getVelocity().h ,runtime.milliseconds() - lastRuntime);
+
             RobotLog.v("currentHeadingChange: ", headingChange);
 
             if((currentPos[2] >= targetPos[2] - error || currentPos[2] <= currentPos[2] + error) && absPos.getVelocity().h < 0.05){
@@ -57,7 +58,7 @@ public class PeakTargetState extends StateMachine.State {
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
 
-//            powerInputMixer.setManualPowers(new double[]{0, 0, headingChange});
+            powerInputMixer.setManualPowers(new double[]{0, 0, headingChange});
 
             lastRuntime = runtime.milliseconds();
             prevError = error;
@@ -71,7 +72,8 @@ public class PeakTargetState extends StateMachine.State {
     protected void started() {
         RobotLog.v("PeakTargetState Started");
         currentPos = absPos.getDoublePosition();
-        targetPos[2] = ballLocation.getX() * 6 + currentPos[2];
+        targetPos[2] = 0.3;
+//        targetPos[2] = ballLocation.getX() * 6 + currentPos[2];
         powerInputMixer.setAutoEnabled(new boolean[]{false, false, false});
     }
 
