@@ -11,6 +11,7 @@ public class AngleCalculator {
         double angleFromPlane = rightAngle + angleBetweenDataPoints * ballXPos - halfOfFov;
         double distFromOriginToBall = (sensorOffset * sensorOffset) + (ballDist * ballDist)
                 - (2 * sensorOffset * ballDist * Math.cos(angleFromPlane));
+        distFromOriginToBall = Math.sqrt(distFromOriginToBall);
         double headingOffset = rightAngle - Math.asin(
                 Math.sin(angleFromPlane) * (ballDist / distFromOriginToBall)
         );
