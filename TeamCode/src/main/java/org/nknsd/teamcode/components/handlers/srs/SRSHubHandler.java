@@ -154,11 +154,11 @@ public class SRSHubHandler implements NKNComponent {
                 telemetry.addData("row: " + y, sb.toString());
             }
         }
-        DoublePoint ballSpot = ballLocation();
-        if (ballSpot != null){
-            telemetry.addData("x", ballSpot.getX());
-            telemetry.addData("y", ballSpot.getY());
-        }
+//        DoublePoint ballSpot = ballLocation();
+//        if (ballSpot != null){
+////            telemetry.addData("x", ballSpot.getX());
+////            telemetry.addData("y", ballSpot.getY());
+//        }
     }
 
     private String normalizeIntCharacterLength(int number, int amountOfCharacters) {

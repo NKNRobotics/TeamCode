@@ -41,11 +41,17 @@ public class AngleCalculatorTest extends NKNProgram {
 
             if (ballPoint.getX() == 10 || ballPoint.getY() == 10) {
                 advancedTelemetry.modifyData("Offset Angle", "no ball :P");
+                advancedTelemetry.modifyData("Ball X", "unknown");
+                advancedTelemetry.modifyData("Ball Y", "unknown");
+                advancedTelemetry.modifyData("Distance", "unkown");
                 return;
             }
 
             int ballXPos = ballPoint.getX();
             int ballDist = srsHubHandler.getDistances()[ballXPos][ballPoint.getY()];
+            advancedTelemetry.modifyData("Ball X", ballXPos);
+            advancedTelemetry.modifyData("Ball Y", ballPoint.getY());
+            advancedTelemetry.modifyData("Distance", ballDist);
             advancedTelemetry.modifyData("Offset Angle", AngleCalculator.calculateHeadingOffset(ballXPos, ballDist));
         }
 
@@ -60,48 +66,6 @@ public class AngleCalculatorTest extends NKNProgram {
         }
     }
 
-
-    public class PeakTargetTestState extends StateMachine.State{
-
-        private final PowerInputMixer powerInputMixer;
-        private final AbsolutePosition absPos;
-        private final SRSHubHandler srsHubHandler;
-        private final PeakFinder peakFinder;
-
-        public PeakTargetTestState(PowerInputMixer powerInputMixer, AbsolutePosition absPos, SRSHubHandler srsHubHandler, PeakFinder peakFinder) {
-            this.powerInputMixer = powerInputMixer;
-            this.absPos = absPos;
-            this.srsHubHandler = srsHubHandler;
-            this.peakFinder = peakFinder;
-        }
-
-        //        private final PidController pidController;
-
-        public double lastRunTime = 0;
-        @Override
-        protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if(lastRunTime < runtime.milliseconds() - 10000){
-                if(!PeakTargetState.killIntakeTargeting){
-                    PeakTargetState.killIntakeTargeting = true;
-                } else {
-                    PeakTargetState.killIntakeTargeting = false;
-                    IntPoint point = peakFinder.getPeak(srsHubHandler.getNormalizedDists());
-                    StateMachine.INSTANCE.startAnonymous(new PeakTargetState(point, powerInputMixer, absPos));
-                    lastRunTime = runtime.milliseconds();
-                }
-            }
-        }
-
-        @Override
-        protected void started() {
-
-        }
-
-        @Override
-        protected void stopped() {
-
-        }
-    }
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         SRSHubHandler srsHubHandler = new SRSHubHandler();
