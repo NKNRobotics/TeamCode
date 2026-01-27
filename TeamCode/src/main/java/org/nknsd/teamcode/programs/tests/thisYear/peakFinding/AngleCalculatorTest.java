@@ -53,7 +53,7 @@ public class AngleCalculatorTest extends NKNProgram {
             advancedTelemetry.modifyData("Ball X", ballXPos);
             advancedTelemetry.modifyData("Ball Y", ballPoint.getY());
             advancedTelemetry.modifyData("Distance", ballDist);
-            advancedTelemetry.modifyData("Offset Angle", AngleCalculator.calculateHeadingOffset(ballXPos, ballDist));
+            advancedTelemetry.modifyData("Offset Angle", AngleCalculator.calculateHeadingOffset(ballXPos, ballDist) * 180 / 3.14159);
         }
 
         @Override
