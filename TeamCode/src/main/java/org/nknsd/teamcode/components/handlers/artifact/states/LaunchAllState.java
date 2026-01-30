@@ -36,6 +36,7 @@ public class LaunchAllState extends StateMachine.State {
         if (microwaveScoopHandler.isDone() && launchSystem.isReady()){
             if (!endNow) {
                 microwaveScoopHandler.doScoopLaunch();
+                slotTracker.clearSlot(slotOrder[timesRan]);
                 launchSystem.resetConfidence();
                 endNow = true;
             } else {

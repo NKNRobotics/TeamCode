@@ -102,7 +102,7 @@ public class ArtifactSystem {
                 if (slotTracker.getSlotColor(i) == color) {
                     setIsLaunching(true);
                     MicrowavePositions microwavePos = MicrowavePositions.values()[i + 3];
-                    StateMachine.INSTANCE.startAnonymous(new LaunchBCStartState(microwaveScoopHandler, slotTracker, this, microwavePos));
+                    StateMachine.INSTANCE.startAnonymous(new LaunchBCStartState(microwaveScoopHandler, slotTracker, this, microwavePos, i));
                     return true;
                 }
             }

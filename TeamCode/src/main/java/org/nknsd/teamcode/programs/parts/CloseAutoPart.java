@@ -46,9 +46,9 @@ public class CloseAutoPart extends ProgramPart {
                 RobotVersion.INSTANCE.pidControllerX,
                 RobotVersion.INSTANCE.pidControllerY,
                 RobotVersion.INSTANCE.pidControllerH,
-                new PidController(0.08, .1, 0.1, .07, true, 0.1, 0.2),
-                new PidController(0.08, .1, 0.1, .07, true, 0.1, 0.2),
-                new PidController(0.6, 0.5, 0.7, 0.5, true, 0.1, 0.1)};
+                new PidController(0.15, 0.15, 0.1, 0.1, true, 0.1, 0.17),
+                new PidController(0.15, 0.15, 0.1, 0.1, true, 0.1, 0.17),
+                new PidController(0.5, 0.5, 0.5, 0.5, true, 0.2, 0.2)};
 
 
         //        auto states
@@ -67,7 +67,7 @@ public class CloseAutoPart extends ProgramPart {
         StateMachine.INSTANCE.addState("intake 2nd ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false, transform.adjustPos(-26, -30, 2.38), 1, 1, 0.1, 2, pidControllers[3], pidControllers[4], pidControllers[5], new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("timer 2", new TimerState(1000, new String[]{"intake 3rd ball", "timer 3"}, new String[]{"intake 2nd ball"}));
         StateMachine.INSTANCE.addState("intake 3rd ball", new AutoMoveToPosState(autoPositioner, absolutePosition, false, transform.adjustPos(-30.75, -26.13, 2.38), 1, 1, 0.1, 2, pidControllers[3], pidControllers[4], pidControllers[5], new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("timer 3", new TimerState(1500, new String[]{"move to fire pos #2"}, new String[]{"intake", "intake 3rd ball"}));
+        StateMachine.INSTANCE.addState("timer 3", new TimerState(2000, new String[]{"move to fire pos #2"}, new String[]{"intake", "intake 3rd ball"}));
         StateMachine.INSTANCE.addState("move to fire pos #2", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, -30, 0), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target #2"}));
         StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{"timeToTarget #2"}));
         StateMachine.INSTANCE.addState("timeToTarget #2", new TimerState(2000, new String[]{"launch pattern #2", "target while firing #2"}, new String[]{"target #2"}));

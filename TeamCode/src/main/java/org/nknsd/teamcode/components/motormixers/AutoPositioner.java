@@ -30,6 +30,9 @@ public class AutoPositioner implements NKNComponent {
     private double xSpeed;
 
     public void enableAutoPositioning(boolean enableX, boolean enableY, boolean enableH) {
+        if(enableX == this.enableX && enableY == this.enableY && enableH == this.enableH){
+            return;
+        }
         this.enableX = enableX;
         this.enableY = enableY;
         this.enableH = enableH;
