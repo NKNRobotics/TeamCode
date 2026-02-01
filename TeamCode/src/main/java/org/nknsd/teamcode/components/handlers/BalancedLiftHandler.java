@@ -21,7 +21,7 @@ public class BalancedLiftHandler implements NKNComponent {
     private final double flInitial = 0.37;
 
     private final double rollTarget = 0.05;
-    private final double pitchTarget = -0.2;
+    private final double pitchTarget = -0.05;
 
     private final double kpfl = 0.5, kpbl = -0.2, kpbr = -0.5;
     private final double krfl = 0.5, krbl = 0.2, krbr = -0.5;
@@ -99,6 +99,7 @@ public class BalancedLiftHandler implements NKNComponent {
 
     public void startLift(){
         isLifting = true;
+        imuSensor.relocatilizeIMUinGame();
 //        imuSensor.initIMU();
 //        imuSensor.resetIMU();
     }

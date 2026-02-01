@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.programs.tests.allYears.autonomousTests;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -21,7 +22,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Move To Position", group = "Tests")
+@TeleOp(name = "Move To Position", group = "Tests") @Disabled
 
 public class MoveToPosTest extends NKNProgram {
 

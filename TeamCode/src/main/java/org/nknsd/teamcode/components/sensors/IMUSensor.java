@@ -50,6 +50,11 @@ public class IMUSensor implements NKNComponent {
         yOffset = imu.getGravity().yAccel;
     }
 
+    public void relocatilizeIMUinGame(){
+        xOffset = imu.getGravity().xAccel;
+        yOffset = imu.getGravity().yAccel;
+    }
+
     @Override
     public void stop(ElapsedTime runtime, Telemetry telemetry) {
 

@@ -42,8 +42,8 @@ public class LiftDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        gamePadHandler.addListener(liftControlScheme.startLift(), startLift, "startLift");
-        gamePadHandler.addListener(liftControlScheme.stopLift(), stopLift, "stopLift");
+//        gamePadHandler.addListener(liftControlScheme.startLift(), startLift, "startLift");
+//        gamePadHandler.addListener(liftControlScheme.stopLift(), stopLift, "stopLift");
     }
 
     @Override
