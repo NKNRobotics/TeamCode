@@ -10,7 +10,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 import java.util.concurrent.Callable;
 
 public class SRSDataAverager implements NKNComponent {
-    public int[][] getAveragedData() {
+    public short[][] getAveragedData() {
         return null;
     }
     

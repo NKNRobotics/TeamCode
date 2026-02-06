@@ -17,26 +17,27 @@ import java.util.Objects;
 
 public class PeakPointer implements NKNComponent {
     private final PeakFinder peakFinder;
-    private AutoPositioner positioner;
+    private final AutoPositioner positioner;
     private final AbsolutePosition absPos;
     private final SRSHubHandler srsHubHandler;
+//    private final SRSDataAverager srsDataAverager;
 
-    public boolean targetPeaks(){
-        IntPoint currentPeak = new IntPoint(peakFinder.getPeak(srsHubHandler.getNormalizedDists()).getX(), peakFinder.getPeak(srsHubHandler.getNormalizedDists()).getY());
-        if(peakFinder.getPeak(srsHubHandler.getNormalizedDists()).getX() != 10){
-            positioner.enableAutoPositioning(true);
-//            positioner.setTargetH(AngleCalculator.calculateHeadingOffset(currentPeak.getX(), srsHubHandler.getDistances()[currentPeak.getX()][currentPeak.getY()]), new PidController());
-        }
-        return false;
+    private boolean enable;
+
+    public void enableTargeting(boolean enable){
+        this.enable = enable;
     }
-    public void stopTargetPeaks(){
-
-    }
-
-    public PeakPointer(PeakFinder peakFinder, SRSHubHandler srsHubHandler, AbsolutePosition absPos) {
+    public PeakPointer(PeakFinder peakFinder, SRSHubHandler srsHubHandler, AbsolutePosition absPos, AutoPositioner positioner /*, SRSDataAverager srsDataAverager*/) {
         this.peakFinder = peakFinder;
         this.absPos = absPos;
         this.srsHubHandler = srsHubHandler;
+        this.positioner = positioner;
+//        this.srsDataAverager = srsDataAverager;
+    }
+
+    public double getOffset(){
+        IntPoint currentPeak = peakFinder.getPeak(srsHubHandler.getNormalizedDists());
+        return AngleCalculator.calculateHeadingOffset(currentPeak.getX(), srsHubHandler.getDistances()[currentPeak.getX()][currentPeak.getY()]);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class PeakPointer implements NKNComponent {
 
     }
 
-    public void link(AutoPositioner positioner){
-        this.positioner = positioner;
+    public void link(){
+
     }
 }
