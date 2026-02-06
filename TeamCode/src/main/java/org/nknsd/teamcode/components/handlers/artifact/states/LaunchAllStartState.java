@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.components.handlers.artifact.states;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
@@ -36,6 +37,7 @@ public class LaunchAllStartState extends StateMachine.State {
     @Override
     protected void started() {
         artifactSystem.setIsLaunching(true);
+        RobotLog.v("LaunchAllStarted with pattern " + slotOrder[0] + " " + slotOrder[1] + " " + slotOrder[2]);
     }
 
     @Override

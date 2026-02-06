@@ -94,6 +94,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
         if (!isDone()) {
             return false;
         }
+        RobotLog.v("Moving microwave to" + position);
         microwaveServo.setPosition(position.microPosition);
         microwavePos = position;
         StateMachine.INSTANCE.startAnonymous(microwaveActionState);
