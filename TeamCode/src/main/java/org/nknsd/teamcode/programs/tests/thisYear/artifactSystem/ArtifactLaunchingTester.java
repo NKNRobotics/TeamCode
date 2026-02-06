@@ -16,6 +16,7 @@ import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.ColorReader;
 
+import org.nknsd.teamcode.components.handlers.launch.LaunchSystem;
 import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -98,11 +99,11 @@ public class ArtifactLaunchingTester extends NKNProgram {
         telemetryEnabled.add(microwaveScoopHandler);
         telemetryEnabled.add(ballColorInterpreter);
 
-        launcherHandler = new LauncherHandler(.97,1.03);
+        launcherHandler = new LauncherHandler(.95,1.10);
         components.add(launcherHandler);
 
         //linking
-        artifactSystem.link(microwaveScoopHandler, slotTracker);
+//        artifactSystem.link(microwaveScoopHandler, slotTracker);
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         ballColorInterpreter.link(colorReader);
 

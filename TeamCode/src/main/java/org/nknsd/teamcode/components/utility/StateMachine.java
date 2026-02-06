@@ -32,7 +32,10 @@ public class StateMachine implements NKNComponent {
         }
     }
 
-    public final static StateMachine INSTANCE = new StateMachine();
+    public static StateMachine INSTANCE = new StateMachine();
+    public static void RESET(){
+        INSTANCE = new StateMachine();
+    }
 
     final private HashMap<String, State> stateMap = new HashMap<>();
     final private List<State> runList = new LinkedList<>();
@@ -86,6 +89,7 @@ public class StateMachine implements NKNComponent {
         String nameString = "";
         for (State state : runList) {
             nameString = nameString + "|" + state.name;
+            nameString = nameString + ", ";
         }
         telemetry.addData("States",nameString);
     }

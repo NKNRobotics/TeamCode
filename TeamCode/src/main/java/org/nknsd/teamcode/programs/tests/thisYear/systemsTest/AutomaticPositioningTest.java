@@ -19,6 +19,7 @@ import org.nknsd.teamcode.components.handlers.color.BallColor;
 import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
 import org.nknsd.teamcode.components.handlers.color.ColorReader;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
+import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
@@ -30,10 +31,10 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "automatic positioning tester", group = "Tests") @Disabled
+@TeleOp(name = "automatic positioning tester", group = "Tests")
 public class AutomaticPositioningTest extends NKNProgram {
 
-    TargetingSystem targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
+    TargetingSystem targetingSystem = new TargetingSystem();
     PowerInputMixer powerInputMixer = new PowerInputMixer();
 
     class IntakeState extends StateMachine.State {
@@ -122,7 +123,7 @@ public class AutomaticPositioningTest extends NKNProgram {
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
             if (targetingSystem.targetVisible()) {
                 launchSystem.setDistance(targetingSystem.getDistance());
-            } else powerInputMixer.setManualPowers(new double[]{0,0,0});
+            } else powerInputMixer.setManualPowers(new double[]{0, 0, 0});
             if (!hasLaunched && microwaveScoopHandler.isDone() && launchSystem.isReady() && targetingSystem.targetAcquired()) {
                 microwaveScoopHandler.doScoopLaunch();
                 hasLaunched = true;
@@ -130,7 +131,7 @@ public class AutomaticPositioningTest extends NKNProgram {
             if (hasLaunched && microwaveScoopHandler.isDone()) {
                 slotTracker.clearSlot(slotNum);
                 targetingSystem.enableAutoTargeting(false);
-                powerInputMixer.setManualPowers(new double[]{0,0,0});
+                powerInputMixer.setManualPowers(new double[]{0, 0, 0});
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
@@ -163,12 +164,12 @@ public class AutomaticPositioningTest extends NKNProgram {
         components.add(trajectoryHandler);
         telemetryEnabled.add(trajectoryHandler);
 
-        LauncherHandler launcherHandler = new LauncherHandler(0.97, 1.05);
+        LauncherHandler launcherHandler = new LauncherHandler(0.95, 1.10);
         components.add(launcherHandler);
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);
 
-        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
+        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 3, 16, 132);
 
 
         MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
@@ -184,11 +185,11 @@ public class AutomaticPositioningTest extends NKNProgram {
         components.add(ballColorInterpreter);
 
 
-        FlowSensor flowSensor1 = new FlowSensor( "RODOS");
+        FlowSensor flowSensor1 = new FlowSensor("RODOS");
         components.add(flowSensor1);
-        FlowSensor flowSensor2 = new FlowSensor( "LODOS");
+        FlowSensor flowSensor2 = new FlowSensor("LODOS");
         components.add(flowSensor2);
-        AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1,flowSensor2);
+        AbsolutePosition absolutePosition = new AbsolutePosition(flowSensor1, flowSensor2);
         components.add(absolutePosition);
         telemetryEnabled.add(absolutePosition);
 
@@ -198,7 +199,10 @@ public class AutomaticPositioningTest extends NKNProgram {
 
         AbsolutePowerMixer absolutePowerMixer = new AbsolutePowerMixer();
         components.add(absolutePowerMixer);
-        absolutePowerMixer.link(mecanumMotorMixer,absolutePosition);
+        absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);
+
+        AutoPositioner autoPositioner = new AutoPositioner();
+        components.add(autoPositioner);
 
         components.add(powerInputMixer);
 
@@ -217,11 +221,11 @@ public class AutomaticPositioningTest extends NKNProgram {
 
 
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
-        targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
+        targetingSystem.link(basketLocator, absolutePosition, autoPositioner);
         basketLocator.link(aprilTagSensor);
-        powerInputMixer.link(absolutePowerMixer);
+        powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         ballColorInterpreter.link(colorReader);
-
+        autoPositioner.link(powerInputMixer, absolutePosition);
         launchSystem.link(trajectoryHandler, launcherHandler);
 
 

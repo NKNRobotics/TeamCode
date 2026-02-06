@@ -3,6 +3,8 @@ package org.nknsd.teamcode.frameworks;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.nknsd.teamcode.components.utility.StateMachine;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +22,7 @@ public abstract class NKNProgram extends OpMode {
     @Override
     public void init() {
         runtime.reset();
+        StateMachine.RESET();
         telemetry.addData("Status", "Initializing");
         telemetry.update();
 

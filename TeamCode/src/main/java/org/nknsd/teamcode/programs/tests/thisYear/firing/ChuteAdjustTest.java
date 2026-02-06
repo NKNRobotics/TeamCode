@@ -1,8 +1,5 @@
 package org.nknsd.teamcode.programs.tests.thisYear.firing;
 
-import android.view.ViewDebug;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -25,10 +22,10 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "chute adjust test", group = "Tests") @Disabled
-public class TrajectoryTest extends NKNProgram {
+@TeleOp(name = "chute adjust test", group = "Tests")
+public class ChuteAdjustTest extends NKNProgram {
 
-    private double distance = 130;
+    private double distance = 36;
 
     class IntakeState extends StateMachine.State {
 
@@ -154,7 +151,7 @@ public class TrajectoryTest extends NKNProgram {
 //        telemetryEnabled.add(microwaveScoopHandler);
  
 
-        LauncherHandler launcherHandler = new LauncherHandler(0.98, 1.03);
+        LauncherHandler launcherHandler = new LauncherHandler(0.95, 1.10);
         components.add(launcherHandler);
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);
@@ -167,7 +164,7 @@ public class TrajectoryTest extends NKNProgram {
 //        telemetryEnabled.add(ballColorInterpreter);
         ballColorInterpreter.link(colorReader);
 
-        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 3, 16, 132);
+        LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 4, 16, 132);
         launchSystem.link(trajectoryHandler, launcherHandler);
 
         SlotTracker slotTracker = new SlotTracker();

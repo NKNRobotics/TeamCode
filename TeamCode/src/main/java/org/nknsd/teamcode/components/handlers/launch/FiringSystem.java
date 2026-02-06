@@ -3,6 +3,7 @@ package org.nknsd.teamcode.components.handlers.launch;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
@@ -21,13 +22,18 @@ public class FiringSystem implements NKNComponent {
     private ArtifactSystem artifactSystem;
 
     private double lastTime;
-    private boolean autoLocked;
+    private boolean autoLocked = false;
+    private boolean isFiring = false;
     private ID color;
+    private ID pattern = ID.NONE;
 
 
-    public void setTargetColor(ID targetColor) {
-        color = targetColor;
-        targetingSystem.setTargetingColor(targetColor);
+    public void setPattern(ID pattern) {
+        this.pattern = pattern;
+    }
+
+    public ID getPattern() {
+        return pattern;
     }
 
     public void lockTarget(boolean enable) {
@@ -35,42 +41,75 @@ public class FiringSystem implements NKNComponent {
         targetingSystem.enableAutoTargeting(enable);
     }
 
+    public void setManualDistance(double dist){
+        launchSystem.setDistance(dist);
+    }
+
     public boolean isReady() {
-        return launchSystem.isReady() && launchSystem.confidence > WHEELSPEED_CONFIDENCE && artifactSystem.isReady() && targetingSystem.targetAcquired();
+        boolean ready;
+        if (autoLocked) {
+            ready = launchSystem.isReady() && artifactSystem.isReady() && targetingSystem.targetAcquired();
+        } else {
+            ready = launchSystem.isReady() && artifactSystem.isReady();
+        }
+//        RobotLog.v("firing system is ready" + ready);
+        return ready;
+//        if (autoLocked) {
+//            return launchSystem.isReady() && artifactSystem.isReady() && targetingSystem.targetAcquired();
+//        } else {
+//            return launchSystem.isReady() && artifactSystem.isReady();
+//        }
     }
 
-    public void fireGreen() {
+    public boolean fireGreen() {
         if (!autoLocked) {
-            artifactSystem.launchColor(BallColor.GREEN);
-            return;
+            return artifactSystem.launchColor(BallColor.GREEN);
         }
 
         if (isReady()) {
-            artifactSystem.launchColor(BallColor.GREEN);
+            return artifactSystem.launchColor(BallColor.GREEN);
         }
+        return false;
     }
 
-    public void firePurple() {
+    public boolean firePurple() {
         if (!autoLocked) {
-            artifactSystem.launchColor(BallColor.PURPLE);
-            return;
+            return artifactSystem.launchColor(BallColor.PURPLE);
         }
 
         if (isReady()) {
-            artifactSystem.launchColor(BallColor.PURPLE);
+            return artifactSystem.launchColor(BallColor.PURPLE);
         }
+        return false;
     }
 
     public void fireAll() {
-        if (!autoLocked) {
-            artifactSystem.launchAll();
+        if (autoLocked && targetingSystem.targetVisible()) {
+            BallColor[] patternColors;
+            switch (pattern.ordinal()) {
+                case 0:
+                    patternColors = new BallColor[]{BallColor.PURPLE, BallColor.GREEN, BallColor.PURPLE};
+                    break;
+                case 1:
+                    patternColors = new BallColor[]{BallColor.PURPLE, BallColor.PURPLE, BallColor.GREEN};
+                    break;
+                case 2:
+                    patternColors = new BallColor[]{BallColor.GREEN, BallColor.PURPLE, BallColor.PURPLE};
+                    break;
+                default:
+                    patternColors = new BallColor[]{BallColor.PURPLE, BallColor.PURPLE, BallColor.PURPLE};
+            }
+            artifactSystem.launchAll(patternColors);
+            isFiring = true;
             return;
         }
 
         if (isReady()) {
+            isFiring = true;
             artifactSystem.launchAll();
         }
     }
+
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
@@ -84,6 +123,8 @@ public class FiringSystem implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
+        color = RobotVersion.getRobotAlliance();
+        targetingSystem.setTargetingColor(RobotVersion.getRobotAlliance());
 
     }
 
@@ -101,17 +142,21 @@ public class FiringSystem implements NKNComponent {
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         if (runtime.milliseconds() - lastTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
             lastTime = runtime.milliseconds();
-            if (targetingSystem.targetVisible()) {
+
+            if (isFiring && artifactSystem.isReady()) {
+                isFiring = false;
+            }
+
+            if (targetingSystem.targetVisible() && !isFiring) {
                 launchSystem.setDistance(targetingSystem.getDistance());
+//                telemetry.addData("setting distance", targetingSystem.getDistance());
             }
         }
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        if (color != null) {
-            telemetry.addData("alliance color", color.name());
-        }
+        telemetry.addData("alliance color", color.name());
     }
 
     public void link(LaunchSystem launchSystem, TargetingSystem targetingSystem, ArtifactSystem artifactSystem) {
@@ -119,4 +164,5 @@ public class FiringSystem implements NKNComponent {
         this.targetingSystem = targetingSystem;
         this.artifactSystem = artifactSystem;
     }
+
 }

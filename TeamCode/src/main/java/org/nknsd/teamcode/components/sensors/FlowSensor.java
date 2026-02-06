@@ -48,6 +48,7 @@ public class FlowSensor implements NKNComponent {
         } else {
             configureSensor();
         }
+        odometry.resetTracking();
         return true;
     }
 
