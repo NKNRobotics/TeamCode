@@ -1,72 +1,34 @@
 package org.nknsd.teamcode.programs.tests.thisYear.peakFinding;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
+import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
+import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
+import org.nknsd.teamcode.components.handlers.color.BallColorInterpreter;
+import org.nknsd.teamcode.components.handlers.color.ColorReader;
+import org.nknsd.teamcode.components.handlers.launch.LaunchSystem;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.srs.PeakFinder;
-import org.nknsd.teamcode.components.handlers.srs.PeakTargetState;
-import org.nknsd.teamcode.components.handlers.srs.SRSHub;
+import org.nknsd.teamcode.components.handlers.srs.PeakPointer;
 import org.nknsd.teamcode.components.handlers.srs.SRSHubHandler;
+import org.nknsd.teamcode.components.handlers.srs.SRSIntakeState;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
+import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
-import org.nknsd.teamcode.components.utility.IntPoint;
 import org.nknsd.teamcode.components.utility.StateMachine;
-import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name="PeakTargetingTest", group = "Tests")
+@TeleOp(name = "PeakTargetingTest", group = "Tests")
 public class PeakTargetTester extends NKNProgram {
-    private class PeakTargetTestState extends StateMachine.State{
 
-        private final PowerInputMixer powerInputMixer;
-        private final AbsolutePosition absPos;
-        private final SRSHubHandler srsHubHandler;
-        private final PeakFinder peakFinder;
-
-        public PeakTargetTestState(PowerInputMixer powerInputMixer, AbsolutePosition absPos, SRSHubHandler srsHubHandler, PeakFinder peakFinder) {
-            this.powerInputMixer = powerInputMixer;
-            this.absPos = absPos;
-            this.srsHubHandler = srsHubHandler;
-            this.peakFinder = peakFinder;
-        }
-
-        //        private final PidController pidController;
-
-        public double lastRunTime = -5000;
-        @Override
-        protected void run(ElapsedTime runtime, Telemetry telemetry) {
-            if(lastRunTime < runtime.milliseconds() - 5000){
-                RobotLog.v("AttemptedTargeting");
-                if(!PeakTargetState.killIntakeTargeting){
-                    PeakTargetState.killIntakeTargeting = true;
-                } else {
-                    PeakTargetState.killIntakeTargeting = false;
-                    IntPoint point = peakFinder.getPeak(srsHubHandler.getNormalizedDists());
-                    StateMachine.INSTANCE.startAnonymous(new PeakTargetState(point, powerInputMixer, absPos));
-                    lastRunTime = runtime.milliseconds();
-                }
-            }
-        }
-
-        @Override
-        protected void started() {
-        RobotLog.v("PeakTestStateStarted");
-        }
-
-        @Override
-        protected void stopped() {
-
-        }
-    }
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
 
@@ -76,6 +38,8 @@ public class PeakTargetTester extends NKNProgram {
         components.add(absolutePowerMixer);
         MecanumMotorMixer mecanumMotorMixer = new MecanumMotorMixer();
         components.add(mecanumMotorMixer);
+        AutoPositioner autoPositioner = new AutoPositioner();
+        components.add(autoPositioner);
 
         FlowSensor flowSensor1 = new FlowSensor("RODOS");
         FlowSensor flowSensor2 = new FlowSensor("LODOS");
@@ -88,16 +52,39 @@ public class PeakTargetTester extends NKNProgram {
         components.add(srsHubHandler);
 
         PeakFinder peakFinder = new PeakFinder();
+        PeakPointer peakPointer = new PeakPointer(peakFinder, srsHubHandler, absolutePosition, autoPositioner);
+        components.add(peakPointer);
 
         components.add(StateMachine.INSTANCE);
 
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);
+        autoPositioner.link(powerInputMixer, absolutePosition);
+
+        ColorReader colorReader = new ColorReader("ColorSensor");
+        components.add(colorReader);
+        BallColorInterpreter ballColorInterpreter = new BallColorInterpreter(10, 0.01);
+        components.add(ballColorInterpreter);
+
+        SlotTracker slotTracker = new SlotTracker();
+        components.add(slotTracker);
+        telemetryEnabled.add(slotTracker);
+
+        MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
+        components.add(microwaveScoopHandler);
+
+        ArtifactSystem artifactSystem = new ArtifactSystem();
+        artifactSystem.link(microwaveScoopHandler, slotTracker, null);
+
+
+
 
         telemetryEnabled.add(powerInputMixer);
         telemetryEnabled.add(srsHubHandler);
         telemetryEnabled.add(absolutePosition);
+        telemetryEnabled.add(peakPointer);
 
-        StateMachine.INSTANCE.startAnonymous(new PeakTargetTestState(powerInputMixer, absolutePosition, srsHubHandler, peakFinder));
+        StateMachine.INSTANCE.addState("intake", new SRSIntakeState(peakPointer,absolutePosition, autoPositioner, true, microwaveScoopHandler, slotTracker, artifactSystem));
+        StateMachine.INSTANCE.startState("intake");
     }
 }

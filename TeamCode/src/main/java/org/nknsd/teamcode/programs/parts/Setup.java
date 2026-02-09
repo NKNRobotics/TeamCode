@@ -11,6 +11,9 @@ import org.nknsd.teamcode.components.handlers.launch.LaunchSystem;
 import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
 import org.nknsd.teamcode.components.handlers.launch.TrajectoryHandler;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
+import org.nknsd.teamcode.components.handlers.srs.PeakFinder;
+import org.nknsd.teamcode.components.handlers.srs.PeakPointer;
+import org.nknsd.teamcode.components.handlers.srs.SRSHubHandler;
 import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
 import org.nknsd.teamcode.components.handlers.vision.TargetingSystem;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
@@ -32,6 +35,7 @@ public class Setup extends ProgramPart {
     private ArtifactSystem artifactSystem;
     private PowerInputMixer powerInputMixer;
     private BalancedLiftHandler balancedLiftHandler;
+    private PeakPointer peakPointer;
 
     public PowerInputMixer getPowerInputMixer() {
         return powerInputMixer;
@@ -45,6 +49,10 @@ public class Setup extends ProgramPart {
 
     public LaunchSystem getLaunchSystem() {
         return launchSystem;
+    }
+
+    public PeakPointer getPeakPointer() {
+        return peakPointer;
     }
 
     public TargetingSystem getTargetingSystem() {
@@ -94,9 +102,9 @@ public class Setup extends ProgramPart {
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);
 
-         launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
+        launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
 
-         firingSystem = new FiringSystem();
+        firingSystem = new FiringSystem();
         components.add(firingSystem);
 //        telemetryEnabled.add(firingSystem);
 
@@ -114,7 +122,7 @@ public class Setup extends ProgramPart {
         MicrowaveScoopHandler microwaveScoopHandler = new MicrowaveScoopHandler();
         components.add(microwaveScoopHandler);
 
-         artifactSystem = new ArtifactSystem();
+        artifactSystem = new ArtifactSystem();
 
 
 //        driving
@@ -122,7 +130,7 @@ public class Setup extends ProgramPart {
         components.add(flowSensor1);
         FlowSensor flowSensor2 = new FlowSensor("LODOS");
         components.add(flowSensor2);
-         absolutePosition = new AbsolutePosition(flowSensor1, flowSensor2);
+        absolutePosition = new AbsolutePosition(flowSensor1, flowSensor2);
         components.add(absolutePosition);
         telemetryEnabled.add(absolutePosition);
 
@@ -133,15 +141,15 @@ public class Setup extends ProgramPart {
         AbsolutePowerMixer absolutePowerMixer = new AbsolutePowerMixer();
         components.add(absolutePowerMixer);
 
-         powerInputMixer = new PowerInputMixer();
+        powerInputMixer = new PowerInputMixer();
         components.add(powerInputMixer);
 
-         autoPositioner = new AutoPositioner();
+        autoPositioner = new AutoPositioner();
         components.add(autoPositioner);
 
 
 //        apriltag tracking
-         aprilTagSensor = new AprilTagSensor();
+        aprilTagSensor = new AprilTagSensor();
         components.add(aprilTagSensor);
         telemetryEnabled.add(aprilTagSensor);
 
@@ -149,7 +157,7 @@ public class Setup extends ProgramPart {
         components.add(basketLocator);
 //        telemetryEnabled.add(basketLocator);
 
-         targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
+        targetingSystem = new TargetingSystem(RobotVersion.INSTANCE.aprilTargetingPid);
         components.add(targetingSystem);
         telemetryEnabled.add(targetingSystem);
 
@@ -158,13 +166,20 @@ public class Setup extends ProgramPart {
         components.add(basketLocator);
 
 
+        SRSHubHandler srsHubHandler = new SRSHubHandler();
+        components.add(srsHubHandler);
+
+        PeakFinder peakFinder = new PeakFinder();
+        peakPointer = new PeakPointer(peakFinder, srsHubHandler, absolutePosition, autoPositioner);
+        components.add(peakPointer);
+
 
 //        all links
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, powerInputMixer, absolutePosition);
         basketLocator.link(aprilTagSensor);
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
-        absolutePowerMixer.link(mecanumMotorMixer,absolutePosition);
+        absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);
         ballColorInterpreter.link(colorReader);
         launchSystem.link(trajectoryHandler, launcherHandler);
         firingSystem.link(launchSystem, targetingSystem, artifactSystem);

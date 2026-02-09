@@ -31,35 +31,36 @@ public class SRSHubHandler implements NKNComponent {
         }
         return distArray;
     }
-    private short[][] getNewMean(short[][] currentDists) {
-        for(int i = 0; i < 64; i++){
-            int x = 7 - i / 8;
-            int y = i % 8;
-             distMeans[x][y] = (short) ((distMeans[x][y] + currentDists[x][y]) / 2);
+
+    private void getNewMean(short[][] currentDists) {
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                distMeans[x][y] = (short) ((distMeans[x][y] + currentDists[x][y]) / 2);
+            }
         }
-        return distMeans;
     }
-    public short[][] getNormalizedDists(){
+
+    public short[][] getNormalizedDists() {
         getDistances();
         short[][] normalDists = new short[8][8];
-        for(int y = 0; y < 8; y++){
-            for(int x = 0; x < 8; x++){
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
                 normalDists[x][y] = (short) ((distArray[x][y] - distMeans[x][y]) * -1);
             }
         }
         return normalDists;
     }
 
-    public DoublePoint ballLocation(){
-        DoublePoint thePlaceOfBallResting = new DoublePoint(10,10);
+    public DoublePoint ballLocation() {
+        DoublePoint thePlaceOfBallResting = new DoublePoint(10, 10);
         short[][] normalDists;
         normalDists = getNormalizedDists();
         double highestPoint = -30;
 
-        for(int y = 0; y < 8; y++){
-            for(int x = 0; x < 8; x++){
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
                 //greater than because the sensor reads negative values as high
-                if (highestPoint > normalDists[x][y]){
+                if (highestPoint > normalDists[x][y]) {
                     highestPoint = normalDists[x][y];
 
                     thePlaceOfBallResting.setX(x - 3.5);
@@ -69,6 +70,7 @@ public class SRSHubHandler implements NKNComponent {
         }
         return thePlaceOfBallResting;
     }
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         // All ports default to NONE, buses default to empty
@@ -84,17 +86,18 @@ public class SRSHubHandler implements NKNComponent {
     }
 
     private int timesSampled = 0;
+
     @Override
     public void init_loop(ElapsedTime runtime, Telemetry telemetry) {
         telemetry.addLine("Waiting for SRSHub");
         while (!hub.ready()) ;
         telemetry.addLine("SRSHub Ready!");
-        if(runtime.milliseconds() >= previousSampleTime + sampleDelay){
+        if (runtime.milliseconds() >= previousSampleTime + sampleDelay) {
             previousSampleTime = runtime.milliseconds();
             getNewMean(getDistances());
             timesSampled++;
         }
-        if (timesSampled >= sampleMinimum){
+        if (timesSampled >= sampleMinimum) {
             telemetry.addLine("Normal Values Found");
         }
     }

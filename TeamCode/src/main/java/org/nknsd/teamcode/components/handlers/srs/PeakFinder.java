@@ -52,10 +52,10 @@ public class PeakFinder {
             }
         }
         if(bestVal >= PEAK_THRESHOLD) {
-            RobotLog.v(Arrays.toString(data), bestPos);
+//            RobotLog.v(Arrays.toString(data), bestPos);
             return calculatePeak(data, bestPos);
         }
-        return new IntPoint(-10,-10);
+        return null;
     }
     private IntPoint calculatePeak(short[][] data, IntPoint currentPeak){
         for(IntPoint offset : CENTRAL_SPIRAL){
