@@ -84,8 +84,11 @@ public class FiringSystem implements NKNComponent {
     }
 
     public void fireAll() {
-        if (autoLocked && targetingSystem.targetVisible()) {
+        RobotLog.v("fireAll started");
+
+        if (pattern != ID.NONE){
             BallColor[] patternColors;
+            RobotLog.v("detectedPattern" + pattern.ordinal());
             switch (pattern.ordinal()) {
                 case 0:
                     patternColors = new BallColor[]{BallColor.PURPLE, BallColor.GREEN, BallColor.PURPLE};
@@ -100,13 +103,14 @@ public class FiringSystem implements NKNComponent {
                     patternColors = new BallColor[]{BallColor.PURPLE, BallColor.PURPLE, BallColor.PURPLE};
             }
             artifactSystem.launchAll(patternColors);
+            RobotLog.v("LaunchAll started with seeing pattern: " + patternColors[0] + patternColors[1] + patternColors[2]);
             isFiring = true;
             return;
         }
-
         if (isReady()) {
             isFiring = true;
             artifactSystem.launchAll();
+            RobotLog.v("LaunchAll started without seeing pattern");
         }
     }
 

@@ -28,6 +28,7 @@ public class AutoReadPatternState extends StateMachine.State {
         pattern = aprilTagSensor.getVisionResultPattern().id;
         if (pattern == ID.GPP || pattern == ID.PGP || pattern == ID.PPG) {
             firingSystem.setPattern(pattern);
+            RobotLog.v("patternIs " + pattern);
 
             StateMachine.INSTANCE.stopAnonymous(this);
         }

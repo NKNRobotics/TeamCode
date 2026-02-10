@@ -18,12 +18,14 @@ import org.nknsd.teamcode.components.handlers.color.ColorReader;
 
 import org.nknsd.teamcode.components.handlers.launch.LaunchSystem;
 import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
+import org.nknsd.teamcode.components.handlers.launch.TrajectoryHandler;
+import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
-@TeleOp(name = "ArtifactLaunchTest", group = "Tests") @Disabled
+@TeleOp(name = "ArtifactLaunchTest", group = "Tests")
 public class ArtifactLaunchingTester extends NKNProgram {
 
     ArtifactSystem artifactSystem;
@@ -32,6 +34,7 @@ public class ArtifactLaunchingTester extends NKNProgram {
     private MicrowaveScoopHandler microwaveScoopHandler;
     private MockSlotTracker slotTracker;
     private BallColorInterpreter ballColorInterpreter;
+    private LaunchSystem launchSystem;
 
 
 //    private class LaunchGreenTestState extends StateMachine.State {
@@ -87,6 +90,8 @@ public class ArtifactLaunchingTester extends NKNProgram {
         slotTracker = new MockSlotTracker(balls);
         components.add(slotTracker);
 
+        launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 3, 16, 132);
+
         components.add(StateMachine.INSTANCE);
         telemetryEnabled.add(StateMachine.INSTANCE);
 
@@ -101,9 +106,13 @@ public class ArtifactLaunchingTester extends NKNProgram {
 
         launcherHandler = new LauncherHandler(.95,1.10);
         components.add(launcherHandler);
+        TrajectoryHandler trajectoryHandler = new TrajectoryHandler();
+        components.add(trajectoryHandler);
+
 
         //linking
-//        artifactSystem.link(microwaveScoopHandler, slotTracker);
+        launchSystem.link(trajectoryHandler, launcherHandler);
+        artifactSystem.link(microwaveScoopHandler, slotTracker, launchSystem);
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         ballColorInterpreter.link(colorReader);
 

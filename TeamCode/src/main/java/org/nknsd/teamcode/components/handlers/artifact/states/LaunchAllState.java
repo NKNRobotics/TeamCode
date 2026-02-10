@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.components.handlers.artifact.states;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
@@ -30,11 +31,24 @@ public class LaunchAllState extends StateMachine.State {
     }
 
     boolean endNow = false;
+    private boolean start;
+    private double startTime;
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if (microwaveScoopHandler.isDone() && launchSystem.isReady()){
+        if(start){
+            startTime = runtime.milliseconds();
+            start = false;
+        }
+//        RobotLog.v("MicrowaveReady: " + microwaveScoopHandler.isDone());
+//        RobotLog.v("LaunchReady: " + launchSystem.isReady());
+        if (microwaveScoopHandler.isDone()
+        && launchSystem.isReady()
+            ){
             if (!endNow) {
+                RobotLog.v("Launch all state moving to " + slotOrder[timesRan]);
+
+                RobotLog.v("LaunchAll timetostartLaunch: " + (runtime.milliseconds() - startTime) + "  TimeElapsed: " + runtime.milliseconds());
                 microwaveScoopHandler.doScoopLaunch();
                 slotTracker.clearSlot(slotOrder[timesRan]);
                 launchSystem.resetConfidence();
@@ -50,7 +64,9 @@ public class LaunchAllState extends StateMachine.State {
 
     @Override
     protected void started() {
+        RobotLog.v("LaunchAllStarted truly with pattern " + slotOrder[0] + " " + slotOrder[1] + " " + slotOrder[2]);
         if (timesRan >= 0 && timesRan <= 2) {
+            RobotLog.v("LaunchState moving microwave to " + slotOrder[timesRan]);
             microwaveScoopHandler.setMicrowavePosition(MicrowavePositions.values()[slotOrder[timesRan] + 3]);
         }
 
