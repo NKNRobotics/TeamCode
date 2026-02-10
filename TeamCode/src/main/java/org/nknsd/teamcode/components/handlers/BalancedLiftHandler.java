@@ -27,6 +27,9 @@ public class BalancedLiftHandler implements NKNComponent {
     private final double krfl = 0.5, krbl = 0.2, krbr = -0.5;
 
     private IMUSensor imuSensor;
+
+    private boolean justStarted = false;
+    private double runtimeAtStart = 0;
     private boolean isLifting = false;
     private double pitch, roll;
 
@@ -68,24 +71,35 @@ public class BalancedLiftHandler implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        if (isLifting){
-             pitch = imuSensor.getPitch() - pitchTarget;
-             roll = imuSensor.getRoll() - rollTarget;
+        if (isLifting) {
+            if (justStarted) {
+                if (runtimeAtStart == 0) {
+                    runtimeAtStart = runtime.milliseconds();
+                } else if (runtime.milliseconds() - runtimeAtStart > 500) {
+                    justStarted = false;
+                }
 
-            double flPower = flInitial + (pitch * kpfl + roll * krfl);
-            double blPower = blInitial + (pitch * kpbl + roll * krbl);
-            double brPower = brInitial + (pitch * kpbr + roll * krbr);
+                imuSensor.updateRollingAverage(false);
+            } else {
 
-            flLift.setPower(Range.clip(flPower, 0, 1));
-            blLift.setPower(Range.clip(blPower, 0, 1));
-            brLift.setPower(Range.clip(brPower, 0, 1));
+                pitch = imuSensor.getPitch() - pitchTarget;
+                roll = imuSensor.getRoll() - rollTarget;
+
+                double flPower = flInitial + (pitch * kpfl + roll * krfl);
+                double blPower = blInitial + (pitch * kpbl + roll * krbl);
+                double brPower = brInitial + (pitch * kpbr + roll * krbr);
+
+                flLift.setPower(Range.clip(flPower, 0, 1));
+                blLift.setPower(Range.clip(blPower, 0, 1));
+                brLift.setPower(Range.clip(brPower, 0, 1));
+            }
         }
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
         telemetry.addData("lifting", isLifting);
-        if(isLifting){
+        if (isLifting) {
             telemetry.addData("FLlift",flLift.getPower());
             telemetry.addData("BLlift",blLift.getPower());
             telemetry.addData("BRlift",brLift.getPower());
@@ -99,7 +113,11 @@ public class BalancedLiftHandler implements NKNComponent {
 
     public void startLift(){
         isLifting = true;
-        imuSensor.relocatilizeIMUinGame();
+
+        imuSensor.updateRollingAverage(true);
+
+        justStarted = true;
+
 //        imuSensor.initIMU();
 //        imuSensor.resetIMU();
     }

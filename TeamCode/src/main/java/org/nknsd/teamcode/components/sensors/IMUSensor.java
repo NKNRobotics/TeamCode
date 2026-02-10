@@ -33,10 +33,7 @@ public class IMUSensor implements NKNComponent {
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         this.hardwareMap = hardwareMap;
         initIMU();
-        if (imu == null)
-            return false;
-
-        return true;
+        return imu != null;
     }
 
     @Override
@@ -50,9 +47,14 @@ public class IMUSensor implements NKNComponent {
         yOffset = imu.getGravity().yAccel;
     }
 
-    public void relocatilizeIMUinGame(){
-        xOffset = imu.getGravity().xAccel;
-        yOffset = imu.getGravity().yAccel;
+    public void updateRollingAverage(boolean firstTime){
+        if (firstTime) {
+            xOffset = imu.getGravity().xAccel;
+            yOffset = imu.getGravity().yAccel;
+        } else {
+            xOffset = (xOffset + imu.getGravity().xAccel) / 2;
+            yOffset = (yOffset + imu.getGravity().yAccel) / 2;
+        }
     }
 
     @Override
