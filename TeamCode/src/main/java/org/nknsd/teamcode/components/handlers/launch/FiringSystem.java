@@ -85,9 +85,8 @@ public class FiringSystem implements NKNComponent {
 
     public void fireAll() {
         RobotLog.v("fireAll started");
-        if (autoLocked
-//                && targetingSystem.targetVisible()
-        ) {
+
+        if (pattern != ID.NONE){
             BallColor[] patternColors;
             RobotLog.v("detectedPattern" + pattern.ordinal());
             switch (pattern.ordinal()) {
@@ -108,7 +107,6 @@ public class FiringSystem implements NKNComponent {
             isFiring = true;
             return;
         }
-
         if (isReady()) {
             isFiring = true;
             artifactSystem.launchAll();

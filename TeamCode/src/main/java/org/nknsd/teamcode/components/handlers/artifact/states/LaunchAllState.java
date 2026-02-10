@@ -31,12 +31,24 @@ public class LaunchAllState extends StateMachine.State {
     }
 
     boolean endNow = false;
+    private boolean start;
+    private double startTime;
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        if (microwaveScoopHandler.isDone() && launchSystem.isReady()){
+        if(start){
+            startTime = runtime.milliseconds();
+            start = false;
+        }
+//        RobotLog.v("MicrowaveReady: " + microwaveScoopHandler.isDone());
+//        RobotLog.v("LaunchReady: " + launchSystem.isReady());
+        if (microwaveScoopHandler.isDone()
+        && launchSystem.isReady()
+            ){
             if (!endNow) {
                 RobotLog.v("Launch all state moving to " + slotOrder[timesRan]);
+
+                RobotLog.v("LaunchAll timetostartLaunch: " + (runtime.milliseconds() - startTime) + "  TimeElapsed: " + runtime.milliseconds());
                 microwaveScoopHandler.doScoopLaunch();
                 slotTracker.clearSlot(slotOrder[timesRan]);
                 launchSystem.resetConfidence();

@@ -23,10 +23,17 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
         private boolean scoopResting = false;
 
+        private boolean onStart;
+
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
+            if(onStart){
+                RobotLog.v("started scoop launch at:" + runtime.milliseconds());
+                onStart = false;
+            }
 //            RobotLog.v("scoopstate running");
             if (runtime.milliseconds() > (startTimeMS + SCOOPACTIONTIMEMS)) {
+                RobotLog.v("stopped scoop launch at: " + runtime.milliseconds());
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
             // halfway through the scoop will start coming back down
@@ -39,6 +46,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
         @Override
         protected void started() {
+            onStart = true;
             scoopServo.setPosition(SERVO_LAUNCH_POS);
             scoopResting = false;
         }
@@ -113,7 +121,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
     public void toggleIntake(boolean startSpinning) {
         intaking = startSpinning;
-        spinner.setPower(startSpinning ? -1 : 0);
+        spinner.setPower(startSpinning ? 1 : 0);
     }
 
     public boolean isDone() {
