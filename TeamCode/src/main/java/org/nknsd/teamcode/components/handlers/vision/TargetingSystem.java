@@ -60,7 +60,7 @@ public class TargetingSystem implements NKNComponent {
             vel = 0;
         }
         targetEnabled = enable;
-        RobotLog.v("autotargeting " + enable);
+//        RobotLog.v("autotargeting " + enable);
         autoPositioner.enableAutoPositioning(false, false, enable);
     }
 

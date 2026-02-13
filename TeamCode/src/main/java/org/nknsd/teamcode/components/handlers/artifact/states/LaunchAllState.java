@@ -1,6 +1,7 @@
 package org.nknsd.teamcode.components.handlers.artifact.states;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
@@ -43,6 +44,7 @@ public class LaunchAllState extends StateMachine.State {
                 if (timesRan < 2) {
                     StateMachine.INSTANCE.startAnonymous(new LaunchAllState(slotOrder, artifactSystem, launchSystem, slotTracker, microwaveScoopHandler, timesRan + 1));
                 } else {artifactSystem.setIsLaunching(false);}
+                RobotLog.v("LaunchAllState ended at: " + runtime.milliseconds());
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
@@ -51,6 +53,7 @@ public class LaunchAllState extends StateMachine.State {
     @Override
     protected void started() {
         if (timesRan >= 0 && timesRan <= 2) {
+            RobotLog.v("LaunchAll moving to launchPos: " + slotOrder[timesRan]);
             microwaveScoopHandler.setMicrowavePosition(MicrowavePositions.values()[slotOrder[timesRan] + 3]);
         }
 
