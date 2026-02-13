@@ -112,7 +112,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
     public void toggleIntake(boolean startSpinning) {
         intaking = startSpinning;
-        spinner.setPower(startSpinning ? -1 : 0);
+        spinner.setPower(startSpinning ? 1 : 0);
     }
 
     public boolean isDone() {
