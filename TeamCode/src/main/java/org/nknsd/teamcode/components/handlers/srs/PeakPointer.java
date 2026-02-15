@@ -50,8 +50,7 @@ public class PeakPointer implements NKNComponent {
     public void enableTargeting(boolean targetingEnabled, boolean eatEnabled) {
         this.targetingEnabled = targetingEnabled;
         this.eatEnabled = eatEnabled;
-//        positioner.enableAutoPositioning(eatEnabled, eatEnabled, targetingEnabled); // for when we merge
-        if(!RobotVersion.isAutonomous()){positioner.enableAutoPositioning(targetingEnabled);}
+        positioner.enableAutoPositioning(eatEnabled, eatEnabled, targetingEnabled);
         positioner.setTargetH(position.getPosition().h, RobotVersion.INSTANCE.pidControllerH);
         positioner.setTargetX(position.getPosition().x, RobotVersion.INSTANCE.pidControllerX);
         positioner.setTargetY(position.getPosition().y, RobotVersion.INSTANCE.pidControllerY);

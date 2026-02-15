@@ -231,7 +231,7 @@ public class Setup extends ProgramPart {
         }
 
         if(RobotVersion.isAutonomous()){
-            autoPositioner.enableAutoPositioning(true);
+            autoPositioner.enableAutoPositioning(true,true,true);
         }
     }
 }
