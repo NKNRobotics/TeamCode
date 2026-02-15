@@ -29,7 +29,7 @@ public class ScanState extends StateMachine.State {
 
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
-        RobotLog.v("slot color " + slotTracker.getSlotColor(timesRan));
+//        RobotLog.v("slot color " + slotTracker.getSlotColor(timesRan));
         if (override) {
             if (microwaveScoopHandler.isDone()) {
                 if (timesRan < 2) {

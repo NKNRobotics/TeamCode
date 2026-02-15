@@ -12,7 +12,7 @@ public class AngleDistCalculator {
 
     public static double calculateDistance(SensorGridPoint point) {
         double x = point.getX(), y = point.getY();
-        return Math.sqrt(x * x + y * y);
+        return Math.sqrt(x * x + y * y) + 1;
     }
 }
 

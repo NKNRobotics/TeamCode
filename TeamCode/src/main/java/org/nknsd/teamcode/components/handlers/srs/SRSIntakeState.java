@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.components.handlers.srs;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -9,6 +10,8 @@ import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
 import org.nknsd.teamcode.components.handlers.artifact.states.IntakeBallState;
 import org.nknsd.teamcode.components.handlers.color.BallColor;
+import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
+import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
@@ -16,6 +19,9 @@ import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 public class SRSIntakeState extends StateMachine.State {
 
     final private PeakPointer peakPointer;
+    private final AutoPositioner positioner;
+    final private AbsolutePosition position;
+
     final private boolean eat;
     final private boolean killSelf;
 
@@ -30,8 +36,10 @@ public class SRSIntakeState extends StateMachine.State {
     private ArtifactSystem artifactSystem;
 
 
-    public SRSIntakeState(PeakPointer peakPointer, boolean killSelf, PidController pidH, PidController pidXY, String[] toStopOnEnd, String[] toStartOnEnd) {
+    public SRSIntakeState(PeakPointer peakPointer, AutoPositioner positioner, AbsolutePosition position, boolean killSelf, PidController pidH, PidController pidXY, String[] toStopOnEnd, String[] toStartOnEnd) {
         this.peakPointer = peakPointer;
+        this.positioner = positioner;
+        this.position = position;
         this.killSelf = killSelf;
         this.pidH = pidH;
         this.pidXY = pidXY;
@@ -40,8 +48,10 @@ public class SRSIntakeState extends StateMachine.State {
         eat = false;
     }
 
-    public SRSIntakeState(PeakPointer peakPointer, boolean killSelf, PidController pidH, PidController pidXY, MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, ArtifactSystem artifactSystem, String[] toStopOnEnd, String[] toStartOnEnd) {
+    public SRSIntakeState(PeakPointer peakPointer, AutoPositioner positioner, AbsolutePosition position, boolean killSelf, PidController pidH, PidController pidXY, MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, ArtifactSystem artifactSystem, String[] toStopOnEnd, String[] toStartOnEnd) {
         this.peakPointer = peakPointer;
+        this.positioner = positioner;
+        this.position = position;
         this.killSelf = killSelf;
         this.pidH = pidH;
         this.pidXY = pidXY;
@@ -57,6 +67,14 @@ public class SRSIntakeState extends StateMachine.State {
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
         if (killSelf && peakPointer.targetAcquired() && !eat) {
             StateMachine.INSTANCE.stopAnonymous(this);
+        }
+        if(eat && !peakPointer.ballVisible()){
+            if(positioner.getError().h < 1 && positioner.getError().x < 1 && positioner.getError().y < 1){
+//                RobotLog.v("in position");
+                SparkFunOTOS.Pose2D robotPos = position.getPosition();
+                positioner.setTargetX(robotPos.x - Math.sin(robotPos.h) * 2, pidXY);
+                positioner.setTargetY(robotPos.y - Math.cos(robotPos.h) * 2, pidXY);
+            }
         }
     }
 

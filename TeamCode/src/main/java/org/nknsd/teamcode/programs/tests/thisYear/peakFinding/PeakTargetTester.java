@@ -32,9 +32,9 @@ public class PeakTargetTester extends NKNProgram {
         telemetryEnabled.add(peakPointer);
 
         StateMachine.INSTANCE.addState("scan slots", new AutoSlotCheck(setup.getArtifactSystem(), new String[]{}, new String[]{"intake 1"}));
-        StateMachine.INSTANCE.addState("intake 1", new SRSIntakeState(peakPointer, true, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{"intake 2"}));
-        StateMachine.INSTANCE.addState("intake 2", new SRSIntakeState(peakPointer, true, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{"intake 3"}));
-        StateMachine.INSTANCE.addState("intake 3", new SRSIntakeState(peakPointer, true, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("intake 1", new SRSIntakeState(peakPointer, setup.getAutoPositioner(), setup.getAbsolutePosition(), true, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{"intake 2"}));
+        StateMachine.INSTANCE.addState("intake 2", new SRSIntakeState(peakPointer, setup.getAutoPositioner(), setup.getAbsolutePosition(), true, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{"intake 3"}));
+        StateMachine.INSTANCE.addState("intake 3", new SRSIntakeState(peakPointer, setup.getAutoPositioner(), setup.getAbsolutePosition(), true, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{}));
 
         StateMachine.INSTANCE.startState("scan slots");
     }
