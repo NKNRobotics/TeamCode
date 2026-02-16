@@ -1,8 +1,6 @@
 package org.nknsd.teamcode.programs.parts;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-
-import org.nknsd.teamcode.components.handlers.BalancedLiftHandler;
+import org.nknsd.teamcode.components.handlers.lifting.BalancedLiftHandler;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.artifact.SlotTracker;
@@ -43,7 +41,7 @@ public class Setup extends ProgramPart {
         return rightLED;
     }
 
-    private LEDIndicator leftLED,rightLED;
+    private LEDIndicator leftLED, rightLED;
 
     private LaunchSystem launchSystem;
     private FiringSystem firingSystem;
@@ -135,8 +133,8 @@ public class Setup extends ProgramPart {
 
 
 //      leds
-        leftLED= new LEDIndicator("ledleftgreen", "ledleftred");
-        rightLED= new LEDIndicator("ledrightgreen", "ledrightred");
+        leftLED = new LEDIndicator("ledleftgreen", "ledleftred");
+        rightLED = new LEDIndicator("ledrightgreen", "ledrightred");
 
 
         components.add(leftLED);
@@ -239,8 +237,10 @@ public class Setup extends ProgramPart {
         components.add(srsHubHandler);
 
         PeakFinder peakFinder = new PeakFinder();
+
         peakPointer = new PeakPointer(peakFinder, srsHubHandler, autoPositioner, absolutePosition);
         components.add(peakPointer);
+        peakPointer.setLEDs(leftLED, rightLED);
 
         telemetryEnabled.add(peakPointer);
 
@@ -248,7 +248,7 @@ public class Setup extends ProgramPart {
 //        all links
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, absolutePosition, autoPositioner);
-        targetingSystem.addLEDs(leftLED,rightLED);
+        targetingSystem.addLEDs(leftLED, rightLED);
         basketLocator.link(aprilTagSensor);
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);

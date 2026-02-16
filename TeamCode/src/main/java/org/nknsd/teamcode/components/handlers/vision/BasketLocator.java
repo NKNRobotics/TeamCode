@@ -94,15 +94,19 @@ public class BasketLocator implements NKNComponent {
 
 //        RobotLog.v("min: " + result.minX + ", max: " + result.maxX + ", center: " + result.centerX);
 
-        if (result.skew < -0.05) {
+        double distance = distanceInterpolater.getValue(result.height);
+
+        if (distance > 84) {
+            if (result.skew < -0.05) {
 //            RobotLog.v("skewing! max");
-            return new BasketOffset(result.maxX, result.skew, distanceInterpolater.getValue(result.height));
-        } else if (result.skew > 0.05) {
+                return new BasketOffset(result.maxX, result.skew, distance);
+            } else if (result.skew > 0.05) {
 //            RobotLog.v("skewing! min");
-            return new BasketOffset(result.minX, result.skew, distanceInterpolater.getValue(result.height));
+                return new BasketOffset(result.minX, result.skew, distance);
+            }
         }
 //        RobotLog.v("center " + result.centerX);
-        return new BasketOffset(result.centerX, result.skew, distanceInterpolater.getValue(result.height));
+        return new BasketOffset(result.centerX, result.skew, distance);
     }
 
     public void link(AprilTagSensor aprilTagSensor) {

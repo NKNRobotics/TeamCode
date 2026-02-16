@@ -1,4 +1,4 @@
-package org.nknsd.teamcode.components.handlers;
+package org.nknsd.teamcode.components.handlers.lifting;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;

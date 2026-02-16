@@ -56,11 +56,12 @@ public class LaunchAllState extends StateMachine.State {
             RobotLog.v("LaunchAll moving to launchPos: " + slotOrder[timesRan]);
             microwaveScoopHandler.setMicrowavePosition(MicrowavePositions.values()[slotOrder[timesRan] + 3]);
         }
-
+        microwaveScoopHandler.toggleIntake(true);
     }
 
     @Override
     protected void stopped() {
+        microwaveScoopHandler.toggleIntake(false);
 //        RobotLog.v("stoppint launch all #" + timesRan);
     }
 }

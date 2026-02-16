@@ -23,8 +23,8 @@ public class SRSIntakeState extends StateMachine.State {
     final private AbsolutePosition position;
 
     final private boolean eat;
-    final private boolean killSelf;
-    final private int timerMS;
+    final private boolean killSelf; //to kill when targeted or when intaked, depending on whether or not we are eating. This will NOT affect the timer
+    final private int timerMS; //set to 0 for infinite time
 
     private final PidController pidH;
     private final PidController pidXY;
@@ -35,6 +35,7 @@ public class SRSIntakeState extends StateMachine.State {
     private MicrowaveScoopHandler microwaveScoopHandler;
     private SlotTracker slotTracker;
     private ArtifactSystem artifactSystem;
+    private IntakeBallState intake;
 
 
     public SRSIntakeState(PeakPointer peakPointer, AutoPositioner positioner, AbsolutePosition position, boolean killSelf, int timerMS, PidController pidH, PidController pidXY, String[] toStopOnEnd, String[] toStartOnEnd) {
@@ -71,13 +72,17 @@ public class SRSIntakeState extends StateMachine.State {
         if (killSelf && peakPointer.targetAcquired() && !eat) {
             StateMachine.INSTANCE.stopAnonymous(this);
         }
-        if(eat && !peakPointer.ballVisible()){
-            if(positioner.getError().h < 1 && positioner.getError().x < 1 && positioner.getError().y < 1){
+        if (eat && !peakPointer.ballVisible()) {
+            if (positioner.getError().h < 1 && positioner.getError().x < 1 && positioner.getError().y < 1) {
 //                RobotLog.v("in position");
                 SparkFunOTOS.Pose2D robotPos = position.getPosition();
                 positioner.setTargetX(robotPos.x - Math.sin(robotPos.h) * 2, pidXY);
                 positioner.setTargetY(robotPos.y - Math.cos(robotPos.h) * 2, pidXY);
             }
+        }
+
+        if (runtime.milliseconds() - startTimeMS > timerMS && timerMS != 0) {
+            StateMachine.INSTANCE.stopAnonymous(intake);
         }
     }
 
@@ -98,9 +103,11 @@ public class SRSIntakeState extends StateMachine.State {
             RobotLog.v("starting srs mode for slot " + slot);
 
             if (killSelf) {
-                StateMachine.INSTANCE.startAnonymous(new IntakeBallState(microwaveScoopHandler, slotTracker, artifactSystem, slot, false, new String[]{name}, new String[]{}));
+                intake = new IntakeBallState(microwaveScoopHandler, slotTracker, artifactSystem, slot, false, new String[]{name}, new String[]{});
+                StateMachine.INSTANCE.startAnonymous(intake);
             } else {
-                StateMachine.INSTANCE.startAnonymous(new IntakeBallState(microwaveScoopHandler, slotTracker, artifactSystem, slot, false, new String[]{}, new String[]{}));
+                intake = new IntakeBallState(microwaveScoopHandler, slotTracker, artifactSystem, slot, false, new String[]{}, new String[]{});
+                StateMachine.INSTANCE.startAnonymous(intake);
             }
         }
     }
@@ -108,6 +115,9 @@ public class SRSIntakeState extends StateMachine.State {
     @Override
     protected void stopped() {
         peakPointer.enableTargeting(false, false);
+        if(eat && !killSelf){
+            StateMachine.INSTANCE.stopAnonymous(intake);
+        }
         for (String stateName : this.toStopOnEnd) {
             StateMachine.INSTANCE.stopState(stateName);
         }

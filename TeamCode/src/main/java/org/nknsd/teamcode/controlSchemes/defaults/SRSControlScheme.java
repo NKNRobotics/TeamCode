@@ -16,7 +16,7 @@ public class SRSControlScheme extends NKNControlScheme {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                return GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad1());
+                return GamePadHandler.GamepadButtons.RIGHT_TRIGGER.detect(gamePadHandler.getGamePad1());
             }
         };
     }
@@ -25,7 +25,7 @@ public class SRSControlScheme extends NKNControlScheme {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                return !GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad1());
+                return !GamePadHandler.GamepadButtons.RIGHT_TRIGGER.detect(gamePadHandler.getGamePad1());
             }
         };
     }

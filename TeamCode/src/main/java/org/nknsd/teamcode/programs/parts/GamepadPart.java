@@ -52,9 +52,11 @@ public class GamepadPart extends ProgramPart {
 
         LiftControlScheme liftControlScheme = new LiftControlScheme();
 
+        SRSDriver srsDriver = new SRSDriver();
+        components.add(srsDriver);
+
         SRSControlScheme srsControlScheme = new SRSControlScheme();
 
-        SRSDriver srsDriver = new SRSDriver();
 
 
         firingDriver.link(gamePadHandler, setup.getFiringSystem(), firingControlScheme);
@@ -65,6 +67,7 @@ public class GamepadPart extends ProgramPart {
         intakeControlScheme.link(gamePadHandler);
         liftDriver.link(gamePadHandler, setup.getBalancedLiftHandler(), liftControlScheme);
         liftControlScheme.link(gamePadHandler);
-        srsDriver.link(gamePadHandler, srsControlScheme, StateMachine.INSTANCE, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem());
+        srsDriver.link(gamePadHandler, srsControlScheme, StateMachine.INSTANCE, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition());
+        srsControlScheme.link(gamePadHandler);
     }
 }

@@ -56,6 +56,9 @@ public class TargetingSystem implements NKNComponent {
     }
 
     public void enableAutoTargeting(boolean enable) {
+        if(targetEnabled == enable){
+            return;
+        }
         if (targetEnabled && !enable) {
             lastOffset = .5;
             vel = 0;
