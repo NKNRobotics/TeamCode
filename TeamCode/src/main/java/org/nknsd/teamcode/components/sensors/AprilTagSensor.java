@@ -150,7 +150,7 @@ public class AprilTagSensor implements NKNComponent {
         }
 
         double centerX = 0, centerY = 0;
-        double minX = 0, maxX = 0;
+        double minX = 1, maxX = 0;
         double top, bottom, left, right;
 
 

@@ -3,6 +3,7 @@ package org.nknsd.teamcode.components.handlers.vision;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
@@ -91,12 +92,16 @@ public class BasketLocator implements NKNComponent {
             return new BasketOffset();
         }
 
-        if (result.skew < -0.05) {
-            return new BasketOffset(result.minX, result.skew, distanceInterpolater.getValue(result.height));
-        } else if (result.skew > 0.05) {
-            return new BasketOffset(result.maxX, result.skew, distanceInterpolater.getValue(result.height));
-        }
+//        RobotLog.v("min: " + result.minX + ", max: " + result.maxX + ", center: " + result.centerX);
 
+        if (result.skew < -0.05) {
+//            RobotLog.v("skewing! max");
+            return new BasketOffset(result.maxX, result.skew, distanceInterpolater.getValue(result.height));
+        } else if (result.skew > 0.05) {
+//            RobotLog.v("skewing! min");
+            return new BasketOffset(result.minX, result.skew, distanceInterpolater.getValue(result.height));
+        }
+//        RobotLog.v("center " + result.centerX);
         return new BasketOffset(result.centerX, result.skew, distanceInterpolater.getValue(result.height));
     }
 

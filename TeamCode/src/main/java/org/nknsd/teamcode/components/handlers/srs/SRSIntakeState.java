@@ -24,6 +24,7 @@ public class SRSIntakeState extends StateMachine.State {
 
     final private boolean eat;
     final private boolean killSelf;
+    final private int timerMS;
 
     private final PidController pidH;
     private final PidController pidXY;
@@ -36,11 +37,12 @@ public class SRSIntakeState extends StateMachine.State {
     private ArtifactSystem artifactSystem;
 
 
-    public SRSIntakeState(PeakPointer peakPointer, AutoPositioner positioner, AbsolutePosition position, boolean killSelf, PidController pidH, PidController pidXY, String[] toStopOnEnd, String[] toStartOnEnd) {
+    public SRSIntakeState(PeakPointer peakPointer, AutoPositioner positioner, AbsolutePosition position, boolean killSelf, int timerMS, PidController pidH, PidController pidXY, String[] toStopOnEnd, String[] toStartOnEnd) {
         this.peakPointer = peakPointer;
         this.positioner = positioner;
         this.position = position;
         this.killSelf = killSelf;
+        this.timerMS = timerMS;
         this.pidH = pidH;
         this.pidXY = pidXY;
         this.toStopOnEnd = toStopOnEnd;
@@ -48,11 +50,12 @@ public class SRSIntakeState extends StateMachine.State {
         eat = false;
     }
 
-    public SRSIntakeState(PeakPointer peakPointer, AutoPositioner positioner, AbsolutePosition position, boolean killSelf, PidController pidH, PidController pidXY, MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, ArtifactSystem artifactSystem, String[] toStopOnEnd, String[] toStartOnEnd) {
+    public SRSIntakeState(PeakPointer peakPointer, AutoPositioner positioner, AbsolutePosition position, boolean killSelf, int timerMS, PidController pidH, PidController pidXY, MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, ArtifactSystem artifactSystem, String[] toStopOnEnd, String[] toStartOnEnd) {
         this.peakPointer = peakPointer;
         this.positioner = positioner;
         this.position = position;
         this.killSelf = killSelf;
+        this.timerMS = timerMS;
         this.pidH = pidH;
         this.pidXY = pidXY;
         this.toStopOnEnd = toStopOnEnd;
