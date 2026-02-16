@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.R;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class StateMachine implements NKNComponent {
     static public abstract class State {
         protected double startTimeMS = -1;
         protected boolean stopping = true;
-        protected  boolean starting = false;
+        protected boolean starting = false;
 
         protected String name;
 
@@ -27,20 +28,22 @@ public class StateMachine implements NKNComponent {
 
         protected abstract void stopped();
 
-        public boolean isRunning(){
+        public boolean isRunning() {
             return !stopping;
         }
     }
 
     public static StateMachine INSTANCE = new StateMachine();
-    public static void RESET(){
+
+    public static void RESET() {
         INSTANCE = new StateMachine();
     }
 
     final private HashMap<String, State> stateMap = new HashMap<>();
     final private List<State> runList = new LinkedList<>();
 
-    private StateMachine(){}
+    private StateMachine() {
+    }
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
@@ -71,7 +74,7 @@ public class StateMachine implements NKNComponent {
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         List<State> copyList = new LinkedList<>(runList);
         for (State state : copyList) {
-            if (state.stopping){
+            if (state.stopping) {
                 continue;
             }
             if (state.starting) {
@@ -80,7 +83,12 @@ public class StateMachine implements NKNComponent {
                 state.started();
                 state.starting = false;
             }
+            double cuurentMS = runtime.milliseconds();
             state.run(runtime, telemetry);
+            cuurentMS = runtime.milliseconds() - cuurentMS;
+            if (cuurentMS > 5) {
+                RobotLog.v("state " + state.name + " took " + cuurentMS);
+            }
         }
     }
 
@@ -91,7 +99,7 @@ public class StateMachine implements NKNComponent {
             nameString = nameString + "|" + state.name;
             nameString = nameString + ", ";
         }
-        telemetry.addData("States",nameString);
+        telemetry.addData("States", nameString);
     }
 
     public void addState(String name, State state) {
@@ -120,13 +128,14 @@ public class StateMachine implements NKNComponent {
         runList.remove(state);
     }
 
-    public void startAnonymous(State state){
-        state.name="anon_"+state.getClass().getSimpleName();
+    public void startAnonymous(State state) {
+        state.name = "anon_" + state.getClass().getSimpleName();
         state.stopping = false;
         state.starting = true;
         runList.add(state);
     }
-    public void stopAnonymous(State state){
+
+    public void stopAnonymous(State state) {
         state.stopped();
         state.stopping = true;
         runList.remove(state);

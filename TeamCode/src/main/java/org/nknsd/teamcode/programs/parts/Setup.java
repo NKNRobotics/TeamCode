@@ -14,6 +14,7 @@ import org.nknsd.teamcode.components.handlers.launch.LauncherHandler;
 import org.nknsd.teamcode.components.handlers.launch.TrajectoryHandler;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.srs.PeakFinder;
+import org.nknsd.teamcode.components.handlers.srs.PeakPointer;
 import org.nknsd.teamcode.components.handlers.srs.SRSHubHandler;
 import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
 import org.nknsd.teamcode.components.handlers.vision.TargetingSystem;
@@ -37,6 +38,12 @@ public class Setup extends ProgramPart {
     private ArtifactSystem artifactSystem;
     private PowerInputMixer powerInputMixer;
     private BalancedLiftHandler balancedLiftHandler;
+
+    public PeakPointer getPeakPointer() {
+        return peakPointer;
+    }
+
+    private PeakPointer peakPointer;
 
     public SRSHubHandler getSrsHubHandler() {
         return srsHubHandler;
@@ -102,7 +109,7 @@ public class Setup extends ProgramPart {
 
     boolean scanOnStart = true, enableTelemetry = true;
 
-    public void changeEnableSettings(boolean scanOnStart, boolean enableTelemetry){
+    public void changeEnableSettings(boolean scanOnStart, boolean enableTelemetry) {
         this.scanOnStart = scanOnStart;
         this.enableTelemetry = enableTelemetry;
     }
@@ -129,10 +136,7 @@ public class Setup extends ProgramPart {
         }
         launcherHandler.setEnabled(true);
 
-
-
-         launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 3, 16, 132);
-
+        launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 0, 16, 132);
 
         firingSystem = new FiringSystem();
         components.add(firingSystem);
@@ -145,7 +149,7 @@ public class Setup extends ProgramPart {
         ColorReader colorReader = new ColorReader("ColorSensor");
         components.add(colorReader);
         telemetryEnabled.add(colorReader);
-        BallColorInterpreter ballColorInterpreter = new BallColorInterpreter(10, 0.01);
+        BallColorInterpreter ballColorInterpreter = new BallColorInterpreter(5, 0.005);
         components.add(ballColorInterpreter);
 
         slotTracker = new SlotTracker();
@@ -194,14 +198,14 @@ public class Setup extends ProgramPart {
             telemetryEnabled.add(basketLocator);
         }
 
-
-         targetingSystem = new TargetingSystem();
+        targetingSystem = new TargetingSystem();
         components.add(targetingSystem);
         if (enableTelemetry) {
             telemetryEnabled.add(targetingSystem);
         }
 
 
+//        lifting
         balancedLiftHandler = new BalancedLiftHandler();
         components.add(balancedLiftHandler);
         IMUSensor imuSensor = new IMUSensor(/*new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD)*/);
@@ -209,8 +213,15 @@ public class Setup extends ProgramPart {
         telemetryEnabled.add(balancedLiftHandler);
 
 
+//        srs
         srsHubHandler = new SRSHubHandler();
         components.add(srsHubHandler);
+
+        PeakFinder peakFinder = new PeakFinder();
+        peakPointer = new PeakPointer(peakFinder, srsHubHandler, autoPositioner, absolutePosition);
+        components.add(peakPointer);
+
+        telemetryEnabled.add(peakPointer);
 
 
 //        all links
@@ -230,7 +241,7 @@ public class Setup extends ProgramPart {
             artifactSystem.scanAll();
         }
 
-        if(RobotVersion.isAutonomous()){
+        if (RobotVersion.isAutonomous()) {
             autoPositioner.enableAutoPositioning(true, true, true);
         }
     }
