@@ -6,6 +6,7 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.vision.ID;
@@ -185,8 +186,10 @@ public class AprilTagSensor implements NKNComponent {
             if (result.id == ID.NONE) {
                 return;
             } else if (result.id == ID.BLUE) {
+                RobotLog.v("blue scew " + result.skew);
                 visionResultBlue = result;
             } else if (result.id == ID.RED) {
+                RobotLog.v("red scew " + result.skew);
                 visionResultRed = result;
             } else {
                 visionResultPattern = result;

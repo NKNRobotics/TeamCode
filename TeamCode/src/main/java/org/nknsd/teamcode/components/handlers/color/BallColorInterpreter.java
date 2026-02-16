@@ -92,14 +92,18 @@ public class BallColorInterpreter implements NKNComponent {
             }
         }
         if (colorCount[BallColor.GREEN.ordinal()] >= maxSamples * confidenceThreshold) {
+//            RobotLog.v("confident GREEN");
             return BallColor.GREEN;
         }
         if (colorCount[BallColor.PURPLE.ordinal()] >= maxSamples * confidenceThreshold) {
+//            RobotLog.v("confident PURPLE");
             return BallColor.PURPLE;
         }
         if (colorCount[BallColor.NOTHING.ordinal()] >= maxSamples * confidenceThreshold) {
+//            RobotLog.v("confident NOTHING");
             return BallColor.NOTHING;
         }
+//        RobotLog.v("unconfident... ");
         return BallColor.UNSURE;
     }
 

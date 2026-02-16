@@ -11,6 +11,7 @@ public class AutoSlotCheck extends StateMachine.State {
     private final ArtifactSystem artifactSystem;
     private final String[] toStopOnEnd;
     private final String[] toStartOnEnd;
+    private double endTime;
 
     public AutoSlotCheck(ArtifactSystem artifactSystem, String[] toStopOnEnd, String[] toStartOnEnd) {
         this.artifactSystem = artifactSystem;
@@ -21,6 +22,7 @@ public class AutoSlotCheck extends StateMachine.State {
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
         if (artifactSystem.isReady() && runtime.milliseconds() > 100 + startTimeMS) {
+            endTime = runtime.milliseconds() - startTimeMS;
             StateMachine.INSTANCE.stopAnonymous(this);
         }
     }
@@ -40,7 +42,7 @@ public class AutoSlotCheck extends StateMachine.State {
         for (String stateName : this.toStartOnEnd) {
             StateMachine.INSTANCE.startState(stateName);
         }
-        RobotLog.v("finished scanning");
+        RobotLog.v("finished scanning at time " + endTime);
     }
 }
 

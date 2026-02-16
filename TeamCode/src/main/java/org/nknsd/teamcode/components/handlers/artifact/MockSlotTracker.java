@@ -62,8 +62,8 @@ public class MockSlotTracker extends SlotTracker {
     private void findSlotColors(){
     }
 
-    public BallColor getSlotColor(int slotnumber){
-        return slotColors[slotnumber];
+    public BallColor getSlotColor(int slotNumber){
+        return slotColors[slotNumber];
     }
 
     public void clearSlot(int slotNumber){

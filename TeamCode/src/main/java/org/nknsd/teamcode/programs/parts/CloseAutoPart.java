@@ -55,7 +55,7 @@ public class CloseAutoPart extends ProgramPart {
         StateMachine.INSTANCE.addState("start", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, -20, Math.PI / 2), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"move to fire pos"}));
 
-        StateMachine.INSTANCE.addState("move to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, -30, 0), 1, 1, 0.05, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target", "timeToTarget"}));
+        StateMachine.INSTANCE.addState("move to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(0, -30, 0), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{"target", "timeToTarget"}));
         StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("timeToTarget", new TimerState(2000, new String[]{"launch pattern", "target while firing"}, new String[]{"target"}));
         StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));

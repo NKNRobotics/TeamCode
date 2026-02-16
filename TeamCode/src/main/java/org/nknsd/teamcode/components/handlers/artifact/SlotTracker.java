@@ -15,6 +15,7 @@ public class SlotTracker implements NKNComponent {
     BallColorInterpreter colorInterpreter;
 
     BallColor[] slotColors = new BallColor[]{BallColor.UNSURE, BallColor.UNSURE, BallColor.UNSURE};
+    private double lastTime;
 
 
     @Override
@@ -44,7 +45,9 @@ public class SlotTracker implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
+        if(runtime.milliseconds() > 10 + lastTime){
         findSlotColors();
+        lastTime = runtime.milliseconds();}
     }
 
     @Override
@@ -79,8 +82,8 @@ public class SlotTracker implements NKNComponent {
         }
     }
 
-    public BallColor getSlotColor(int slotnumber){
-        return slotColors[slotnumber];
+    public BallColor getSlotColor(int slotNumber){
+        return slotColors[slotNumber];
     }
 
     public void clearSlot(int slotNumber){

@@ -15,7 +15,6 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class FiringSystem implements NKNComponent {
 
-    private final int WHEELSPEED_CONFIDENCE = 4;
 
     private LaunchSystem launchSystem;
     private TargetingSystem targetingSystem;
