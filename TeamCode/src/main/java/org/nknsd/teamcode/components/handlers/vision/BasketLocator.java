@@ -20,7 +20,7 @@ public class BasketLocator implements NKNComponent {
     }
 
 
-//    this little class can hold basket offset data
+    //    this little class can hold basket offset data
     public static class BasketOffset {
 
         public final double xOffset;
@@ -90,6 +90,13 @@ public class BasketLocator implements NKNComponent {
         if (result.id == ID.NONE) {
             return new BasketOffset();
         }
+
+        if (result.skew < -0.05) {
+            return new BasketOffset(result.minX, result.skew, distanceInterpolater.getValue(result.height));
+        } else if (result.skew > 0.05) {
+            return new BasketOffset(result.maxX, result.skew, distanceInterpolater.getValue(result.height));
+        }
+
         return new BasketOffset(result.centerX, result.skew, distanceInterpolater.getValue(result.height));
     }
 

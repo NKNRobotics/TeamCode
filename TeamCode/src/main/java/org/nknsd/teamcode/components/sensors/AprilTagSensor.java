@@ -21,19 +21,22 @@ public class AprilTagSensor implements NKNComponent {
     Limelight3A limelight;
 
     double lastReadTime = 0;
-    private VisionResult visionResultBlue = new VisionResult(0, 0, 0, 0, 0, ID.NONE);
-    private VisionResult visionResultRed = new VisionResult(0, 0, 0, 0, 0, ID.NONE);
-    private VisionResult visionResultPattern = new VisionResult(0, 0, 0, 0, 0, ID.NONE);
+    private VisionResult visionResultBlue = new VisionResult(0, 0, 0, 0, 0, 0, 0, ID.NONE);
+    private VisionResult visionResultRed = new VisionResult(0, 0, 0, 0, 0, 0, 0, ID.NONE);
+    private VisionResult visionResultPattern = new VisionResult(0, 0, 0, 0, 0, 0, 0, ID.NONE);
 
 
     public static class VisionResult {
 
         public final double centerX, centerY;
+        public final double minX, maxX;
         public final double height, width;
         public final double skew;
         public final ID id;
 
         public VisionResult() {
+            this.minX = 0;
+            this.maxX = 0;
             centerX = 0;
             centerY = 0;
             height = 0;
@@ -42,9 +45,11 @@ public class AprilTagSensor implements NKNComponent {
             id = ID.NONE;
         }
 
-        public VisionResult(double centerX, double centerY, double height, double width, double skew, ID id) {
+        public VisionResult(double centerX, double centerY, double minX, double maxX, double height, double width, double skew, ID id) {
             this.centerX = centerX;
             this.centerY = centerY;
+            this.minX = minX;
+            this.maxX = maxX;
             this.height = height;
             this.width = width;
             this.skew = skew;
@@ -56,6 +61,8 @@ public class AprilTagSensor implements NKNComponent {
             return "VisionResult{" +
                     "centerX=" + String.format("%.3f", centerX) +
                     ", centerY=" + String.format("%.3f", centerY) +
+                    ", minX=" + String.format("%.3f", minX) +
+                    ", maxX=" + String.format("%.3f", maxX) +
                     ", height=" + String.format("%.3f", height) +
                     ", width=" + String.format("%.3f", width) +
                     ", skew=" + String.format("%.3f", skew) +
@@ -143,12 +150,19 @@ public class AprilTagSensor implements NKNComponent {
         }
 
         double centerX = 0, centerY = 0;
+        double minX = 0, maxX = 0;
         double top, bottom, left, right;
 
 
         for (double[] corner : corners) {
             centerX += corner[0];
             centerY += corner[1];
+
+            if(corner[0] < minX){
+                minX = corner[0];
+            } else if(corner[0] > maxX){
+                maxX = corner[0];
+            }
         }
         centerX /= 4;
         centerY /= 4;
@@ -161,9 +175,9 @@ public class AprilTagSensor implements NKNComponent {
         double width = (top + bottom) / 2;
         double height = (left + right) / 2;
 
-        double shortening = (corners[3][1] - corners[2][1])/height;
+        double shortening = (corners[3][1] - corners[2][1]) / height;
 
-        return new VisionResult(centerX, centerY, height, width, shortening, id);
+        return new VisionResult(centerX, centerY, minX, maxX, height, width, shortening, id);
     }
 
 
@@ -175,7 +189,7 @@ public class AprilTagSensor implements NKNComponent {
         }
         lastReadTime = runtime.milliseconds();
         LLResult sightings = limelight.getLatestResult();
-        if(sightings == null){
+        if (sightings == null) {
             throw new NullPointerException("No Limelight Data");
         }
 

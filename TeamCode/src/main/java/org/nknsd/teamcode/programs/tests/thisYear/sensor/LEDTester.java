@@ -24,8 +24,8 @@ public class LEDTester extends NKNProgram {
 
         public LEDState(LEDIndicator ledIndicator,LEDIndicator ledIndicator2) {
 
-            this.ledIndicatorleft = ledIndicatorleft;
-            this.ledIndicatorright = ledIndicatorright;
+            this.ledIndicatorleft = ledIndicator;
+            this.ledIndicatorright = ledIndicator2;
 
         }
 
@@ -58,8 +58,8 @@ public class LEDTester extends NKNProgram {
         components.add(StateMachine.INSTANCE);
         telemetryEnabled.add(StateMachine.INSTANCE);
 
-        LEDIndicator indicatorleft = new LEDIndicator("redledleft","greenledleft");
-        LEDIndicator indicatorright = new LEDIndicator("redledright","greenledright");
+        LEDIndicator indicatorleft = new LEDIndicator("ledleftred","ledleftgreen");
+        LEDIndicator indicatorright = new LEDIndicator("ledrightred","ledrightgreen");
         components.add(indicatorleft);
         telemetryEnabled.add(indicatorleft);
         components.add(indicatorright);
