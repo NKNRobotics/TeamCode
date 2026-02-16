@@ -7,4 +7,5 @@ public enum ID {
     BLUE,
     RED,
     NONE
+
 }

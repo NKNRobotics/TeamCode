@@ -29,7 +29,7 @@ public class IntakeDriver implements NKNComponent {
     Runnable scanSlots = new Runnable() {
         @Override
         public void run() {
-          artifactSystem.scanAll();
+            artifactSystem.scanAll();
         }
     };
 

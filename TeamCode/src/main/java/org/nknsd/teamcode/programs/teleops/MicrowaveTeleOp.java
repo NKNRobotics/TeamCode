@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.drivers.IntakeDriverDEPRECATED;
 import org.nknsd.teamcode.components.drivers.MicrowaveDriver;
-import org.nknsd.teamcode.components.drivers.WheelDriver;
+//import org.nknsd.teamcode.components.drivers.WheelDriver;
 import org.nknsd.teamcode.components.handlers.WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
@@ -28,8 +28,8 @@ public class MicrowaveTeleOp extends NKNProgram {
         WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER = new WheelHandlerTODODELETEMEUSEPOWERINPUTMIXER();
         components.add(wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER);
 
-        WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
-        components.add(wheelDriver);
+//        WheelDriver wheelDriver = new WheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
+//        components.add(wheelDriver);
 
 
         // SENSORS
@@ -55,7 +55,7 @@ public class MicrowaveTeleOp extends NKNProgram {
         MicrowaveControlScheme microwaveControlScheme = new MicrowaveControlScheme();
         microwaveControlScheme.link(gamePadHandler);
 
-        wheelDriver.link(gamePadHandler, wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER,wheelControlScheme);
+//        wheelDriver.link(gamePadHandler, wheelHandlerTODODELETEMEUSEPOWERINPUTMIXER,wheelControlScheme);
         microwaveDriver.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
         intakeDriverDEPRECATED.link(gamePadHandler, microwaveScoopHandler, microwaveControlScheme);
     }

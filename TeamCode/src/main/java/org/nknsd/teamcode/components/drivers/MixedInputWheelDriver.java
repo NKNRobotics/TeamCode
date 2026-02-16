@@ -86,7 +86,7 @@ public class MixedInputWheelDriver implements NKNComponent {
         // NOTE:
         // THE STICKS ARE INVERTED UPON REQUEST BY COLLY
         // WE HAVE NO WAY TO DO THAT VIA CONTROL SCHEME
-        powerInputMixer.setManualPowers(new double[]{-strafeStick.getValue(gamepad) * moveSpeedMultiplier, -forwardStick.getValue(gamepad) * moveSpeedMultiplier, turnStick.getValue(gamepad) * moveSpeedMultiplier});
+        powerInputMixer.setManualPowers(new double[]{strafeStick.getValue(gamepad) * moveSpeedMultiplier, forwardStick.getValue(gamepad) * moveSpeedMultiplier, turnStick.getValue(gamepad) * moveSpeedMultiplier});
 //        double y = 0; double x = 0;
 //        if (GamePadHandler.GamepadButtons.DPAD_UP.detect(gamepad)) {
 //            y = 0.4;

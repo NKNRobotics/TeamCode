@@ -10,7 +10,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Flow Sensor Test", group="Tests") @Disabled
+@TeleOp(name = "Flow Sensor Test", group="Tests")
 public class FlowSensorTestProgram extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {

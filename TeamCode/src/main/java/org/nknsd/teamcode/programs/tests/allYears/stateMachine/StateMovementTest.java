@@ -12,7 +12,7 @@ import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
-import org.nknsd.teamcode.components.utility.states.RobotPosWithin;
+import org.nknsd.teamcode.states.RobotPosWithin;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 

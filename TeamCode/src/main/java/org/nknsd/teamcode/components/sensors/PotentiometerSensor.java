@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class PotentiometerSensor implements NKNComponent {
-    private final String potName = "armPot";
+    private final String potName = "ServoPos";
 
     private AnalogInput pot;
 
@@ -48,7 +48,7 @@ public class PotentiometerSensor implements NKNComponent {
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData("POT", pot.getVoltage());
+        telemetry.addData("Servo pos", pot.getVoltage());
     }
 
     public double getPotVoltage() {

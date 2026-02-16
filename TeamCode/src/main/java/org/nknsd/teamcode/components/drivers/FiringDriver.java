@@ -10,6 +10,7 @@ import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
 import org.nknsd.teamcode.components.handlers.vision.ID;
+import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.controlSchemes.defaults.FiringControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -52,13 +53,13 @@ public class FiringDriver implements NKNComponent {
     Runnable setAllianceBlue = new Runnable() {
         @Override
         public void run() {
-            firingSystem.setTargetColor(ID.BLUE);
+            RobotVersion.setRobotAlliance(ID.BLUE);
         }
     };
     Runnable setAllianceRed = new Runnable() {
         @Override
         public void run() {
-            firingSystem.setTargetColor(ID.RED);
+            RobotVersion.setRobotAlliance(ID.RED);
         }
     };
 
