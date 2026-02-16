@@ -25,6 +25,7 @@ import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.sensors.IMUSensor;
+import org.nknsd.teamcode.components.sensors.LEDIndicator;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -33,6 +34,17 @@ import org.nknsd.teamcode.frameworks.ProgramPart;
 import java.util.List;
 
 public class Setup extends ProgramPart {
+
+    public LEDIndicator getLeftLED() {
+        return leftLED;
+    }
+
+    public LEDIndicator getRightLED() {
+        return rightLED;
+    }
+
+    private LEDIndicator leftLED,rightLED;
+
     private LaunchSystem launchSystem;
     private FiringSystem firingSystem;
     private ArtifactSystem artifactSystem;
@@ -120,6 +132,13 @@ public class Setup extends ProgramPart {
 //        statemachine
         components.add(StateMachine.INSTANCE);
         telemetryEnabled.add(StateMachine.INSTANCE);
+
+
+
+        leftLED= new LEDIndicator("ledleftgreen", "ledleftred");
+        rightLED= new LEDIndicator("ledrightgreen", "ledrightred");
+        components.add(leftLED);
+        components.add(rightLED);
 
 
 //        firing
