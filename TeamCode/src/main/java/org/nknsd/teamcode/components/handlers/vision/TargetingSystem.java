@@ -19,9 +19,6 @@ public class TargetingSystem implements NKNComponent {
     final private double MAX_XOFFSET = 0.07;
 //    final private double MAX_ANGLE_VEL = 0.1;
     final private double MIN_MOVE_VEL = 0.05;
-//    final private double SKEW_MULTIPLIER = 0;
-final private double SKEW_OFFSET = 0.1;
-
     private BasketLocator basketLocator;
     AutoPositioner autoPositioner;
 
@@ -110,15 +107,12 @@ final private double SKEW_OFFSET = 0.1;
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-//        if (basketLocator.getOffset(targetingColor).distance == -1 && targetEnabled && !RobotVersion.isAutonomous()) {
-//            enableAutoTargeting(false);
-//        }
-
-
         if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
             distance = basketLocator.getOffset(targetingColor).distance;
+
             if (targetEnabled && distance != -1) {
                 BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
+
                 double currentOffset = (basketData.xOffset - 0.5) * 0.47560222;
                 lastOffset = currentOffset;
 
@@ -126,30 +120,6 @@ final private double SKEW_OFFSET = 0.1;
             }
             lastRunTime = runtime.milliseconds();
         }
-
-
-//        if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
-//            distance = basketLocator.getOffset(targetingColor).distance;
-//            if (targetEnabled && distance != -1) {
-//                double[] targetingPowers = new double[]{0, 0, 0};
-//                BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
-//                double currentOffset = basketData.xOffset - 0.5;
-//                currentOffset += basketData.skew * SKEW_MULTIPLIER;
-//                vel = (currentOffset - lastOffset) / 50;
-//                targetingPowers[2] = (pidController.findOutput(currentOffset, 0, vel, runtime.milliseconds() - lastRunTime));
-////            RobotLog.v("xOffset" + shiftedOffset);
-//                lastOffset = currentOffset;
-//                power = targetingPowers[2];
-////                RobotLog.v("targeting powers x: " + targetingPowers[0] + ", y: " + targetingPowers[1] + ", h: " + targetingPowers[2]);
-//                powerInputMixer.setAutoPowers(targetingPowers);
-//
-//            } else if(targetEnabled){
-//                powerInputMixer.setAutoPowers(new double[]{0,0,0}) ;
-//            }
-//            lastRunTime = runtime.milliseconds();
-//        }
-
-
     }
 
     @Override

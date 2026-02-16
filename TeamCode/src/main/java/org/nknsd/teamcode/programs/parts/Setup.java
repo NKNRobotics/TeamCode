@@ -134,7 +134,7 @@ public class Setup extends ProgramPart {
         telemetryEnabled.add(StateMachine.INSTANCE);
 
 
-
+//      leds
         leftLED= new LEDIndicator("ledleftgreen", "ledleftred");
         rightLED= new LEDIndicator("ledrightgreen", "ledrightred");
         components.add(leftLED);
@@ -155,7 +155,7 @@ public class Setup extends ProgramPart {
         }
         launcherHandler.setEnabled(true);
 
-        launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 0, 16, 132);
+        launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 1, 16, 132);
 
         firingSystem = new FiringSystem();
         components.add(firingSystem);
