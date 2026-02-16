@@ -16,6 +16,8 @@ public class LEDIndicator implements NKNComponent {
     private DigitalChannel redLED;
     private DigitalChannel greenLED;
 
+    private boolean redIsOn,greenIsOn;
+
     public LEDIndicator (String redHardwareName, String greenHardwareName) {
         this.redName = redHardwareName;
         this.greenName = greenHardwareName;
@@ -32,16 +34,21 @@ public class LEDIndicator implements NKNComponent {
         redLED.setState(true);
         greenLED.setState(true);
 
+        redIsOn = false;
+        greenIsOn = false;
+
         return true;
     }
 
     public void setRedLED (boolean state) {
         redLED.setState(!state);
+        redIsOn = state;
         RobotLog.v("Red set to : "+state);
     }
 
     public void setGreenLED (boolean state) {
         greenLED.setState(!state);
+        greenIsOn = state;
         RobotLog.v("Green set to : "+state);
     }
 
@@ -73,5 +80,12 @@ public class LEDIndicator implements NKNComponent {
     @Override
     public void doTelemetry(Telemetry telemetry) {
 
+    }
+
+    public boolean isRedOn(){
+        return redIsOn;
+    }
+    public boolean isGreenOn(){
+        return greenIsOn;
     }
 }

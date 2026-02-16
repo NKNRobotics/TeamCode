@@ -137,6 +137,8 @@ public class Setup extends ProgramPart {
 //      leds
         leftLED= new LEDIndicator("ledleftgreen", "ledleftred");
         rightLED= new LEDIndicator("ledrightgreen", "ledrightred");
+
+
         components.add(leftLED);
         components.add(rightLED);
 
@@ -246,6 +248,7 @@ public class Setup extends ProgramPart {
 //        all links
         slotTracker.link(microwaveScoopHandler, ballColorInterpreter);
         targetingSystem.link(basketLocator, absolutePosition, autoPositioner);
+        targetingSystem.addLEDs(leftLED,rightLED);
         basketLocator.link(aprilTagSensor);
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
         absolutePowerMixer.link(mecanumMotorMixer, absolutePosition);

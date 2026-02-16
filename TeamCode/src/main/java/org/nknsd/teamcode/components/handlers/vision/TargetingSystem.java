@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
+import org.nknsd.teamcode.components.sensors.LEDIndicator;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
@@ -19,6 +20,7 @@ public class TargetingSystem implements NKNComponent {
     final private double MAX_XOFFSET = 0.07;
 //    final private double MAX_ANGLE_VEL = 0.1;
     final private double MIN_MOVE_VEL = 0.05;
+
     private BasketLocator basketLocator;
     AutoPositioner autoPositioner;
 
@@ -33,6 +35,8 @@ public class TargetingSystem implements NKNComponent {
 
 //    final private PidController pidController;
     private AbsolutePosition absolutePosition;
+
+    private LEDIndicator leftLED,rightLED;
     private double distance;
 
 //    public TargetingSystem(PidController pidController) {
@@ -109,17 +113,51 @@ public class TargetingSystem implements NKNComponent {
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
             distance = basketLocator.getOffset(targetingColor).distance;
-
             if (targetEnabled && distance != -1) {
                 BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
-
                 double currentOffset = (basketData.xOffset - 0.5) * 0.47560222;
                 lastOffset = currentOffset;
 
                 autoPositioner.setTargetH((absolutePosition.getPosition().h + currentOffset), RobotVersion.INSTANCE.pidControllerH);
+                if (leftLED != null && rightLED != null){
+                    if (targetAcquired()) {
+                        if (!leftLED.isRedOn()) {
+                            leftLED.setRedLED(true);
+                        }
+                        if (!rightLED.isRedOn()) {
+                            rightLED.setRedLED(true);
+                        }
+                    }else{
+                        if (currentOffset<0){
+                            if (!leftLED.isRedOn()) {
+                                leftLED.setRedLED(true);
+                            }
+                            if (rightLED.isRedOn()) {
+                                rightLED.setRedLED(false);
+                            }
+                        }else {
+                            if (leftLED.isRedOn()) {
+                                leftLED.setRedLED(false);
+                            }
+                            if (!rightLED.isRedOn()) {
+                                rightLED.setRedLED(true);
+                            }
+                        }
+                    }
+                }
+            } else{
+                if (leftLED != null && rightLED != null){
+                    if (leftLED.isRedOn()) {
+                        leftLED.setRedLED(false);
+                    }
+                    if (rightLED.isRedOn()) {
+                        rightLED.setRedLED(false);
+                    }
+                }
             }
             lastRunTime = runtime.milliseconds();
         }
+
     }
 
     @Override
@@ -135,5 +173,10 @@ public class TargetingSystem implements NKNComponent {
         this.basketLocator = basketLocator;
         this.absolutePosition = absolutePosition;
         this.autoPositioner = autoPositioner;
+    }
+
+    public void addLEDs(LEDIndicator left, LEDIndicator right){
+        this.leftLED = left;
+        this.rightLED = right;
     }
 }

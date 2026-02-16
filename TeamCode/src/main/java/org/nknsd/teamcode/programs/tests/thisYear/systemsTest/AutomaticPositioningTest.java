@@ -23,6 +23,7 @@ import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
+import org.nknsd.teamcode.components.sensors.LEDIndicator;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -155,8 +156,18 @@ public class AutomaticPositioningTest extends NKNProgram {
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
+
         components.add(StateMachine.INSTANCE);
         telemetryEnabled.add(StateMachine.INSTANCE);
+
+
+//      leds
+        LEDIndicator leftLED = new LEDIndicator("ledleftgreen", "ledleftred");
+        LEDIndicator rightLED = new LEDIndicator("ledrightgreen", "ledrightred");
+
+
+        components.add(leftLED);
+        components.add(rightLED);
 
 
         TrajectoryHandler trajectoryHandler = new TrajectoryHandler();
@@ -167,6 +178,8 @@ public class AutomaticPositioningTest extends NKNProgram {
         components.add(launcherHandler);
         telemetryEnabled.add(launcherHandler);
         launcherHandler.setEnabled(true);
+
+        targetingSystem.addLEDs(leftLED,rightLED);
 
         LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 3, 16, 132);
 

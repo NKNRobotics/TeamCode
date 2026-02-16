@@ -47,6 +47,7 @@ public class IntakeBallState extends StateMachine.State{
                 }
                 microwaveScoopHandler.toggleIntake(false);
                 StateMachine.INSTANCE.stopAnonymous(this);
+
             }
         }
     }
