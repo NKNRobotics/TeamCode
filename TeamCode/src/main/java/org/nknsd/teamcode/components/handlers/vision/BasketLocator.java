@@ -97,10 +97,10 @@ public class BasketLocator implements NKNComponent {
         double distance = distanceInterpolater.getValue(result.height);
 
         if (distance > 84) {
-            if (result.skew < -0.05) {
+            if (result.skew > -0.05) {
 //            RobotLog.v("skewing! max");
                 return new BasketOffset(result.maxX, result.skew, distance);
-            } else if (result.skew > 0.05) {
+            } else if (result.skew < 0.05) {
 //            RobotLog.v("skewing! min");
                 return new BasketOffset(result.minX, result.skew, distance);
             }

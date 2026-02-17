@@ -2,6 +2,7 @@ package org.nknsd.teamcode.frameworks;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.nknsd.teamcode.components.utility.StateMachine;
 
@@ -74,6 +75,7 @@ public abstract class NKNProgram extends OpMode {
     // Runs once every ~500 milliseconds
     // ONLY calls for components to do telemetry
     public void doTelemetry() {
+        RobotLog.v("FM:"+Runtime.getRuntime().freeMemory());
         for (NKNComponent component:enabledTelemetryList){
             component.doTelemetry(telemetry);
         }

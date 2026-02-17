@@ -1,5 +1,7 @@
 package org.nknsd.teamcode.programs.parts;
 
+import com.qualcomm.robotcore.util.RobotLog;
+
 import org.nknsd.teamcode.components.drivers.FiringDriver;
 import org.nknsd.teamcode.components.drivers.IntakeDriver;
 import org.nknsd.teamcode.components.drivers.LiftDriver;
@@ -28,6 +30,7 @@ public class GamepadPart extends ProgramPart {
 
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
+
         GamePadHandler gamePadHandler = new GamePadHandler();
         components.add(gamePadHandler);
 
@@ -67,7 +70,7 @@ public class GamepadPart extends ProgramPart {
         intakeControlScheme.link(gamePadHandler);
         liftDriver.link(gamePadHandler, setup.getBalancedLiftHandler(), liftControlScheme);
         liftControlScheme.link(gamePadHandler);
-        srsDriver.link(gamePadHandler, srsControlScheme, StateMachine.INSTANCE, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition());
+        srsDriver.link(gamePadHandler, srsControlScheme, /* StateMachine.INSTANCE, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getAbsolutePosition(), */ setup.getArtifactSystem(), setup.getPeakPointer(), setup.getAutoPositioner());
         srsControlScheme.link(gamePadHandler);
     }
 }

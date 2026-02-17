@@ -16,6 +16,7 @@ public class TeleopBlue extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         RobotVersion.setRobotAlliance(ID.BLUE);
+        RobotVersion.setIsAutonomous(false);
 
         Setup setup = new Setup();
         setup.createComponents(components, telemetryEnabled);

@@ -22,26 +22,25 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class SRSDriver implements NKNComponent {
     private GamePadHandler gamePadHandler;
     private SRSControlScheme srsControlScheme;
-    private StateMachine stateMachine;
+    //    private StateMachine stateMachine;
     private PeakPointer peakPointer;
-    private MicrowaveScoopHandler microwaveScoopHandler;
-    private SlotTracker slotTracker;
+    //    private MicrowaveScoopHandler microwaveScoopHandler;
+//    private SlotTracker slotTracker;
     private ArtifactSystem artifactSystem;
     private AutoPositioner autoPositioner;
-    private AbsolutePosition absolutePosition;
+    //    private AbsolutePosition absolutePosition;
     private boolean running = false;
+//    private SRSIntakeState intake;
 
-    private SRSIntakeState intake;
     Runnable lockTarget = new Runnable() {
         @Override
         public void run() {
             if (!running) {
                 running = true;
                 RobotLog.v("Turning on srs");
-                intake = new SRSIntakeState(peakPointer, autoPositioner, absolutePosition, false, 0, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY, /*microwaveScoopHandler, slotTracker, artifactSystem, */ new String[]{}, new String[]{});
-                StateMachine.INSTANCE.startAnonymous(intake);
+                peakPointer.enableTargeting(true, false);
                 artifactSystem.intakeUntilFull();
-                //                autoPositioner.enableAutoPositioning(false, false, true);
+                autoPositioner.enableAutoPositioning(false, false, true);
             }
         }
     };
@@ -52,8 +51,9 @@ public class SRSDriver implements NKNComponent {
             if (running) {
                 running = false;
                 RobotLog.v("Turning off srs");
-                StateMachine.INSTANCE.stopAnonymous(intake);
-//                autoPositioner.enableAutoPositioning(false, false, false);
+                peakPointer.enableTargeting(true, false);
+                artifactSystem.stopIntake();
+                autoPositioner.enableAutoPositioning(false, false, false);
             }
         }
     };
@@ -71,7 +71,8 @@ public class SRSDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-
+        gamePadHandler.addListener(srsControlScheme.lockTarget(), lockTarget, "Enable Ball Targeting Mode");
+        gamePadHandler.addListener(srsControlScheme.unlockTarget(), unlockTarget, "Disable Ball Targeting Mode");
     }
 
     @Override
@@ -86,8 +87,6 @@ public class SRSDriver implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        gamePadHandler.addListener(srsControlScheme.lockTarget(), lockTarget, "Enable Ball Targeting Mode");
-        gamePadHandler.addListener(srsControlScheme.unlockTarget(), unlockTarget, "Disable Ball Targeting Mode");
     }
 
     @Override
@@ -95,15 +94,15 @@ public class SRSDriver implements NKNComponent {
 
     }
 
-    public void link(GamePadHandler gamePadHandler, SRSControlScheme srsControlScheme, StateMachine stateMachine, MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, ArtifactSystem artifactSystem, PeakPointer peakPointer, AutoPositioner autoPositioner, AbsolutePosition absolutePosition) {
+    public void link(GamePadHandler gamePadHandler, SRSControlScheme srsControlScheme, /* StateMachine stateMachine,  MicrowaveScoopHandler microwaveScoopHandler, AbsolutePosition absolutePosition, SlotTracker slotTracker, */ ArtifactSystem artifactSystem, PeakPointer peakPointer, AutoPositioner autoPositioner) {
         this.gamePadHandler = gamePadHandler;
         this.srsControlScheme = srsControlScheme;
-        this.stateMachine = stateMachine;
+//        this.stateMachine = stateMachine;
         this.peakPointer = peakPointer;
-        this.microwaveScoopHandler = microwaveScoopHandler;
-        this.slotTracker = slotTracker;
+//        this.microwaveScoopHandler = microwaveScoopHandler;
+//        this.slotTracker = slotTracker;
         this.artifactSystem = artifactSystem;
-        this.absolutePosition = absolutePosition;
+//        this.absolutePosition = absolutePosition;
         this.autoPositioner = autoPositioner;
     }
 }

@@ -1,5 +1,7 @@
 package org.nknsd.teamcode.programs.parts;
 
+import com.qualcomm.robotcore.util.RobotLog;
+
 import org.nknsd.teamcode.components.handlers.lifting.BalancedLiftHandler;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
@@ -135,8 +137,6 @@ public class Setup extends ProgramPart {
 //      leds
         leftLED = new LEDIndicator("ledleftgreen", "ledleftred");
         rightLED = new LEDIndicator("ledrightgreen", "ledrightred");
-
-
         components.add(leftLED);
         components.add(rightLED);
 
@@ -155,7 +155,7 @@ public class Setup extends ProgramPart {
         }
         launcherHandler.setEnabled(true);
 
-        launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 1, 16, 132);
+        launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);
 
         firingSystem = new FiringSystem();
         components.add(firingSystem);
@@ -231,18 +231,19 @@ public class Setup extends ProgramPart {
         components.add(imuSensor);
         telemetryEnabled.add(balancedLiftHandler);
 
-
+        if (RobotVersion.isAutonomous()) {
 //        srs
-        srsHubHandler = new SRSHubHandler();
-        components.add(srsHubHandler);
+            srsHubHandler = new SRSHubHandler();
+            components.add(srsHubHandler);
 
-        PeakFinder peakFinder = new PeakFinder();
+            PeakFinder peakFinder = new PeakFinder();
 
-        peakPointer = new PeakPointer(peakFinder, srsHubHandler, autoPositioner, absolutePosition);
-        components.add(peakPointer);
-        peakPointer.setLEDs(leftLED, rightLED);
+            peakPointer = new PeakPointer(peakFinder, srsHubHandler, autoPositioner, absolutePosition);
+            components.add(peakPointer);
+            peakPointer.setLEDs(leftLED, rightLED);
 
-        telemetryEnabled.add(peakPointer);
+            telemetryEnabled.add(peakPointer);
+        }
 
 
 //        all links
