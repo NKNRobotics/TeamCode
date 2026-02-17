@@ -1,15 +1,10 @@
 package org.nknsd.teamcode.programs.tests.thisYear.lift;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.BalancedLiftHandler;
+import org.nknsd.teamcode.components.handlers.lifting.BalancedLiftHandler;
 import org.nknsd.teamcode.components.sensors.IMUSensor;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -17,7 +12,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "manual lift")
+@TeleOp(name = "manual lift", group = "tests")
 public class ManualLiftTest extends NKNProgram {
 
     private IMUSensor imuSensor;

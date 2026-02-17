@@ -77,7 +77,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
         @Override
         protected void stopped() {
 //            RobotLog.v("micromovestate stopping");
-            toggleIntake(lastIntake);
+            toggleIntake(false);
         }
     }
 

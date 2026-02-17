@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.BalancedLiftHandler;
+import org.nknsd.teamcode.components.handlers.lifting.BalancedLiftHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.controlSchemes.defaults.LiftControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;

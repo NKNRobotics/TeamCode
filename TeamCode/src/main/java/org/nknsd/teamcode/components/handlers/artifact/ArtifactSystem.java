@@ -60,6 +60,10 @@ public class ArtifactSystem {
         return true;
     }
 
+    public boolean isIntaking(){
+        return intakeState != null && intakeState.isRunning();
+    }
+
 
     /**
      * gets the contents of the microwave

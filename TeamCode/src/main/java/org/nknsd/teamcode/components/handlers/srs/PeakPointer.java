@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.motormixers.AutoPositioner;
+import org.nknsd.teamcode.components.sensors.LEDIndicator;
 import org.nknsd.teamcode.components.utility.SensorGridPoint;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
@@ -34,12 +35,18 @@ public class PeakPointer implements NKNComponent {
     private Double dist;
     private SensorGridPoint point;
     private short oldData;
+    private LEDIndicator leftLED, rightLED;
 
     public PeakPointer(PeakFinder peakFinder, SRSHubHandler srsHubHandler, AutoPositioner positioner, AbsolutePosition position) {
         this.peakFinder = peakFinder;
         this.srsHubHandler = srsHubHandler;
         this.positioner = positioner;
         this.position = position;
+    }
+
+    public void setLEDs(LEDIndicator left, LEDIndicator right) {
+        this.leftLED = left;
+        this.rightLED = right;
     }
 
     public void setPids(PidController pidH, PidController pidXY) {
@@ -63,7 +70,7 @@ public class PeakPointer implements NKNComponent {
         return Math.abs(angle) < MAX_X_OFFSET;
     }
 
-    public boolean ballVisible(){
+    public boolean ballVisible() {
         return point != null;
     }
 
@@ -95,22 +102,29 @@ public class PeakPointer implements NKNComponent {
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-        if (runtime.milliseconds() - lastRunTime > WAIT_TIME_MS) {
+        if (runtime.milliseconds() - lastRunTime > WAIT_TIME_MS && targetingEnabled) {
+//            if (data[0][0] == oldData){
+////                RobotLog.v("same");
+//            } else {
+////                RobotLog.v("not same");
+//            }
+//            oldData = data[0][0];
             short[][] data = srsHubHandler.getNormalizedDists();
-            if (data[0][0] == oldData){
-//                RobotLog.v("same");
-            } else {
-//                RobotLog.v("not same");
-            }
-            oldData = data[0][0];
             point = peakFinder.findClosestPeak(data);
+            if (leftLED != null) {
+                leftLED.setGreenLED(point != null);
+                rightLED.setGreenLED(point != null);
+            }
 
-            if (targetingEnabled && point != null) {
+            if (point != null) {
 //                RobotLog.v("peak " + point.toString());
 
                 dist = AngleDistCalculator.calculateDistance(point);
                 angle = -AngleDistCalculator.calculateHeadingAngle(point);
 
+                RobotLog.v("ball angle " + angle);
+                RobotLog.v("current angle " + position.getPosition().h);
+                RobotLog.v("targetpos angle " + (position.getPosition().h + angle));
                 positioner.setTargetH((position.getPosition().h + angle), pidH);
 
                 if (eatEnabled) {
