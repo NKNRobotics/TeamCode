@@ -58,9 +58,9 @@ public class PeakPointer implements NKNComponent {
         this.targetingEnabled = targetingEnabled;
         this.eatEnabled = eatEnabled;
         positioner.enableAutoPositioning(eatEnabled, eatEnabled, targetingEnabled); // for when we merge
-        positioner.setTargetH(position.getPosition().h, RobotVersion.INSTANCE.pidControllerH);
-        positioner.setTargetX(position.getPosition().x, RobotVersion.INSTANCE.pidControllerX);
-        positioner.setTargetY(position.getPosition().y, RobotVersion.INSTANCE.pidControllerY);
+        positioner.setTargetH(position.getPosition().h, pidH);
+        positioner.setTargetX(position.getPosition().x, pidXY);
+        positioner.setTargetY(position.getPosition().y, pidXY);
     }
 
     public boolean targetAcquired() {
@@ -122,9 +122,9 @@ public class PeakPointer implements NKNComponent {
                 dist = AngleDistCalculator.calculateDistance(point);
                 angle = -AngleDistCalculator.calculateHeadingAngle(point);
 
-                RobotLog.v("ball angle " + angle);
-                RobotLog.v("current angle " + position.getPosition().h);
-                RobotLog.v("targetpos angle " + (position.getPosition().h + angle));
+//                RobotLog.v("ball angle " + angle);
+//                RobotLog.v("current angle " + position.getPosition().h);
+//                RobotLog.v("targetpos angle " + (position.getPosition().h + angle));
                 positioner.setTargetH((position.getPosition().h + angle), pidH);
 
                 if (eatEnabled) {

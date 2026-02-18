@@ -15,7 +15,7 @@ public class RobotVersion {
         new PidController(0.07, .15, 0.07, .07, false, 0.01, 0.1), // for the SRS
         new PidController(0.2, .4, 0.15, .2, true, 0.02, 0.2), // x
         new PidController(0.2, .4, 0.15, .2, true, 0.02, 0.2), // y
-        new PidController(0.8, .6, 0.5, .5, true, 0.2, 0.3)); // h (both driving and srs)
+        new PidController(2, .5, 0.5, .5, true, 0.2, 0.3)); // h (both driving and srs)
 
 //    public final static RobotVersion INSTANCE= new RobotVersion(50,0,true,60,.5,1,
 //            new Interpolater(new double[][]{{16,1370}, {32,1440}, {48,1500}, {64,1550}, {80,1620}, {96, 1720}, {112,1900}, {132, 1940}}),

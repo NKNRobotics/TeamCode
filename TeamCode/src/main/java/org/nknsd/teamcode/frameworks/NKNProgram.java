@@ -75,7 +75,7 @@ public abstract class NKNProgram extends OpMode {
     // Runs once every ~500 milliseconds
     // ONLY calls for components to do telemetry
     public void doTelemetry() {
-        RobotLog.v("FM:"+Runtime.getRuntime().freeMemory());
+//        RobotLog.v("FM:"+Runtime.getRuntime().freeMemory());
         for (NKNComponent component:enabledTelemetryList){
             component.doTelemetry(telemetry);
         }
