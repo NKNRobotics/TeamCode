@@ -110,7 +110,7 @@ public class PeakPointer implements NKNComponent {
 //            }
 //            oldData = data[0][0];
             short[][] data = srsHubHandler.getNormalizedDists();
-            point = peakFinder.findClosestPeak(data);
+            point = peakFinder.findPeak(data);
             if (leftLED != null) {
                 leftLED.setGreenLED(point != null);
                 rightLED.setGreenLED(point != null);

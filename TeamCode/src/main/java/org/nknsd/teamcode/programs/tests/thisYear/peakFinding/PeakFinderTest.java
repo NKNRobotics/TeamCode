@@ -31,7 +31,7 @@ public class PeakFinderTest extends NKNProgram {
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
             short[][] data = srsHubHandler.getNormalizedDists();
-            SensorGridPoint ballPoint = peakFinder.findClosestPeak(data);
+            SensorGridPoint ballPoint = peakFinder.findPeak(data);
 
             // IF THE DATA BECOMES NOT SQUARE WE HAVE A PROBLEM HOUSTON.
             if (ballPoint == null ) {
