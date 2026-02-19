@@ -115,12 +115,11 @@ public class TargetingSystem implements NKNComponent {
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
         if (runtime.milliseconds() - lastRunTime > RobotVersion.INSTANCE.visionLoopIntervalMS) {
             distance = basketLocator.getOffset(targetingColor).distance;
-            if (targetEnabled && distance != -1) {
+            if (distance != -1) {
                 BasketLocator.BasketOffset basketData = basketLocator.getOffset(targetingColor);
                 double currentOffset = (basketData.xOffset - 0.5) * 0.47560222;
                 lastOffset = currentOffset;
 
-                autoPositioner.setTargetH((absolutePosition.getPosition().h + currentOffset), RobotVersion.INSTANCE.pidControllerH);
                 if (leftLED != null && rightLED != null) {
                     if (targetAcquired()) {
                         leftLED.setRedLED(true);
@@ -135,6 +134,11 @@ public class TargetingSystem implements NKNComponent {
                         }
                     }
                 }
+
+                if(targetEnabled){
+                    autoPositioner.setTargetH((absolutePosition.getPosition().h + currentOffset), RobotVersion.INSTANCE.pidControllerH);
+                }
+
             } else {
                 if (leftLED != null && rightLED != null) {
                     leftLED.setRedLED(false);

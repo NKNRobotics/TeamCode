@@ -158,9 +158,9 @@ public class AprilTagSensor implements NKNComponent {
             centerX += corner[0];
             centerY += corner[1];
 
-            if(corner[0] < minX){
+            if (corner[0] < minX) {
                 minX = corner[0];
-            } else if(corner[0] > maxX){
+            } else if (corner[0] > maxX) {
                 maxX = corner[0];
             }
         }
@@ -175,9 +175,9 @@ public class AprilTagSensor implements NKNComponent {
         double width = (top + bottom) / 2;
         double height = (left + right) / 2;
 
-        double shortening = (corners[3][1] - corners[2][1]) / height;
+        double skew = left > right ? -1*left/bottom : right/bottom;
 
-        return new VisionResult(centerX, centerY, minX, maxX, height, width, shortening, id);
+        return new VisionResult(centerX, centerY, minX, maxX, height, width, skew, id);
     }
 
 
@@ -200,10 +200,10 @@ public class AprilTagSensor implements NKNComponent {
             if (result.id == ID.NONE) {
                 return;
             } else if (result.id == ID.BLUE) {
-                RobotLog.v("blue scew " + result.skew);
+//                RobotLog.v("blue scew " + result.skew);
                 visionResultBlue = result;
             } else if (result.id == ID.RED) {
-                RobotLog.v("red scew " + result.skew);
+//                RobotLog.v("red scew " + result.skew);
                 visionResultRed = result;
             } else {
                 visionResultPattern = result;
