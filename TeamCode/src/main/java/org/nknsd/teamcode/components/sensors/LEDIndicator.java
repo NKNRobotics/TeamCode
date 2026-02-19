@@ -44,14 +44,14 @@ public class LEDIndicator implements NKNComponent {
         if (redIsOn != state) {
             redLED.setState(!state);
             redIsOn = state;
-            RobotLog.v("Red set to : " + state);
+//            RobotLog.v("Red set to : " + state);
         }
     }
     public void setGreenLED (boolean state) {
         if (greenIsOn != state) {
             greenLED.setState(!state);
             greenIsOn = state;
-            RobotLog.v("Green set to : " + state);
+//            RobotLog.v("Green set to : " + state);
         }
     }
 

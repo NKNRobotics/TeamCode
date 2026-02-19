@@ -17,7 +17,7 @@ import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 
 public class TargetingSystem implements NKNComponent {
 
-    final private double MAX_XOFFSET = 0.07;
+    final private double MAX_XOFFSET = 0.05;
     final private double MIN_MOVE_VEL = 0.05;
 
     private BasketLocator basketLocator;

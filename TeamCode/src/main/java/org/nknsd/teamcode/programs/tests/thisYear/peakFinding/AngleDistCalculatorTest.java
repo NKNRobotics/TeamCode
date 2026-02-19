@@ -32,7 +32,7 @@ public class AngleDistCalculatorTest extends NKNProgram {
         @Override
         protected void run(ElapsedTime runtime, Telemetry telemetry) {
             short[][] data = srsHubHandler.getNormalizedDists();
-            SensorGridPoint ballPoint = peakFinder.findClosestPeak(data);
+            SensorGridPoint ballPoint = peakFinder.findPeak(data);
 
             if (ballPoint == null ) {
 

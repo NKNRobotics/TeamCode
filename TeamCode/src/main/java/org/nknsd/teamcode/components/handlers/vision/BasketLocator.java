@@ -93,16 +93,16 @@ public class BasketLocator implements NKNComponent {
         }
 
 //        RobotLog.v("min: " + result.minX + ", max: " + result.maxX + ", center: " + result.centerX);
-        RobotLog.v("skew: " + result.skew);
+//        RobotLog.v("skew: " + result.skew);
 
         double distance = distanceInterpolater.getValue(result.height);
 
 //        if (distance > 84) {
             if (result.skew < -1.35) {
-            RobotLog.v("skewing! Min");
+//            RobotLog.v("skewing! Min");
                 return new BasketOffset(result.minX, result.skew, distance);
             } else if (result.skew > 1.35) {
-            RobotLog.v("skewing! Max");
+//            RobotLog.v("skewing! Max");
                 return new BasketOffset(result.maxX, result.skew, distance);
             }
 //        }

@@ -44,7 +44,7 @@ public class LaunchAllState extends StateMachine.State {
                 if (timesRan < 2) {
                     StateMachine.INSTANCE.startAnonymous(new LaunchAllState(slotOrder, artifactSystem, launchSystem, slotTracker, microwaveScoopHandler, timesRan + 1));
                 } else {artifactSystem.setIsLaunching(false);}
-                RobotLog.v("LaunchAllState ended at: " + runtime.milliseconds());
+                RobotLog.v("LaunchAllState took: " + (runtime.milliseconds() - startTimeMS));
                 StateMachine.INSTANCE.stopAnonymous(this);
             }
         }
@@ -53,15 +53,17 @@ public class LaunchAllState extends StateMachine.State {
     @Override
     protected void started() {
         if (timesRan >= 0 && timesRan <= 2) {
-            RobotLog.v("LaunchAll moving to launchPos: " + slotOrder[timesRan]);
+//            RobotLog.v("LaunchAll moving to launchPos: " + slotOrder[timesRan]);
             microwaveScoopHandler.setMicrowavePosition(MicrowavePositions.values()[slotOrder[timesRan] + 3]);
         }
+        RobotLog.v("launch started");
         microwaveScoopHandler.toggleIntake(true);
     }
 
     @Override
     protected void stopped() {
         microwaveScoopHandler.toggleIntake(false);
+        RobotLog.v("stop launch");
 //        RobotLog.v("stoppint launch all #" + timesRan);
     }
 }
