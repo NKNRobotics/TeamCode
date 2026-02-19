@@ -19,7 +19,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
     // this state makes the scoop go up and down
     class ScoopActionState extends StateMachine.State {
-        final double SCOOPACTIONTIMEMS = 250;
+        final double SCOOPACTIONTIMEMS = 300;
 
         private boolean scoopResting = false;
 

@@ -241,7 +241,7 @@ public class Setup extends ProgramPart {
             peakPointer = new PeakPointer(peakFinder, srsHubHandler, autoPositioner, absolutePosition);
             components.add(peakPointer);
             peakPointer.setLEDs(leftLED, rightLED);
-            peakPointer.setPids(RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY);
+            peakPointer.setPids(RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY);
 
             telemetryEnabled.add(peakPointer);
 //        }
