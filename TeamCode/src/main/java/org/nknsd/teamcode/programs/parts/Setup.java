@@ -148,7 +148,7 @@ public class Setup extends ProgramPart {
             telemetryEnabled.add(trajectoryHandler);
         }
 
-        LauncherHandler launcherHandler = new LauncherHandler(0.95, 1.10);
+        LauncherHandler launcherHandler = new LauncherHandler(0.95, 1.05);
         components.add(launcherHandler);
         if (enableTelemetry) {
             telemetryEnabled.add(launcherHandler);
