@@ -213,6 +213,7 @@ public class Setup extends ProgramPart {
 
         BasketLocator basketLocator = new BasketLocator(RobotVersion.INSTANCE.aprilDistanceInterpolater);
         components.add(basketLocator);
+        basketLocator.setLEDs(leftLED, rightLED);
         if (enableTelemetry) {
             telemetryEnabled.add(basketLocator);
         }
@@ -233,17 +234,17 @@ public class Setup extends ProgramPart {
 
 //        if (RobotVersion.isAutonomous()) {
 //        srs
-            srsHubHandler = new SRSHubHandler();
-            components.add(srsHubHandler);
+        srsHubHandler = new SRSHubHandler();
+        components.add(srsHubHandler);
 
-            PeakFinder peakFinder = new PeakFinder();
+        PeakFinder peakFinder = new PeakFinder();
 
-            peakPointer = new PeakPointer(peakFinder, srsHubHandler, autoPositioner, absolutePosition);
-            components.add(peakPointer);
-            peakPointer.setLEDs(leftLED, rightLED);
-            peakPointer.setPids(RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY);
+        peakPointer = new PeakPointer(peakFinder, srsHubHandler, autoPositioner, absolutePosition);
+        components.add(peakPointer);
+        peakPointer.setLEDs(leftLED, rightLED);
+        peakPointer.setPids(RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY);
 
-            telemetryEnabled.add(peakPointer);
+        telemetryEnabled.add(peakPointer);
 //        }
 
 

@@ -61,6 +61,15 @@ public class PeakPointer implements NKNComponent {
         positioner.setTargetH(position.getPosition().h, pidH);
         positioner.setTargetX(position.getPosition().x, pidXY);
         positioner.setTargetY(position.getPosition().y, pidXY);
+
+        if (leftLED != null) {
+            leftLED.setGreenLED(false);
+            rightLED.setGreenLED(false);
+        }
+    }
+
+    public boolean isTargeting(){
+        return targetingEnabled;
     }
 
     public boolean targetAcquired() {

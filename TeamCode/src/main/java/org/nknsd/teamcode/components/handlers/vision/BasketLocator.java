@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
+import org.nknsd.teamcode.components.sensors.LEDIndicator;
 import org.nknsd.teamcode.components.utility.Interpolater;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
@@ -15,6 +16,12 @@ public class BasketLocator implements NKNComponent {
     private final Interpolater distanceInterpolater;
 
     private AprilTagSensor aprilTagSensor;
+    private LEDIndicator leftLED, rightLED;
+
+    public void setLEDs(LEDIndicator left, LEDIndicator right) {
+        this.leftLED = left;
+        this.rightLED = right;
+    }
 
     public BasketLocator(Interpolater distanceInterpolater) {
         this.distanceInterpolater = distanceInterpolater;
@@ -75,6 +82,8 @@ public class BasketLocator implements NKNComponent {
     public void doTelemetry(Telemetry telemetry) {
         telemetry.addData("blue distance", getOffset(ID.BLUE).distance);
         telemetry.addData("red distance", getOffset(ID.RED).distance);
+
+        telemetry.addData("skew ", getOffset(ID.BLUE).skew);
     }
 
     public BasketOffset getOffset(ID color) {
@@ -89,6 +98,10 @@ public class BasketLocator implements NKNComponent {
         }
 
         if (result.id == ID.NONE) {
+            if (rightLED != null) {
+                rightLED.setRedLED(false);
+                leftLED.setRedLED(false);
+            }
             return new BasketOffset();
         }
 
@@ -98,14 +111,26 @@ public class BasketLocator implements NKNComponent {
         double distance = distanceInterpolater.getValue(result.height);
 
 //        if (distance > 84) {
-            if (result.skew < -1.35) {
-//            RobotLog.v("skewing! Min");
-                return new BasketOffset(result.minX, result.skew, distance);
-            } else if (result.skew > 1.35) {
-//            RobotLog.v("skewing! Max");
-                return new BasketOffset(result.maxX, result.skew, distance);
+        if (result.skew > 1.4) {
+            if (leftLED != null) {
+                leftLED.setRedLED(true);
+                rightLED.setRedLED(false);
             }
+//            RobotLog.v("skewing! Min");
+            return new BasketOffset(result.minX, result.skew, distance);
+        } else if (result.skew < -1.4) {
+            if (rightLED != null) {
+                rightLED.setRedLED(true);
+                leftLED.setRedLED(false);
+            }
+//            RobotLog.v("skewing! Max");
+            return new BasketOffset(result.maxX, result.skew, distance);
+        }
 //        }
+        if (rightLED != null) {
+            rightLED.setRedLED(true);
+            leftLED.setRedLED(true);
+        }
 
         return new BasketOffset(result.centerX, result.skew, distance);
     }

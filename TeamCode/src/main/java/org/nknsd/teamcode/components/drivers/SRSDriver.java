@@ -53,7 +53,7 @@ public class SRSDriver implements NKNComponent {
             if (running) {
                 running = false;
                 RobotLog.v("Turning off srs");
-                peakPointer.enableTargeting(true, false);
+                peakPointer.enableTargeting(false, false);
                 autoPositioner.enableAutoPositioning(false, false, false);
             }
         }

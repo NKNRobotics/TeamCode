@@ -76,8 +76,8 @@ public class SRSIntakeState extends StateMachine.State {
             if (positioner.getError().h < 1 && positioner.getError().x < 1 && positioner.getError().y < 1) {
 //                RobotLog.v("in position");
                 SparkFunOTOS.Pose2D robotPos = position.getPosition();
-                positioner.setTargetX(robotPos.x - Math.sin(robotPos.h) * 2, pidXY);
-                positioner.setTargetY(robotPos.y - Math.cos(robotPos.h) * 2, pidXY);
+                positioner.setTargetX(robotPos.x - Math.sin(robotPos.h) * 5, pidXY);
+                positioner.setTargetY(robotPos.y - Math.cos(robotPos.h) * 5, pidXY);
             }
         }
 

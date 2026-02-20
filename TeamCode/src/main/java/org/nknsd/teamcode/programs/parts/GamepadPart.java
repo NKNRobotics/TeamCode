@@ -62,7 +62,7 @@ public class GamepadPart extends ProgramPart {
 
 
 
-        firingDriver.link(gamePadHandler, setup.getFiringSystem(), firingControlScheme);
+        firingDriver.link(gamePadHandler, setup.getFiringSystem(), firingControlScheme, setup.getPeakPointer());
         firingControlScheme.link(gamePadHandler);
         mixedInputWheelDriver.link(gamePadHandler, setup.getPowerInputMixer(), wheelControlScheme);
         wheelControlScheme.link(gamePadHandler);

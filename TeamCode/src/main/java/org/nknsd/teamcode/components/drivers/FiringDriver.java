@@ -6,9 +6,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.R;
+import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
 import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
+import org.nknsd.teamcode.components.handlers.srs.PeakPointer;
 import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.controlSchemes.defaults.FiringControlScheme;
@@ -19,11 +21,13 @@ public class FiringDriver implements NKNComponent {
     private GamePadHandler gamePadHandler;
     private FiringSystem firingSystem;
     private FiringControlScheme firingControlScheme;
+    private PeakPointer peakPointer;
 
     Runnable lockTarget = new Runnable() {
         @Override
         public void run() {
-            firingSystem.lockTarget(true);
+            if(!peakPointer.isTargeting()){
+            firingSystem.lockTarget(true);}
         }
     };
     Runnable unlockTarget = new Runnable() {
@@ -108,9 +112,10 @@ public class FiringDriver implements NKNComponent {
 
     }
 
-    public void link(GamePadHandler gamePadHandler, FiringSystem firingSystem, FiringControlScheme firingControlScheme) {
+    public void link(GamePadHandler gamePadHandler, FiringSystem firingSystem, FiringControlScheme firingControlScheme, PeakPointer peakPointer) {
         this.gamePadHandler = gamePadHandler;
         this.firingSystem = firingSystem;
         this.firingControlScheme = firingControlScheme;
+        this.peakPointer = peakPointer;
     }
 }

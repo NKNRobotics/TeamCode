@@ -166,7 +166,7 @@ public class TargetingSystem implements NKNComponent {
     }
 
     public void addLEDs(LEDIndicator left, LEDIndicator right) {
-        this.leftLED = left;
-        this.rightLED = right;
+//        this.leftLED = left;
+//        this.rightLED = right;
     }
 }
