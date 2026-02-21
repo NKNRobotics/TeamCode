@@ -34,7 +34,7 @@ public class LauncherHandler implements NKNComponent {
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         wMotor = (DcMotorEx) hardwareMap.dcMotor.get("LM");
-        wMotor.setVelocityPIDFCoefficients(100,4,2,0);
+        wMotor.setVelocityPIDFCoefficients(100,2,2,0);
         return true;
     }
 
