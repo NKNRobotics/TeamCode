@@ -214,6 +214,7 @@ public class Setup extends ProgramPart {
         BasketLocator basketLocator = new BasketLocator(RobotVersion.INSTANCE.aprilDistanceInterpolater);
         components.add(basketLocator);
         basketLocator.setLEDs(leftLED, rightLED);
+        basketLocator.setSkewEnabled(true);
         if (enableTelemetry) {
             telemetryEnabled.add(basketLocator);
         }

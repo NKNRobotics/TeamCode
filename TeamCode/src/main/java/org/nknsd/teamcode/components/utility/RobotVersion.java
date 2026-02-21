@@ -39,7 +39,7 @@ public class RobotVersion {
         return autoMode;
     }
 
-    private static ID robotAlliance = ID.NONE;
+    private static ID robotAlliance = ID.BLUE;
 
     public static void setRobotAlliance(ID alliance) {
         RobotVersion.robotAlliance = alliance;

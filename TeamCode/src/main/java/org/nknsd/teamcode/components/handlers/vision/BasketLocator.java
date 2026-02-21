@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.sensors.LEDIndicator;
 import org.nknsd.teamcode.components.utility.Interpolater;
+import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class BasketLocator implements NKNComponent {
@@ -17,6 +18,11 @@ public class BasketLocator implements NKNComponent {
 
     private AprilTagSensor aprilTagSensor;
     private LEDIndicator leftLED, rightLED;
+    private boolean skewEnabled = false;
+
+    public void setSkewEnabled(boolean skewEnabled) {
+        this.skewEnabled = skewEnabled;
+    }
 
     public void setLEDs(LEDIndicator left, LEDIndicator right) {
         this.leftLED = left;
@@ -110,23 +116,22 @@ public class BasketLocator implements NKNComponent {
 
         double distance = distanceInterpolater.getValue(result.height);
 
-//        if (distance > 84) {
-//        if (result.skew > 1.4) {
-//            if (leftLED != null) {
-//                leftLED.setRedLED(true);
-//                rightLED.setRedLED(false);
-//            }
-////            RobotLog.v("skewing! Min");
-//            return new BasketOffset(result.minX, result.skew, distance);
-//        } else if (result.skew < -1.4) {
-//            if (rightLED != null) {
-//                rightLED.setRedLED(true);
-//                leftLED.setRedLED(false);
-//            }
-////            RobotLog.v("skewing! Max");
-//            return new BasketOffset(result.maxX, result.skew, distance);
-//        }
-//        }
+        if (skewEnabled && distance > 80) {
+            if (RobotVersion.getRobotAlliance() == ID.BLUE) {
+                if (rightLED != null) {
+                    rightLED.setRedLED(true);
+                    leftLED.setRedLED(false);
+                }
+                return new BasketOffset(result.maxX, result.skew, distance);
+            } else if (RobotVersion.getRobotAlliance() == ID.RED) {
+                if (rightLED != null) {
+                    rightLED.setRedLED(false);
+                    leftLED.setRedLED(true);
+                }
+                return new BasketOffset(result.minX, result.skew, distance);
+            }
+        }
+
         if (rightLED != null) {
             rightLED.setRedLED(true);
             leftLED.setRedLED(true);
