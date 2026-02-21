@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.tests.thisYear.peakFinding;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,7 +15,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name="Peak Finder Test", group="Tests")
+@TeleOp(name="Peak Finder Test", group="Tests")@Disabled
 public class PeakFinderTest extends NKNProgram {
     private class AngleTestState extends StateMachine.State {
         private final SRSHubHandler srsHubHandler;

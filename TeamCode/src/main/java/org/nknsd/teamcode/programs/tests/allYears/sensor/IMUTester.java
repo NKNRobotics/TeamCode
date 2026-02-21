@@ -10,7 +10,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "IMU Tester", group="Tests")
+@TeleOp(name = "IMU Tester", group="Tests") @Disabled
 public class IMUTester extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {

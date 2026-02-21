@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.tests.thisYear.firing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -31,7 +32,7 @@ import org.nknsd.teamcode.states.TimerState;
 
 import java.util.List;
 
-@TeleOp(name = "firing system test", group = "Tests")
+@TeleOp(name = "firing system test", group = "Tests") @Disabled
 public class FiringSystemTest extends NKNProgram {
 
     LaunchSystem launchSystem = new LaunchSystem(RobotVersion.INSTANCE.launchSpeedInterpolater, RobotVersion.INSTANCE.launchAngleInterpolater, 2, 16, 132);

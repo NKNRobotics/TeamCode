@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.tests.thisYear.firing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -20,7 +21,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "firing pattern test", group = "Tests")
+@TeleOp(name = "firing pattern test", group = "Tests") @Disabled
 
 public class FirePatternTest extends NKNProgram {
 

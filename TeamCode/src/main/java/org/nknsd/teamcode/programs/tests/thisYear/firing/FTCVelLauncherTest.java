@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.tests.thisYear.firing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,7 +12,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Launcher Test", group = "Tests")
+@TeleOp(name = "Launcher Test", group = "Tests") @Disabled
 public class FTCVelLauncherTest extends NKNProgram {
 
     class spin extends StateMachine.State {

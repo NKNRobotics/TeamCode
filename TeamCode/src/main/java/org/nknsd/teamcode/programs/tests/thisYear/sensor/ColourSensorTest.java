@@ -11,7 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "ColorSensorTest", group = "Tests")
+@TeleOp(name = "ColorSensorTest", group = "Tests") @Disabled
 public class ColourSensorTest extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {

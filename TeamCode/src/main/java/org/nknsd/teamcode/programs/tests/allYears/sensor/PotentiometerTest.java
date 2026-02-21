@@ -9,7 +9,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "potentiometer Tester", group="Tests")
+@TeleOp(name = "potentiometer Tester", group="Tests") @Disabled
 public class PotentiometerTest extends NKNProgram {
     @Override
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {

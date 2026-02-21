@@ -12,7 +12,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "manual lift", group = "tests")
+@TeleOp(name = "manual lift")
 public class ManualLiftTest extends NKNProgram {
 
     private IMUSensor imuSensor;

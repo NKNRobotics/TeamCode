@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.tests.thisYear.artifactSystem;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -10,7 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 import java.util.Arrays;
 import java.util.List;
 
-@TeleOp(name = "slot ordering unit test", group = "Tests")
+@TeleOp(name = "slot ordering unit test", group = "Tests") @Disabled
 public class SlotOrderingUnitTest extends NKNProgram {
 
     private int[] testMe(BallColor[] colorOrder, BallColor[] slotColors) {
