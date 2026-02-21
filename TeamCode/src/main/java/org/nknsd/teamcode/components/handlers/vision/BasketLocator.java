@@ -111,21 +111,21 @@ public class BasketLocator implements NKNComponent {
         double distance = distanceInterpolater.getValue(result.height);
 
 //        if (distance > 84) {
-        if (result.skew > 1.4) {
-            if (leftLED != null) {
-                leftLED.setRedLED(true);
-                rightLED.setRedLED(false);
-            }
-//            RobotLog.v("skewing! Min");
-            return new BasketOffset(result.minX, result.skew, distance);
-        } else if (result.skew < -1.4) {
-            if (rightLED != null) {
-                rightLED.setRedLED(true);
-                leftLED.setRedLED(false);
-            }
-//            RobotLog.v("skewing! Max");
-            return new BasketOffset(result.maxX, result.skew, distance);
-        }
+//        if (result.skew > 1.4) {
+//            if (leftLED != null) {
+//                leftLED.setRedLED(true);
+//                rightLED.setRedLED(false);
+//            }
+////            RobotLog.v("skewing! Min");
+//            return new BasketOffset(result.minX, result.skew, distance);
+//        } else if (result.skew < -1.4) {
+//            if (rightLED != null) {
+//                rightLED.setRedLED(true);
+//                leftLED.setRedLED(false);
+//            }
+////            RobotLog.v("skewing! Max");
+//            return new BasketOffset(result.maxX, result.skew, distance);
+//        }
 //        }
         if (rightLED != null) {
             rightLED.setRedLED(true);

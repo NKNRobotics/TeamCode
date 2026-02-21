@@ -45,7 +45,6 @@ public class BalancedLiftHandler implements NKNComponent {
         flLift.setPower(0);
         blLift.setPower(0);
 
-
         return true;
     }
 
@@ -115,6 +114,7 @@ public class BalancedLiftHandler implements NKNComponent {
         isLifting = true;
 
         imuSensor.updateRollingAverage(true);
+        imuSensor.initIMU();
 
         justStarted = true;
 

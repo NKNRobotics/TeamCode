@@ -52,9 +52,9 @@ public class FarAutoPart extends ProgramPart {
         StateMachine.INSTANCE.addState("read pattern", new AutoReadPatternState(aprilTagSensor, firingSystem, new String[]{"start"}, new String[]{"rotate to fire pos"}));
         StateMachine.INSTANCE.addState("rotate to fire pos", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
                 transform.adjustPos(0, 8, -0.35), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
-                new String[]{}, new String[]{"timeToTarget", "target"}));
-        StateMachine.INSTANCE.addState("timeToTarget", new TimerState(1000, new String[]{"launch pattern", "target while firing"}, new String[]{"target"}));
-        StateMachine.INSTANCE.addState("target", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
+                new String[]{}, new String[]{/*"timeToTarget #3", "target #3"*/ "target while firing", "launch pattern"}));
+//        StateMachine.INSTANCE.addState("timeToTarget #3", new TimerState(1000, new String[]{"launch pattern #3", "target while firing #3"}, new String[]{"target #3"}));
+//        StateMachine.INSTANCE.addState("target #3", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to intake pos"}));
 
@@ -73,11 +73,29 @@ public class FarAutoPart extends ProgramPart {
 
         StateMachine.INSTANCE.addState("return to launch", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
                 transform.adjustPos(0, 8, -0.35), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
-                new String[]{}, new String[]{"timeToTarget #2", "target #2"}));
-        StateMachine.INSTANCE.addState("timeToTarget #2", new TimerState(1000, new String[]{"launch pattern #2", "target while firing #2"}, new String[]{"target #2"}));
-        StateMachine.INSTANCE.addState("target #2", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("target while firing 2", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("launch pattern 2", new AutoLaunchAllState(firingSystem, new String[]{"target while firing 2"}, new String[]{"move"}));
+                new String[]{}, new String[]{/*"timeToTarget #3", "target #3"*/ "target while firing #2", "launch pattern #2"}));
+//        StateMachine.INSTANCE.addState("timeToTarget #3", new TimerState(1000, new String[]{"launch pattern #3", "target while firing #3"}, new String[]{"target #3"}));
+//        StateMachine.INSTANCE.addState("target #3", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("target while firing #2", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("launch pattern #2", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #2"}, new String[]{"move to loading zone"}));
+
+        StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
+                transform.adjustPos(-40.5, 12, 0.8), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
+                new String[]{}, new String[]{"eat from spike 1 #2"}));
+        StateMachine.INSTANCE.addState("eat from spike 1 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 3000, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
+                new String[]{}, new String[]{"eat from spike 2 #2"}));
+        StateMachine.INSTANCE.addState("eat from spike 2 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 1500, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
+                new String[]{}, new String[]{"eat from spike 3 #2"}));
+        StateMachine.INSTANCE.addState("eat from spike 3 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 1500, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
+                new String[]{}, new String[]{"return to launch #2"}));
+
+        StateMachine.INSTANCE.addState("return to launch #2", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
+                transform.adjustPos(0, 8, -0.35), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
+                new String[]{}, new String[]{/*"timeToTarget #3", "target #3"*/ "target while firing #3", "launch pattern #3"}));
+//        StateMachine.INSTANCE.addState("timeToTarget #3", new TimerState(1000, new String[]{"launch pattern #3", "target while firing #3"}, new String[]{"target #3"}));
+//        StateMachine.INSTANCE.addState("target #3", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("target while firing #3", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("launch pattern #3", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #3"}, new String[]{"move"}));
 
         StateMachine.INSTANCE.addState("move", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
                 transform.adjustPos(-5, 20, 0), 0, 0, 0, 0, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH, new String[]{}, new String[]{}));

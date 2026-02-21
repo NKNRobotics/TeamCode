@@ -77,11 +77,11 @@ public class CloseAutoPart extends ProgramPart {
                 new String[]{}, new String[]{"return to launch"}));
 
         StateMachine.INSTANCE.addState("return to launch",
-                new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(-13, -45, 0.14), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
+                new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(-13, -45, 0), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
                         new String[]{}, new String[]{/*"timeToTarget #3", "target #3"*/ "target while firing #2", "launch pattern #2"}));
 //        StateMachine.INSTANCE.addState("timeToTarget #3", new TimerState(1000, new String[]{"launch pattern #3", "target while firing #3"}, new String[]{"target #3"}));
 //        StateMachine.INSTANCE.addState("target #3", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("target while firing #2", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("target while firing #2", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("launch pattern #2", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #2"}, new String[]{"move to spike #2"}));
 
         StateMachine.INSTANCE.addState("move to spike #2",
@@ -95,11 +95,11 @@ public class CloseAutoPart extends ProgramPart {
                 new String[]{}, new String[]{"return to launch #2"}));
 
         StateMachine.INSTANCE.addState("return to launch #2",
-                new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(-15, -58, 0.21), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
+                new AutoMoveToPosState(autoPositioner, absolutePosition, true, transform.adjustPos(-10, -57, 0), 1, 1, 0.1, 2, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
                         new String[]{}, new String[]{/*"timeToTarget #3", "target #3"*/ "target while firing #3", "launch pattern #3"}));
 //        StateMachine.INSTANCE.addState("timeToTarget #3", new TimerState(1000, new String[]{"launch pattern #3", "target while firing #3"}, new String[]{"target #3"}));
 //        StateMachine.INSTANCE.addState("target #3", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("target while firing #3", new AutoTargetState(firingSystem, true, new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("target while firing #3", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("launch pattern #3", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #3"}, new String[]{}));
 
         StateMachine.INSTANCE.startState("start");

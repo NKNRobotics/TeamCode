@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class AprilTagSensor implements NKNComponent {
@@ -175,7 +176,7 @@ public class AprilTagSensor implements NKNComponent {
         double width = (top + bottom) / 2;
         double height = (left + right) / 2;
 
-        double skew = left > right ? -1*left/bottom : right/bottom;
+        double skew = left > right ? -1 * left / bottom : right / bottom;
 
         return new VisionResult(centerX, centerY, minX, maxX, height, width, skew, id);
     }

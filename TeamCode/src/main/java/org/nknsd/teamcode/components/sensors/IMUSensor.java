@@ -24,7 +24,7 @@ public class IMUSensor implements NKNComponent {
 //        this.orientationOnRobot = orientationOnRobot;
     }
 
-    private void initIMU(){
+    public void initIMU(){
         imu = hardwareMap.get(AdafruitBNO055IMU.class, "imu");
         imu.initialize(new AdafruitBNO055IMU.Parameters());
     }
@@ -74,11 +74,11 @@ public class IMUSensor implements NKNComponent {
 
     public double getPitch() {
 //        return -imu.getRobotYawPitchRollAngles().getYaw();
-        return imu.getGravity().xAccel - xOffset;
+        return -(imu.getGravity().xAccel - xOffset);
     }
     public double getRoll() {
 //        return imu.getRobotYawPitchRollAngles().getPitch();
-        return imu.getGravity().yAccel - yOffset;
+        return -(imu.getGravity().yAccel - yOffset);
     }
 
 

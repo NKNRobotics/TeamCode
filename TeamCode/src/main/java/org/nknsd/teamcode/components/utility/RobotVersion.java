@@ -9,14 +9,14 @@ public class RobotVersion {
 //    comment out the unwanted version, top is new robot and bottom is old robot
 
     public final static RobotVersion INSTANCE = new RobotVersion(50, .038, false, 60, .5, 1,
-            new Interpolater(new double[][]{{16, 1550}, {24, 1650}, {36, 1750}, {48, 1820}, {60, 1900}, {72, 2000}, {84, 2100}, {96, 2200}, {108, 2300}, {130, 2500}}),
-            new Interpolater(new double[][]{{16, 1}, {32, .8}, {48, .7}, {64, 0.6}, {80, 0.5}, {96, 0.4}, {112, 0.3}, {132, 0.22}}),
+            new Interpolater(new double[][]{{16, 1550}, {24, 1650}, {36, 1725}, {48, 1800}, {60, 1925}, {72, 2025}, {84, 2100}, {96, 2250}, {108, 2350}, {130, 2400}}),
+            new Interpolater(new double[][]{{16, 1}, {32, .8}, {48, .55}, {64, 0.45}, {80, 0.4}, {96, 0.41}, {112, 0.35}, {132, 0.3}}),
             new Interpolater(new double[][]{{0.265, 12}, {0.2, 24}, {0.16, 36}, {0.132, 48}, {0.11, 60}, {0.098, 72}, {0.085, 84}, {0.077, 96}, {0.068, 108}, {0.064, 120}, {0.058, 132}, {0.054, 144}, {0.05, 156}}),
-            new PidController(0.08, 0.2, 0.08, 0.08, true, 0.05, 0.2), // for the SRS
-            new PidController(0.5, 1, 0, 0, true, 0, 0), // SRS heading
-            new PidController(0.2, 1, 0.15, 0.2, true, 0.1, 0.2), // x
-            new PidController(0.2, 1, 0.15, 0.2, true, 0.1, 0.2), // y
-            new PidController(2, 2, 0.2, 0.3, true, 0.2, 1)); // h (both driving and targeting)
+            new PidController(0.2, 0.1, 0.1, 0.1, true, 0, 0), // for the SRS
+            new PidController(0.7, 1, 0.1, 0.3, true, 0, 0), // SRS heading
+            new PidController(0.2, 1, 0.15, 0.2, true, 0.1, 0.5), // x
+            new PidController(0.2, 1, 0.15, 0.2, true, 0.1, 0.5), // y
+            new PidController(2, 2, 0.3, 0.4, true, 0.2, 0.5)); // h (both driving and targeting)
 
 //    public final static RobotVersion INSTANCE= new RobotVersion(50,0,true,60,.5,1,
 //            new Interpolater(new double[][]{{16,1370}, {32,1440}, {48,1500}, {64,1550}, {80,1620}, {96, 1720}, {112,1900}, {132, 1940}}),
