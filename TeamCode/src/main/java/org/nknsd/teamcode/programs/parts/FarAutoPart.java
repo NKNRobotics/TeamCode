@@ -80,7 +80,7 @@ public class FarAutoPart extends ProgramPart {
         StateMachine.INSTANCE.addState("launch pattern #2", new AutoLaunchAllState(firingSystem, new String[]{"target while firing #2"}, new String[]{"move to loading zone"}));
 
         StateMachine.INSTANCE.addState("move to loading zone", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
-                transform.adjustPos(-40.5, 12, 0.8), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
+                transform.adjustPos(-39, 12, 1.19), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
                 new String[]{}, new String[]{"eat from spike 1 #2"}));
         StateMachine.INSTANCE.addState("eat from spike 1 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 3000, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
                 new String[]{}, new String[]{"eat from spike 2 #2"}));

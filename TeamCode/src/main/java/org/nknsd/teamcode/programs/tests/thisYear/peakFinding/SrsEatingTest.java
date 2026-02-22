@@ -22,15 +22,15 @@ public class SrsEatingTest extends NKNProgram {
         RobotVersion.setIsAutonomous(true);
 
         Setup setup = new Setup();
-        setup.createComponents(components,telemetryEnabled);
+        setup.createComponents(components, telemetryEnabled);
 
         GamepadPart gamepadPart = new GamepadPart(setup);
-        gamepadPart.createComponents(components,telemetryEnabled);
+        gamepadPart.createComponents(components, telemetryEnabled);
 
         StateMachine.INSTANCE.addState("scan slots", new AutoSlotCheck(setup.getArtifactSystem(), new String[]{}, new String[]{"intake 1"}));
-        StateMachine.INSTANCE.addState("intake 1", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), false, 0, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , /* setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), */ new String[]{}, new String[]{"intake 2"}));
-        StateMachine.INSTANCE.addState("intake 2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), false, 0, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , /* setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), */ new String[]{}, new String[]{"intake 3"}));
-        StateMachine.INSTANCE.addState("intake 3", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), false, 0, RobotVersion.INSTANCE.pidControllerH, RobotVersion.INSTANCE.ballEatingPidXY , /* setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), */ new String[]{}, new String[]{}));
+        StateMachine.INSTANCE.addState("intake 1", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), false, 0, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{"intake 2"}));
+        StateMachine.INSTANCE.addState("intake 2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), false, 0, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{"intake 3"}));
+        StateMachine.INSTANCE.addState("intake 3", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), false, 0, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(), new String[]{}, new String[]{}));
 
         StateMachine.INSTANCE.startState("scan slots");
     }

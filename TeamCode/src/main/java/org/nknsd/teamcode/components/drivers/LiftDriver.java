@@ -19,14 +19,14 @@ public class LiftDriver implements NKNComponent {
     Runnable startLift = new Runnable() {
         @Override
         public void run() {
-            balancedLiftHandler.startLift();
+            //balancedLiftHandler.startLift();
         }
     };
 
     Runnable stopLift = new Runnable() {
         @Override
         public void run() {
-            balancedLiftHandler.stopLift();
+            //balancedLiftHandler.stopLift();
         }
     };
 

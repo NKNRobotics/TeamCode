@@ -122,13 +122,13 @@ public class BasketLocator implements NKNComponent {
                     rightLED.setRedLED(true);
                     leftLED.setRedLED(false);
                 }
-                return new BasketOffset(result.maxX, result.skew, distance);
+                return new BasketOffset(result.minX, result.skew, distance);
             } else if (RobotVersion.getRobotAlliance() == ID.RED) {
                 if (rightLED != null) {
                     rightLED.setRedLED(false);
                     leftLED.setRedLED(true);
                 }
-                return new BasketOffset(result.minX, result.skew, distance);
+                return new BasketOffset(result.maxX, result.skew, distance);
             }
         }
 
