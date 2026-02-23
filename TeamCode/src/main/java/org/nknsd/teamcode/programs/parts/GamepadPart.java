@@ -62,7 +62,7 @@ public class GamepadPart extends ProgramPart {
 
 
 
-        firingDriver.link(gamePadHandler, setup.getFiringSystem(), firingControlScheme, setup.getPeakPointer());
+        firingDriver.link(gamePadHandler, setup.getFiringSystem(), firingControlScheme/*, setup.getPeakPointer() */);
         firingControlScheme.link(gamePadHandler);
         mixedInputWheelDriver.link(gamePadHandler, setup.getPowerInputMixer(), wheelControlScheme);
         wheelControlScheme.link(gamePadHandler);
@@ -70,7 +70,7 @@ public class GamepadPart extends ProgramPart {
         intakeControlScheme.link(gamePadHandler);
         liftDriver.link(gamePadHandler, setup.getBalancedLiftHandler(), liftControlScheme);
         liftControlScheme.link(gamePadHandler);
-        srsDriver.link(gamePadHandler, srsControlScheme, /* StateMachine.INSTANCE, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getAbsolutePosition(), */ setup.getArtifactSystem(), setup.getPeakPointer(), setup.getAutoPositioner());
+        srsDriver.link(gamePadHandler, srsControlScheme, /* StateMachine.INSTANCE, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getAbsolutePosition(), */ setup.getArtifactSystem(), /* setup.getPeakPointer(), */ setup.getAutoPositioner());
         srsControlScheme.link(gamePadHandler);
     }
 }

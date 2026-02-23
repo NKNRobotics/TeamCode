@@ -80,7 +80,6 @@ public class BalancedLiftHandler implements NKNComponent {
 
                 imuSensor.updateRollingAverage(false);
             } else {
-
                 pitch = imuSensor.getPitch() - pitchTarget;
                 roll = imuSensor.getRoll() - rollTarget;
 
@@ -114,7 +113,7 @@ public class BalancedLiftHandler implements NKNComponent {
         isLifting = true;
 
         imuSensor.updateRollingAverage(true);
-        imuSensor.initIMU();
+//        imuSensor.initIMU();
 
         justStarted = true;
 

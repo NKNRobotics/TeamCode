@@ -26,9 +26,9 @@ public class FiringDriver implements NKNComponent {
     Runnable lockTarget = new Runnable() {
         @Override
         public void run() {
-            if(!peakPointer.isTargeting()){
+//            if(!peakPointer.isTargeting()){
             firingSystem.lockTarget(true);}
-        }
+//        }
     };
     Runnable unlockTarget = new Runnable() {
         @Override
@@ -112,10 +112,10 @@ public class FiringDriver implements NKNComponent {
 
     }
 
-    public void link(GamePadHandler gamePadHandler, FiringSystem firingSystem, FiringControlScheme firingControlScheme, PeakPointer peakPointer) {
+    public void link(GamePadHandler gamePadHandler, FiringSystem firingSystem, FiringControlScheme firingControlScheme/*, PeakPointer peakPointer*/) {
         this.gamePadHandler = gamePadHandler;
         this.firingSystem = firingSystem;
         this.firingControlScheme = firingControlScheme;
-        this.peakPointer = peakPointer;
+//        this.peakPointer = peakPointer;
     }
 }

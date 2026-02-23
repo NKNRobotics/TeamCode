@@ -9,7 +9,7 @@ public class RobotVersion {
 //    comment out the unwanted version, top is new robot and bottom is old robot
 
     public final static RobotVersion INSTANCE = new RobotVersion(50, .038, false, 60, .5, 1,
-            new Interpolater(new double[][]{{16, 1550}, {24, 1650}, {36, 1750}, {48, 1825}, {60, 1950}, {72, 2025}, {84, 2100}, {96, 2250}, {108, 2350}, {130, 2400}}),
+            new Interpolater(new double[][]{{16, 1550}, {24, 1650}, {36, 1750}, {48, 1825}, {60, 1950}, {72, 2025}, {84, 2125}, {96, 2275}, {108, 2375}, {130, 2425}}),
             new Interpolater(new double[][]{{16, 1}, {32, .8}, {48, .55}, {64, 0.45}, {80, 0.4}, {96, 0.41}, {112, 0.35}, {132, 0.3}}),
             new Interpolater(new double[][]{{0.265, 12}, {0.2, 24}, {0.16, 36}, {0.132, 48}, {0.11, 60}, {0.098, 72}, {0.085, 84}, {0.077, 96}, {0.068, 108}, {0.064, 120}, {0.058, 132}, {0.054, 144}, {0.05, 156}}),
             new PidController(0.1, 0.1, 0.08, 0.1, true, 0, 0), // for the SRS

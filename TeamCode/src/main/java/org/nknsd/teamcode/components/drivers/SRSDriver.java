@@ -38,7 +38,7 @@ public class SRSDriver implements NKNComponent {
             if (!running) {
                 running = true;
                 RobotLog.v("Turning on srs");
-                peakPointer.enableTargeting(true, false);
+//                peakPointer.enableTargeting(true, false);
                 if (!artifactSystem.isIntaking()) {
                     artifactSystem.intakeUntilFull();
                 }
@@ -53,7 +53,7 @@ public class SRSDriver implements NKNComponent {
             if (running) {
                 running = false;
                 RobotLog.v("Turning off srs");
-                peakPointer.enableTargeting(false, false);
+//                peakPointer.enableTargeting(false, false);
                 autoPositioner.enableAutoPositioning(false, false, false);
             }
         }
@@ -95,7 +95,7 @@ public class SRSDriver implements NKNComponent {
 
     }
 
-    public void link(GamePadHandler gamePadHandler, SRSControlScheme srsControlScheme, /* StateMachine stateMachine,  MicrowaveScoopHandler microwaveScoopHandler, AbsolutePosition absolutePosition, SlotTracker slotTracker, */ ArtifactSystem artifactSystem, PeakPointer peakPointer, AutoPositioner autoPositioner) {
+    public void link(GamePadHandler gamePadHandler, SRSControlScheme srsControlScheme, /* StateMachine stateMachine,  MicrowaveScoopHandler microwaveScoopHandler, AbsolutePosition absolutePosition, SlotTracker slotTracker, */ ArtifactSystem artifactSystem, /*PeakPointer peakPointer,*/ AutoPositioner autoPositioner) {
         this.gamePadHandler = gamePadHandler;
         this.srsControlScheme = srsControlScheme;
 //        this.stateMachine = stateMachine;

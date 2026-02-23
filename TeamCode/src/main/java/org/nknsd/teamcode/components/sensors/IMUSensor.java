@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.frameworks.NKNComponent;
@@ -24,9 +25,9 @@ public class IMUSensor implements NKNComponent {
 //        this.orientationOnRobot = orientationOnRobot;
     }
 
-    public void initIMU(){
+    public boolean initIMU(){
         imu = hardwareMap.get(AdafruitBNO055IMU.class, "imu");
-        imu.initialize(new AdafruitBNO055IMU.Parameters());
+        return imu.initialize(new AdafruitBNO055IMU.Parameters());
     }
 
     @Override
@@ -38,7 +39,7 @@ public class IMUSensor implements NKNComponent {
 
     @Override
     public void init_loop(ElapsedTime runtime, Telemetry telemetry) {
-
+        telemetry.addLine("ready");
     }
 
     @Override
@@ -51,9 +52,11 @@ public class IMUSensor implements NKNComponent {
         if (firstTime) {
             xOffset = imu.getGravity().xAccel;
             yOffset = imu.getGravity().yAccel;
+            RobotLog.v("first time");
         } else {
             xOffset = (xOffset + imu.getGravity().xAccel) / 2;
             yOffset = (yOffset + imu.getGravity().yAccel) / 2;
+            RobotLog.v("updating offset");
         }
     }
 
@@ -80,7 +83,6 @@ public class IMUSensor implements NKNComponent {
 //        return imu.getRobotYawPitchRollAngles().getPitch();
         return -(imu.getGravity().yAccel - yOffset);
     }
-
 
     @Override
     public void doTelemetry(Telemetry telemetry) {

@@ -233,7 +233,7 @@ public class Setup extends ProgramPart {
         components.add(imuSensor);
         telemetryEnabled.add(balancedLiftHandler);
 
-//        if (RobotVersion.isAutonomous()) {
+        if (RobotVersion.isAutonomous()) {
 //        srs
         srsHubHandler = new SRSHubHandler();
         components.add(srsHubHandler);
@@ -246,7 +246,7 @@ public class Setup extends ProgramPart {
         peakPointer.setPids(RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY);
 
         telemetryEnabled.add(peakPointer);
-//        }
+        }
 
 
 //        all links
