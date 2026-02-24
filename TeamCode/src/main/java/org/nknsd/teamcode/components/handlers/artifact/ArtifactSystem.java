@@ -16,7 +16,7 @@ import org.nknsd.teamcode.components.utility.StateMachine;
 public class ArtifactSystem {
     private MicrowaveScoopHandler microwaveScoopHandler;
     private SlotTracker slotTracker;
-    private LaunchSystem launchSystem;
+//    private LaunchSystem launchSystem;
     private boolean isLaunching;
     private boolean isScanning;
 
@@ -127,8 +127,7 @@ public class ArtifactSystem {
         return launchAll(new int[]{0, 1, 2});
     }
 
-    public boolean launchAll(BallColor[] colorOrder
-    ) {
+    public boolean launchAll(BallColor[] colorOrder) {
         int[] orderToLaunch = new int[]{4,4,4};
         BallColor[] slotColors = new BallColor[3];
         for (int i = 0; i < 3; i++) {
@@ -166,7 +165,7 @@ public class ArtifactSystem {
     public boolean launchAll(int[] slotOrder) {
         if (isReady()) {
             setIsLaunching(true);
-            StateMachine.INSTANCE.startAnonymous(new LaunchAllStartState(slotOrder, microwaveScoopHandler, slotTracker, this, launchSystem));
+//            StateMachine.INSTANCE.startAnonymous(new LaunchAllStartState(slotOrder, microwaveScoopHandler, slotTracker, this, launchSystem));
             return true;
         }
         return false;
@@ -193,9 +192,11 @@ public class ArtifactSystem {
     }
 
 
-    public void link(MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker, LaunchSystem launchSystem) {
+    public void link(MicrowaveScoopHandler microwaveScoopHandler, SlotTracker slotTracker
+//            , LaunchSystem launchSystem
+    ) {
         this.microwaveScoopHandler = microwaveScoopHandler;
         this.slotTracker = slotTracker;
-        this.launchSystem = launchSystem;
+//        this.launchSystem = launchSystem;
     }
 }

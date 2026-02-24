@@ -2,9 +2,9 @@ package org.nknsd.teamcode.programs.parts;
 
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.nknsd.teamcode.components.drivers.FiringDriver;
+//import org.nknsd.teamcode.components.drivers.FiringDriver;
 import org.nknsd.teamcode.components.drivers.IntakeDriver;
-import org.nknsd.teamcode.components.drivers.LiftDriver;
+//import org.nknsd.teamcode.components.drivers.LiftDriver;
 import org.nknsd.teamcode.components.drivers.MixedInputWheelDriver;
 import org.nknsd.teamcode.components.drivers.SRSDriver;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
@@ -35,8 +35,8 @@ public class GamepadPart extends ProgramPart {
         components.add(gamePadHandler);
 
 
-        FiringDriver firingDriver = new FiringDriver();
-        components.add(firingDriver);
+        //FiringDriver firingDriver = new FiringDriver();
+        //components.add(firingDriver);
 
         FiringControlScheme firingControlScheme = new FiringControlScheme();
 
@@ -49,9 +49,9 @@ public class GamepadPart extends ProgramPart {
         components.add(intakeDriver);
 
         IntakeControlScheme intakeControlScheme = new IntakeControlScheme();
-
-        LiftDriver liftDriver = new LiftDriver();
-        components.add(liftDriver);
+//
+//        LiftDriver liftDriver = new LiftDriver();
+//        components.add(liftDriver);
 
         LiftControlScheme liftControlScheme = new LiftControlScheme();
 
@@ -62,13 +62,13 @@ public class GamepadPart extends ProgramPart {
 
 
 
-        firingDriver.link(gamePadHandler, setup.getFiringSystem(), firingControlScheme/*, setup.getPeakPointer() */);
+//        firingDriver.link(gamePadHandler, setup.getFiringSystem(), firingControlScheme/*, setup.getPeakPointer() */);
         firingControlScheme.link(gamePadHandler);
         mixedInputWheelDriver.link(gamePadHandler, setup.getPowerInputMixer(), wheelControlScheme);
         wheelControlScheme.link(gamePadHandler);
         intakeDriver.link(gamePadHandler, setup.getArtifactSystem(), intakeControlScheme);
         intakeControlScheme.link(gamePadHandler);
-        liftDriver.link(gamePadHandler, setup.getBalancedLiftHandler(), liftControlScheme);
+//        liftDriver.link(gamePadHandler, setup.getBalancedLiftHandler(), liftControlScheme);
         liftControlScheme.link(gamePadHandler);
         srsDriver.link(gamePadHandler, srsControlScheme, /* StateMachine.INSTANCE, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getAbsolutePosition(), */ setup.getArtifactSystem(), /* setup.getPeakPointer(), */ setup.getAutoPositioner());
         srsControlScheme.link(gamePadHandler);
