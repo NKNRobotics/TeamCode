@@ -23,7 +23,7 @@ public class FarAutoRed extends NKNProgram {
         setup.createComponents(components, telemetryEnabled);
 
         PositionTransform transform = new PositionTransform(0, 0, 0, -1, 1, -1);
-        FarAutoPart farAutoPart = new FarAutoPart(transform, setup);
+        FarAutoPart farAutoPart = new FarAutoPart(transform, setup, false);
         farAutoPart.createComponents(components, telemetryEnabled);
 
 

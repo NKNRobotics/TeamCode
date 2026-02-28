@@ -9,7 +9,6 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 import org.nknsd.teamcode.programs.parts.FarAutoPart;
 import org.nknsd.teamcode.programs.parts.Setup;
-import org.nknsd.teamcode.programs.parts.ShortenedFarAutoPart;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class ShortenedFarAutoBlue extends NKNProgram {
         setup.createComponents(components,telemetryEnabled);
 
         PositionTransform transform = new PositionTransform(0,0,0,1,1,1);
-        ShortenedFarAutoPart farAutoPart = new ShortenedFarAutoPart(transform, setup);
+        FarAutoPart farAutoPart = new FarAutoPart(transform, setup, true);
         farAutoPart.createComponents(components,telemetryEnabled);
     }
 }

@@ -91,7 +91,4 @@ public class IMUSensor implements NKNComponent {
         telemetry.addData("roll", getRoll());
 
     }
-
-    public void resetIMU() {
-    }
 }

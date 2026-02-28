@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.sensors.IMUSensor;
@@ -99,9 +100,9 @@ public class BalancedLiftHandler implements NKNComponent {
     public void doTelemetry(Telemetry telemetry) {
         telemetry.addData("lifting", isLifting);
         if (isLifting) {
-            telemetry.addData("FLlift",flLift.getPower());
-            telemetry.addData("BLlift",blLift.getPower());
-            telemetry.addData("BRlift",brLift.getPower());
+            telemetry.addData("FLlift", flLift.getPower());
+            telemetry.addData("BLlift", blLift.getPower());
+            telemetry.addData("BRlift", brLift.getPower());
 
         }
         telemetry.addData("imu roll", imuSensor.getRoll());
@@ -110,26 +111,33 @@ public class BalancedLiftHandler implements NKNComponent {
         telemetry.addData("mult pitch", pitch);
     }
 
-    public void startLift(){
-        isLifting = true;
+    public void startLift() {
+        if (!isLifting) {
+            RobotLog.v("start lift");
+            isLifting = true;
 
-        imuSensor.updateRollingAverage(true);
+            imuSensor.updateRollingAverage(true);
 //        imuSensor.initIMU();
 
-        justStarted = true;
+            justStarted = true;
+            runtimeAtStart = 0;
 
 //        imuSensor.initIMU();
 //        imuSensor.resetIMU();
+        }
     }
 
-    public void stopLift(){
-        isLifting = false;
-        brLift.setPower(0);
-        flLift.setPower(0);
-        blLift.setPower(0);
+    public void stopLift() {
+        if (isLifting) {
+            RobotLog.v("stop lift");
+            isLifting = false;
+            brLift.setPower(0);
+            flLift.setPower(0);
+            blLift.setPower(0);
+        }
     }
 
-    public void link(IMUSensor imuSensor){
+    public void link(IMUSensor imuSensor) {
         this.imuSensor = imuSensor;
     }
 }

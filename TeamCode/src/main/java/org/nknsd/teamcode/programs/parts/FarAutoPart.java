@@ -29,10 +29,12 @@ public class FarAutoPart extends ProgramPart {
     final private PositionTransform transform;
 
     private final Setup setup;
+    private final boolean shortened;
 
-    public FarAutoPart(PositionTransform positionTransform, Setup setup) {
+    public FarAutoPart(PositionTransform positionTransform, Setup setup, boolean shortened) {
         this.transform = positionTransform;
         this.setup = setup;
+        this.shortened = shortened;
     }
 
     @Override
@@ -56,7 +58,10 @@ public class FarAutoPart extends ProgramPart {
 //        StateMachine.INSTANCE.addState("timeToTarget #3", new TimerState(1000, new String[]{"launch pattern #3", "target while firing #3"}, new String[]{"target #3"}));
 //        StateMachine.INSTANCE.addState("target #3", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
         StateMachine.INSTANCE.addState("target while firing", new AutoTargetState(firingSystem, false, new String[]{}, new String[]{}));
-        StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to intake pos"}));
+        if (!shortened) {
+            StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to intake pos"}));
+        } else {            StateMachine.INSTANCE.addState("launch pattern", new AutoLaunchAllState(firingSystem, new String[]{"target while firing"}, new String[]{"move to loading zone"}));
+        }
 
         StateMachine.INSTANCE.addState("move to intake pos", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
                 transform.adjustPos(0, 20, 0), 1, 1, 1, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
