@@ -19,7 +19,11 @@ public class TeleopBlue extends NKNProgram {
         RobotVersion.setIsAutonomous(false);
 
         Setup setup = new Setup();
-        setup.createComponents(components, telemetryEnabled);
+        setup.changeEnableSettings(true,true);
+        setup.createComponents(components,telemetryEnabled);
+
+//        telemetryEnabled.add(setup.getBalancedLiftHandler());
+//        telemetryEnabled.add(setup.getSrsHubHandler());
 
         GamepadPart gamepadPart = new GamepadPart(setup);
         gamepadPart.createComponents(components,telemetryEnabled);

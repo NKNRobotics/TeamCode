@@ -21,7 +21,11 @@ public class FarAutoBlue extends NKNProgram {
         RobotVersion.setRobotAlliance(ID.BLUE);
 
         Setup setup = new Setup();
+        setup.changeEnableSettings(true,false);
         setup.createComponents(components,telemetryEnabled);
+
+        telemetryEnabled.add(setup.getBalancedLiftHandler());
+        telemetryEnabled.add(setup.getSrsHubHandler());
 
         PositionTransform transform = new PositionTransform(0,0,0,1,1,1);
         FarAutoPart farAutoPart = new FarAutoPart(transform, setup);

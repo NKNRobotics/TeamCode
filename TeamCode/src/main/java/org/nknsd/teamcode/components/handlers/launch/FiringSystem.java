@@ -45,7 +45,7 @@ public class FiringSystem implements NKNComponent {
     }
 
     public boolean isReady() {
-        boolean ready;
+        boolean ready = true;
         if (autoLocked) {
             ready = launchSystem.isReady() && artifactSystem.isReady() && targetingSystem.targetAcquired();
         } else {
@@ -76,7 +76,7 @@ public class FiringSystem implements NKNComponent {
 
     public void fireAll() {
 
-        if (isReady()) {
+//        if (isReady()) {
             if (pattern == ID.NONE) {
                 artifactSystem.launchAll();
             } else {
@@ -98,7 +98,7 @@ public class FiringSystem implements NKNComponent {
                 }
                 artifactSystem.launchAll(patternColors);
             }
-        }
+//        }
     }
 
     @Override

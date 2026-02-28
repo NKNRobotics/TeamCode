@@ -42,7 +42,7 @@ public class SRSDriver implements NKNComponent {
                 if (!artifactSystem.isIntaking()) {
                     artifactSystem.intakeUntilFull();
                 }
-                autoPositioner.enableAutoPositioning(false, false, true);
+//                autoPositioner.enableAutoPositioning(false, false, true);
             }
         }
     };
@@ -54,7 +54,7 @@ public class SRSDriver implements NKNComponent {
                 running = false;
                 RobotLog.v("Turning off srs");
 //                peakPointer.enableTargeting(false, false);
-                autoPositioner.enableAutoPositioning(false, false, false);
+//                autoPositioner.enableAutoPositioning(false, false, false);
             }
         }
     };

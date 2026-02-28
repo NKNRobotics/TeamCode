@@ -19,7 +19,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
     // this state makes the scoop go up and down
     class ScoopActionState extends StateMachine.State {
-        final double SCOOPACTIONTIMEMS = 300;
+        final double SCOOPACTIONTIMEMS = 400;
 
         private boolean scoopResting = false;
 
@@ -127,9 +127,9 @@ public class MicrowaveScoopHandler implements NKNComponent {
     }
 
 
-    Servo microwaveServo;
-    Servo scoopServo;
-    CRServo spinner;
+    public Servo microwaveServo;
+    public Servo scoopServo;
+    public CRServo spinner;
 
     AnalogInput servoPosInput;
 
@@ -157,7 +157,7 @@ public class MicrowaveScoopHandler implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        setMicrowavePosition(MicrowavePositions.LOAD0);
+//        setMicrowavePosition(MicrowavePositions.LOAD0);
     }
 
     @Override

@@ -16,15 +16,15 @@ public class BalancedLiftHandler implements NKNComponent {
     CRServo brLift;
     CRServo flLift;
 
-    private final double blInitial = 0.3;
-    private final double brInitial = 0.37;
-    private final double flInitial = 0.37;
+    private final double blInitial = 0.33;
+    private final double brInitial = 0.35;
+    private final double flInitial = 0.36;
 
     private final double rollTarget = 0.05;
     private final double pitchTarget = -0.05;
 
-    private final double kpfl = 0.5, kpbl = -0.2, kpbr = -0.5;
-    private final double krfl = 0.5, krbl = 0.2, krbr = -0.5;
+    private final double kpfl = 0.25, kpbl = -0.1, kpbr = -0.2;
+    private final double krfl = 0.25, krbl = 0.1, krbr = -0.2;
 
     private IMUSensor imuSensor;
 
@@ -39,7 +39,8 @@ public class BalancedLiftHandler implements NKNComponent {
         brLift = hardwareMap.crservo.get("BRlift");
         flLift = hardwareMap.crservo.get("FLlift");
 
-        blLift.setDirection(DcMotorSimple.Direction.REVERSE);
+        brLift.setDirection(DcMotorSimple.Direction.REVERSE);
+        flLift.setDirection(DcMotorSimple.Direction.REVERSE);
 
         brLift.setPower(0);
         flLift.setPower(0);
@@ -81,7 +82,7 @@ public class BalancedLiftHandler implements NKNComponent {
                 imuSensor.updateRollingAverage(false);
             } else {
                 pitch = imuSensor.getPitch() - pitchTarget;
-                roll = imuSensor.getRoll() - rollTarget;
+                roll = -imuSensor.getRoll() - rollTarget;
 
                 double flPower = flInitial + (pitch * kpfl + roll * krfl);
                 double blPower = blInitial + (pitch * kpbl + roll * krbl);

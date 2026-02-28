@@ -85,14 +85,14 @@ public class FarAutoPart extends ProgramPart {
         StateMachine.INSTANCE.addState("eat from spike 1 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 3000, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
                 new String[]{}, new String[]{"back up 1"}));
         StateMachine.INSTANCE.addState("back up 1", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
-                transform.adjustPos(-35, 9, 1.19), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
+                transform.adjustPos(-37, 9, 1.19), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
                 new String[]{}, new String[]{"eat from spike 2 #2"}));
-        StateMachine.INSTANCE.addState("eat from spike 2 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 1500, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
+        StateMachine.INSTANCE.addState("eat from spike 2 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 2000, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
                 new String[]{}, new String[]{"back up 2"}));
         StateMachine.INSTANCE.addState("back up 2", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
-                transform.adjustPos(-35, 6, 1.19), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
+                transform.adjustPos(-37, 8, 1), 2, 2, 0.3, 4, RobotVersion.INSTANCE.pidControllerX, RobotVersion.INSTANCE.pidControllerY, RobotVersion.INSTANCE.pidControllerH,
                 new String[]{}, new String[]{"eat from spike 3 #2"}));
-        StateMachine.INSTANCE.addState("eat from spike 3 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 1500, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
+        StateMachine.INSTANCE.addState("eat from spike 3 #2", new SRSIntakeState(setup.getPeakPointer(), setup.getAutoPositioner(), setup.getAbsolutePosition(), true, 2000, RobotVersion.INSTANCE.ballEatingPidH, RobotVersion.INSTANCE.ballEatingPidXY, setup.getMicrowaveScoopHandler(), setup.getSlotTracker(), setup.getArtifactSystem(),
                 new String[]{}, new String[]{"return to launch #2"}));
 
         StateMachine.INSTANCE.addState("return to launch #2", new AutoMoveToPosState(autoPositioner, absolutePosition, true,
