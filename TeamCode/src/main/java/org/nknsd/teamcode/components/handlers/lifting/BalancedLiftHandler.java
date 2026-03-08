@@ -17,12 +17,13 @@ public class BalancedLiftHandler implements NKNComponent {
     CRServo brLift;
     CRServo flLift;
 
-    private final double blInitial = 0.33;
-    private final double brInitial = 0.35;
-    private final double flInitial = 0.36;
 
-    private final double rollTarget = 0.05;
-    private final double pitchTarget = -0.05;
+    private final double blInitial = 0.36;
+    private final double brInitial = 0.30;
+    private final double flInitial = 0.42;
+
+    private final double rollTarget = .2;
+    private final double pitchTarget = .2;
 
     private final double kpfl = 0.25, kpbl = -0.1, kpbr = -0.2;
     private final double krfl = 0.25, krbl = 0.1, krbr = -0.2;
@@ -40,7 +41,6 @@ public class BalancedLiftHandler implements NKNComponent {
         brLift = hardwareMap.crservo.get("BRlift");
         flLift = hardwareMap.crservo.get("FLlift");
 
-        brLift.setDirection(DcMotorSimple.Direction.REVERSE);
         flLift.setDirection(DcMotorSimple.Direction.REVERSE);
 
         brLift.setPower(0);

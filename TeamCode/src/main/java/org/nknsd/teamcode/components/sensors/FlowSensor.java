@@ -16,18 +16,24 @@ public class FlowSensor implements NKNComponent {
     private SparkFunOTOS odometry;
     final SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0, 0, -Math.PI / 2);
     final String sensorName;
+    final double multiplier;
 
+
+    public FlowSensor(String sensorName, double multiplier) {
+        this.sensorName = sensorName;
+        this.multiplier = multiplier;
+    }
 
     public FlowSensor(String sensorName) {
         this.sensorName = sensorName;
-
+        multiplier = 1;
     }
 
     private void configureSensor() {
         odometry.setLinearUnit(DistanceUnit.INCH);
         odometry.setAngularUnit(AngleUnit.RADIANS);
         odometry.setOffset(offset);
-        odometry.setLinearScalar(1.0);
+        odometry.setLinearScalar(multiplier);
         odometry.setAngularScalar(1.0);
         odometry.calibrateImu();
         odometry.resetTracking();
