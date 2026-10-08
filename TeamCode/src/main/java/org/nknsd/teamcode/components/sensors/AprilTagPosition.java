@@ -1,15 +1,15 @@
 package org.nknsd.teamcode.components.sensors;
 
 public class AprilTagPosition {
-    public double getTagy;
+    public double tag_y;
 
-    public double getTagp;
+    public double tag_p;
 
-    public double getTagr;
+    public double tag_r;
 
-    public double getTagX;
+    public double tag_X;
 
-    public double getTagY;
+    public double tag_Y;
 
-    public double getTagz;
+    public double tag_Z;
 }
