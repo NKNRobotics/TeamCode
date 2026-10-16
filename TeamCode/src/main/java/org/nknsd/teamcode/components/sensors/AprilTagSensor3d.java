@@ -164,6 +164,7 @@ public class AprilTagSensor3d implements NKNComponent {
         tag34 = null;
         tag35 = null;
         tag36 = null;
+        tag37 = null;
         tag38 = null;
         tag39 = null;
         tag40 = null;

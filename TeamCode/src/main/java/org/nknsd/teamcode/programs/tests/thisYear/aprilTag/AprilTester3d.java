@@ -2,9 +2,11 @@ package org.nknsd.teamcode.programs.tests.thisYear.aprilTag;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.vision.BasketLocator;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor3d;
+import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
@@ -15,8 +17,11 @@ import java.util.List;
 public class AprilTester3d extends NKNProgram {
     public void createComponents(List<NKNComponent> components, List<NKNComponent> telemetryEnabled) {
         AprilTagSensor3d aprilTagSensor = new AprilTagSensor3d();
+        FlowSensor flowSensor = new FlowSensor("flowSens", 1);
         components.add(aprilTagSensor);
+        components.add(flowSensor);
         telemetryEnabled.add(aprilTagSensor);
-
+        telemetryEnabled.add(flowSensor);
     }
 }
+
