@@ -1,15 +1,19 @@
 package org.nknsd.teamcode.components.handlers.odometry;
 
+import android.util.Log;
+
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.robotcore.external.matrices.ColumnMatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.DenseMatrixF;
+import org.firstinspires.ftc.robotcore.external.matrices.GeneralMatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.MatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.RowMatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -17,6 +21,8 @@ import org.nknsd.teamcode.components.sensors.AprilTagPosition;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor3d;
 import org.nknsd.teamcode.components.sensors.FlowSensor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
+
+import java.util.Arrays;
 
 public class CameraFlowFuser implements NKNComponent {
 
@@ -42,24 +48,9 @@ public class CameraFlowFuser implements NKNComponent {
         this.aprilSensor = aprilSensor;
     }
 
-    private DenseMatrixF findRotationMatrix(float roll, float pitch, float yaw){
 
-        DenseMatrixF rotationMatrix = new DenseMatrixF(3, 3) {
-            @Override
-            public float[] getData() {
-                return new float[0];
-            }
-
-            @Override
-            protected int indexFromRowCol(int row, int col) {
-                return 0;
-            }
-
-            @Override
-            public MatrixF emptyMatrix(int numRows, int numCols) {
-                return null;
-            }
-        };
+    public GeneralMatrixF findRotationMatrix(float roll, float pitch, float yaw){
+        GeneralMatrixF rotationMatrix = new GeneralMatrixF(3, 3);
 
         double rollSin = Math.sin(roll);
         double rollCos = Math.cos(roll);
@@ -77,7 +68,7 @@ public class CameraFlowFuser implements NKNComponent {
         rotationMatrix.put(2, 0, (float) (-pitchSin));
         rotationMatrix.put(2, 1, (float) (pitchCos * yawSin));
         rotationMatrix.put(2, 2, (float) (pitchCos * yawCos));
-        rotationMatrix.formatAsTransform();
+
 
         return rotationMatrix;
     }
