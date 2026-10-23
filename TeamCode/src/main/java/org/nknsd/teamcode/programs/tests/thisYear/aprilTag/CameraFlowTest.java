@@ -18,6 +18,7 @@ import org.nknsd.teamcode.components.utility.StateMachine.State;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
 
+import java.util.Arrays;
 import java.util.List;
 
 @TeleOp(name = "Camera Flow Tester", group="Tests")
@@ -44,6 +45,8 @@ public class CameraFlowTest extends NKNProgram {
                     telemetry.addData("Rotation 1: ", rot);
                     telemetry.addData("RotationMatrix: ", rotationMatrix);
                     RobotLog.v("Rotation 1 roll pitch yaw: " + rotationMatrix.toString());
+                    RobotLog.v("Current rotat: " + Arrays.toString(rot));
+
 
                 }
 
@@ -57,6 +60,8 @@ public class CameraFlowTest extends NKNProgram {
                     telemetry.addData("Rotation 2 (roll = 1): ", rot);
                     telemetry.addData("RotationMatrix: ", rotationMatrix);
                     RobotLog.v("Rotation 2 roll pitch yaw: " + rotationMatrix.toString());
+                    RobotLog.v("Current rotat: " + Arrays.toString(rot));
+
 
                 }
 
@@ -69,6 +74,7 @@ public class CameraFlowTest extends NKNProgram {
                     telemetry.addData("Rotation 3 (pitch = 1): ", rot);
                     telemetry.addData("RotationMatrix: ", rotationMatrix);
                     RobotLog.v("Rotation 3 roll pitch yaw: " + rotationMatrix.toString());
+                    RobotLog.v("Current rotat: " + Arrays.toString(rot));
 
                 }
 
@@ -81,6 +87,8 @@ public class CameraFlowTest extends NKNProgram {
                     telemetry.addData("Rotation 4 (yaw = 1): ", rot);
                     telemetry.addData("RotationMatrix: ", rotationMatrix);
                     RobotLog.v("Rotation 4 roll pitch yaw: " + rotationMatrix.toString());
+                    RobotLog.v("Current rotat: " + Arrays.toString(rot));
+
 
                 }
 
@@ -93,6 +101,8 @@ public class CameraFlowTest extends NKNProgram {
                     telemetry.addData("Rotation 5 (all 1): ", rot);
                     telemetry.addData("RotationMatrix: ", rotationMatrix);
                     RobotLog.v("Rotation 5 roll pitch yaw: " + rotationMatrix.toString());
+                    RobotLog.v("Current rotat: " + Arrays.toString(rot));
+
 
                 }
             }
