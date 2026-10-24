@@ -29,9 +29,38 @@ public class BallLiftDriver implements NKNComponent {
         }
     };
 
+
+    //testCode below, do not activate unless you know what you are doing.
+//    Runnable liftRaiseIncrease = new Runnable() {
+//        @Override
+//        public void run() {
+//            ballLiftHandler.liftPosInc();
+//        }
+//    };
+//    Runnable liftRaiseDecrease = new Runnable() {
+//        @Override
+//        public void run() {
+//            ballLiftHandler.liftPosDec();
+//        }
+//    };
+
+//    Runnable liftLowerIncrease = new Runnable() {
+//        @Override
+//        public void run() {
+//            ballLiftHandler.botPosInc();
+//        }
+//    };
+//
+//    Runnable liftLowerDecrease = new Runnable() {
+//        @Override
+//        public void run() {
+//            ballLiftHandler.botPosDec();
+//        }
+//    };
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        return false;
+        return true;
     }
 
     @Override
@@ -41,6 +70,12 @@ public class BallLiftDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
+        gamePadHandler.addListener(controlScheme.raiseLift(), raiseLift, "raiseLift");
+        gamePadHandler.addListener(controlScheme.lowerLift(), lowerLift, "lowerLift");
+//        gamePadHandler.addListener(controlScheme.liftUpInc(), liftRaiseIncrease, "liftMaxIncrease");
+//        gamePadHandler.addListener(controlScheme.liftUpDec(), liftRaiseDecrease, "liftMaxDecrease");
+//        gamePadHandler.addListener(controlScheme.liftDownInc(), liftLowerIncrease, "liftMinIncrease");
+//        gamePadHandler.addListener(controlScheme.liftDownDec(), liftLowerDecrease, "liftMinIncrease");
 
     }
 

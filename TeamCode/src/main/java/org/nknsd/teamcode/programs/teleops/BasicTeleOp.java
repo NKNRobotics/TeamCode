@@ -31,33 +31,6 @@ public class BasicTeleOp extends NKNProgram {
         components.add(gamePadHandler);
         telemetryEnabled.add(gamePadHandler);
 
-
-        //wheels
-        AbsolutePowerMixer absolutePowerMixer = new AbsolutePowerMixer();
-        components.add(absolutePowerMixer);
-
-        MecanumMotorMixer mecanumMotorMixer = new MecanumMotorMixer();
-        components.add(mecanumMotorMixer);
-
-        PowerInputMixer powerInputMixer = new PowerInputMixer();
-        components.add(powerInputMixer);
-
-        MixedInputWheelDriver mixedInputWheelDriver = new MixedInputWheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
-        components.add(mixedInputWheelDriver);
-
-        //intake
-        IntakeHandler intakeHandler = new IntakeHandler();
-        IntakeDriver intakeDriver = new IntakeDriver();
-        components.add(intakeDriver);
-        components.add(intakeHandler);
-        telemetryEnabled.add(intakeHandler);
-
-        //launcher stuff
-        BallLiftDriver ballLiftDriver = new BallLiftDriver();
-        BallLiftHandler ballLiftHandler = new BallLiftHandler();
-        components.add(ballLiftHandler);
-        components.add(ballLiftDriver);
-
         //control scheme
         WheelControlScheme wheelControlScheme = new WheelControlScheme();
         wheelControlScheme.link(gamePadHandler);
@@ -68,11 +41,37 @@ public class BasicTeleOp extends NKNProgram {
         BallLauncherControlScheme ballLauncherControlScheme = new BallLauncherControlScheme();
         ballLauncherControlScheme.link(gamePadHandler);
 
-        ballLiftDriver.link(gamePadHandler, ballLauncherControlScheme, ballLiftHandler);
-        intakeDriver.link(gamePadHandler, intakeControlScheme, intakeHandler);
+        //wheels
+        AbsolutePowerMixer absolutePowerMixer = new AbsolutePowerMixer();
+        components.add(absolutePowerMixer);
+        MecanumMotorMixer mecanumMotorMixer = new MecanumMotorMixer();
+        components.add(mecanumMotorMixer);
+        PowerInputMixer powerInputMixer = new PowerInputMixer();
+        components.add(powerInputMixer);
         powerInputMixer.link(absolutePowerMixer, mecanumMotorMixer);
+
+        MixedInputWheelDriver mixedInputWheelDriver = new MixedInputWheelDriver(0, 1, 5, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_Y, GamePadHandler.GamepadSticks.LEFT_JOYSTICK_X, GamePadHandler.GamepadSticks.RIGHT_JOYSTICK_X);
+        components.add(mixedInputWheelDriver);
         mixedInputWheelDriver.link(gamePadHandler, powerInputMixer, wheelControlScheme);
 
+
+
+
+        //intake
+        IntakeHandler intakeHandler = new IntakeHandler();
+        IntakeDriver intakeDriver = new IntakeDriver();
+        components.add(intakeDriver);
+        components.add(intakeHandler);
+        intakeDriver.link(gamePadHandler, intakeControlScheme, intakeHandler);
+        telemetryEnabled.add(intakeHandler);
+
+        //launcher stuff
+        BallLiftDriver ballLiftDriver = new BallLiftDriver();
+        BallLiftHandler ballLiftHandler = new BallLiftHandler();
+        components.add(ballLiftHandler);
+        components.add(ballLiftDriver);
+        ballLiftDriver.link(gamePadHandler, ballLauncherControlScheme, ballLiftHandler);
+        telemetryEnabled.add(ballLiftHandler);
 
     }
 }
