@@ -11,6 +11,7 @@ import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
+import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.controlSchemes.defaults.BallLauncherControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.IntakeControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
@@ -30,6 +31,10 @@ public class BasicTeleOp extends NKNProgram {
         GamePadHandler gamePadHandler = new GamePadHandler();
         components.add(gamePadHandler);
         telemetryEnabled.add(gamePadHandler);
+
+        //stateMachine
+        components.add(StateMachine.INSTANCE);
+        telemetryEnabled.add(StateMachine.INSTANCE);
 
         //control scheme
         WheelControlScheme wheelControlScheme = new WheelControlScheme();

@@ -14,7 +14,6 @@ public class BallLiftHandler implements NKNComponent {
 
     private final String liftServoName = "liftBallServo";
     private final String gateServoName = "liftGateServo";
-
     private final String leftMotorWheel = "launchLeft";
     private final String rightMotorWheel = "launchRight";
 
@@ -25,12 +24,13 @@ public class BallLiftHandler implements NKNComponent {
     //motors
     public DcMotor leftMotor;
     public DcMotor rightMotor;
+    double motorPower = 0.37;
 
     //lift servo values
     double liftRaise = 0.18;
     double liftLower = 1;
-    double gateOpen = 0;
-    double gateClosed = 0.6;
+    double gateOpen = 0.6;
+    double gateClosed = 0;
 
 
     @Override
@@ -50,9 +50,10 @@ public class BallLiftHandler implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        liftServo.setPosition(1);
-        leftMotor.setPower(0.6);
-        rightMotor.setPower(0.6);
+        liftServo.setPosition(liftLower);
+        gateServo.setPosition(gateOpen);
+        leftMotor.setPower(motorPower);
+        rightMotor.setPower(motorPower);
     }
 
     @Override
@@ -81,15 +82,16 @@ public class BallLiftHandler implements NKNComponent {
 
     public void raiseLift() {
         liftServo.setPosition(liftRaise);
-        gateServo.setPosition(gateOpen);
     }
-
     public void lowerLift() {
         liftServo.setPosition(liftLower);
+    }
+    public void lowerGate(){
         gateServo.setPosition(gateClosed);
     }
-
-
+    public void raiseGate(){
+        gateServo.setPosition(gateOpen);
+    }
     //code to test the servo positon, unecessary but left in case we truly NEED it
 //    public void liftPosInc(){
 //        liftRaise = liftRaise + 0.02;
