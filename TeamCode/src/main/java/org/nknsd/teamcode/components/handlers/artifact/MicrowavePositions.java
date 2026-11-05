@@ -16,8 +16,8 @@ public enum MicrowavePositions {
 
 
     public final double ROBOT_OFFSET = RobotVersion.INSTANCE.microwaveOffset;
-    public final boolean OLD_VOLTAGE_POSITIONS = RobotVersion.INSTANCE.oldVoltagePositions;
-
+//    public final boolean OLD_VOLTAGE_POSITIONS = RobotVersion.INSTANCE.oldVoltagePositions;
+public final boolean OLD_VOLTAGE_POSITIONS = true;
 
     public final double microPosition;
     public final double powerPosition;

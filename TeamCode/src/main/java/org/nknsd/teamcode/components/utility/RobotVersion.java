@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.components.utility;
 
+import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 
 public class RobotVersion {
@@ -31,6 +32,14 @@ public class RobotVersion {
     public final Interpolater aprilDistanceInterpolater;
 
     public final PidController aprilTargetingPid;
+    public final PidController pidControllerX = null;
+    public final PidController pidControllerY = null;
+    public final PidController pidControllerH = null;
+    public final PidController ballEatingPidXY = null;
+    public final PidController ballEatingPidH = null;
+    public final double rodosMult = 0.1;
+    public final double lodosMult = 0.1;
+
 
     private RobotVersion(double visionLoopIntervalMS, double microwaveOffset, double distSensorThreshold, double scoopRestPos, double scoopLaunchPos, Interpolater launchSpeedInterpolater, Interpolater launchAngleInterpolater, Interpolater aprilHeightInterpolater, PidController aprilTargetingPid){
         this.visionLoopIntervalMS = visionLoopIntervalMS;
@@ -44,5 +53,19 @@ public class RobotVersion {
         this.aprilTargetingPid = aprilTargetingPid;
     }
 
+    public static ID getRobotAlliance() {
+        return ID.RED;
+    }
 
+    public static void setRobotAlliance(ID id) {
+
+    }
+
+    public static void setIsAutonomous(boolean state) {
+
+    }
+
+    public static boolean isAutonomous() {
+        return true;
+    }
 }
