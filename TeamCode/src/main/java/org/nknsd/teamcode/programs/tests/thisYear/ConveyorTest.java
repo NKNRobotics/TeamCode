@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.ConveyorHandler;
-import org.nknsd.teamcode.components.handlers.IntakeHandler;
+import org.nknsd.teamcode.components.handlers.intakeTurret.IntakeHandler;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
@@ -33,7 +33,7 @@ public class ConveyorTest extends NKNProgram {
         @Override
         protected void started() {
             conveyorHandler.startUp();
-            intakeHandler.setIntakePower(.5);
+            intakeHandler.startIntake(true);
         }
 
         @Override
