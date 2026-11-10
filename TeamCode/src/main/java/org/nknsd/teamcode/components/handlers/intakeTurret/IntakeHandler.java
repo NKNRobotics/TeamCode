@@ -1,7 +1,6 @@
 package org.nknsd.teamcode.components.handlers.intakeTurret;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,16 +10,14 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class IntakeHandler implements NKNComponent {
 
-    private DcMotor motor;
-
-    private final int maxPower = 1;
-
+    private DcMotor intakeMotor;
+    private final double power = .5;
 
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        motor = hardwareMap.dcMotor.get("intakeMotor");
-        motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor = hardwareMap.dcMotor.get("intake");
+        intakeMotor.setPower(0);
         return true;
     }
 
@@ -52,36 +49,34 @@ public class IntakeHandler implements NKNComponent {
     @Override
     public void doTelemetry(Telemetry telemetry) {
         telemetry.addData("Intake forward ", intakeForward);
-        telemetry.addData("Intake reverse ", intakeReverse);
     }
 
-    boolean intakeForward = false;
-    boolean intakeReverse = false;
+    private boolean intakeForward = true;
 
-    public void startIntake(){
-        if(!intakeForward){
-            motor.setPower(maxPower);
-            intakeForward = true;
-            intakeReverse = false;
+    public void startIntake(boolean start) {
+        if (start) {
+            if (intakeForward) {
+                intakeMotor.setPower(power);
+            } else {
+                intakeMotor.setPower(-power);
+            }
         } else {
-            stopIntake();
+            intakeMotor.setPower(0);
         }
     }
 
-    public void stopIntake() {
-        intakeForward = false;
-        intakeReverse = false;
-        motor.setPower(0);
+    public void reverseIntake(boolean reverse) {
+        intakeForward = reverse;
+        if (intakeMotor.getPower() != 0) {
+            startIntake(true);
+        }
     }
 
-    public void reverseIntake() {
-        if(!intakeReverse) {
-            motor.setPower(-maxPower);
-            intakeReverse = true;
-            intakeForward = false;
-        } else {
-            stopIntake();
-        }
+    public boolean getDirection() {
+        return intakeForward;
+    }
 
+    public boolean intakeRunning() {
+        return intakeMotor.getPower() != 0;
     }
 }
