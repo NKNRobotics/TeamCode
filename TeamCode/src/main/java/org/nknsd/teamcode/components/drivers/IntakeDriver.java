@@ -19,14 +19,20 @@ public class IntakeDriver implements NKNComponent {
     Runnable startIntake = new Runnable() {
         @Override
         public void run() {
-            intakeHandler.startIntake(true);
+            if(!intakeHandler.intakeRunning()) {
+                intakeHandler.startIntake(true);
+            }
+
         }
     };
 
     Runnable reverseIntake = new Runnable() {
         @Override
         public void run() {
-            intakeHandler.reverseIntake(true);}
+            if(!intakeHandler.intakeRunning()) {
+                intakeHandler.reverseIntake(true);
+            }
+        }
     };
 
 //    Runnable scanSlots = new Runnable() {

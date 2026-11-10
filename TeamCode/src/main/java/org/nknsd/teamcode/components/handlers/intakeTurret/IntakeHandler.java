@@ -11,7 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class IntakeHandler implements NKNComponent {
 
     private DcMotor intakeMotor;
-    private final double power = .5;
+    private final double power = .7;
 
 
     @Override
