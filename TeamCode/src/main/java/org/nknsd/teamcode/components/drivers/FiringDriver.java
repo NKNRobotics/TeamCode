@@ -5,16 +5,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.R;
-import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
-import org.nknsd.teamcode.components.handlers.artifact.MicrowaveScoopHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
-import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
+import org.nknsd.teamcode.components.handlers.launch.old.FiringSystem;
 import org.nknsd.teamcode.components.handlers.srs.PeakPointer;
 import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.utility.RobotVersion;
 import org.nknsd.teamcode.controlSchemes.defaults.FiringControlScheme;
-import org.nknsd.teamcode.controlSchemes.defaults.MicrowaveControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
 public class FiringDriver implements NKNComponent {
