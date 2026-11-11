@@ -1,22 +1,30 @@
-package org.nknsd.teamcode.components.sensors;
+package org.nknsd.teamcode.components.handlers.launch;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.nknsd.teamcode.components.sensors.TouchSensor;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 
-public class TouchSens implements NKNComponent {
-    private final String sensorName;
-    private TouchSensor sensor;
-    public TouchSens(String sensorName) {
-        this.sensorName = sensorName;
+public class BallSorter implements NKNComponent {
+    private Ball currentBall;
+    private TouchSensor noneSens;
+    private TouchSensor nectarSens;
+
+    public Ball getCurrentBall() {
+        return currentBall;
     }
+
+
+    public void link(TouchSensor noneSens, TouchSensor nectarSens) {
+        this.noneSens = noneSens;
+        this.nectarSens = nectarSens;
+    }
+
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        sensor = hardwareMap.get(TouchSensor.class, sensorName);
         return true;
     }
 
@@ -37,19 +45,22 @@ public class TouchSens implements NKNComponent {
 
     @Override
     public String getName() {
-        return "TouchSensor";
+        return "";
     }
 
     @Override
     public void loop(ElapsedTime runtime, Telemetry telemetry) {
-
+        if (noneSens.isTouching()) {
+            currentBall = Ball.NONE;
+        } else if (nectarSens.isTouching()) {
+            currentBall = Ball.NECTAR;
+        } else {
+            currentBall = Ball.POLLEN;
+        }
     }
 
     @Override
     public void doTelemetry(Telemetry telemetry) {
-        telemetry.addData(sensorName, isTouching());
-    }
-    public boolean isTouching(){
-        return sensor.isPressed();
+        telemetry.addLine("Current ball: " + currentBall);
     }
 }
