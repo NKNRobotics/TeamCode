@@ -1,10 +1,9 @@
 package org.nknsd.teamcode.autoStates;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
+import org.nknsd.teamcode.components.handlers.launch.old.FiringSystem;
 import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.utility.StateMachine;

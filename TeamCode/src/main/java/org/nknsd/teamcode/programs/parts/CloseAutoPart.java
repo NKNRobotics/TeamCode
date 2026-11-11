@@ -1,17 +1,13 @@
 package org.nknsd.teamcode.programs.parts;
 
-import org.nknsd.teamcode.autoStates.AutoIntakeAllState;
 import org.nknsd.teamcode.autoStates.AutoLaunchAllState;
 import org.nknsd.teamcode.autoStates.AutoMoveToPosState;
 import org.nknsd.teamcode.autoStates.AutoReadPatternState;
-import org.nknsd.teamcode.autoStates.AutoSlotCheck;
 import org.nknsd.teamcode.autoStates.AutoTargetState;
 import org.nknsd.teamcode.components.handlers.artifact.ArtifactSystem;
-import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
-import org.nknsd.teamcode.components.handlers.launch.LaunchSystem;
+import org.nknsd.teamcode.components.handlers.launch.old.FiringSystem;
 import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.handlers.srs.SRSIntakeState;
-import org.nknsd.teamcode.components.handlers.vision.ID;
 import org.nknsd.teamcode.components.motormixers.AutoPositioner;
 import org.nknsd.teamcode.components.sensors.AprilTagSensor;
 import org.nknsd.teamcode.components.utility.PositionTransform;
@@ -20,7 +16,6 @@ import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.components.utility.feedbackcontroller.PidController;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.ProgramPart;
-import org.nknsd.teamcode.states.TimerState;
 
 import java.util.List;
 
