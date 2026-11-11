@@ -10,10 +10,10 @@ public class BallSystem {
     public void launchDistance(double dist){
 
     }
-    public void intakeToLaunch(IntakePosition position){
+    public void intakeToLaunch(){
 
     }
-    public void intake(IntakePosition position){
+    public void intake(){
 
     }
 
