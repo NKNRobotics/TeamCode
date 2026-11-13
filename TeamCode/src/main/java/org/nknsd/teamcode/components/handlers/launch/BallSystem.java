@@ -4,7 +4,6 @@ import org.nknsd.teamcode.components.utility.StateMachine;
 
 public class BallSystem {
 
-    StateMachine.INSTANCE;
     public void longLaunch(){
 
     }
