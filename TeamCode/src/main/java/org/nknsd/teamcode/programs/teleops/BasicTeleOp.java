@@ -2,11 +2,9 @@ package org.nknsd.teamcode.programs.teleops;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.nknsd.teamcode.components.drivers.BallLiftDriver;
 import org.nknsd.teamcode.components.drivers.IntakeDriver;
 import org.nknsd.teamcode.components.drivers.LaunchDriver;
 import org.nknsd.teamcode.components.drivers.MixedInputWheelDriver;
-import org.nknsd.teamcode.components.handlers.BallLiftHandler;
 import org.nknsd.teamcode.components.handlers.intakeTurret.ConveyorHandler;
 import org.nknsd.teamcode.components.handlers.intakeTurret.IntakeHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
@@ -16,7 +14,6 @@ import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.utility.StateMachine;
-import org.nknsd.teamcode.controlSchemes.defaults.BallLauncherControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.IntakeControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.LaunchControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;

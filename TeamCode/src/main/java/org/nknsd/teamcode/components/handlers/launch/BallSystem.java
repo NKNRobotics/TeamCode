@@ -2,8 +2,7 @@ package org.nknsd.teamcode.components.handlers.launch;
 
 import org.nknsd.teamcode.components.handlers.intakeTurret.ConveyorHandler;
 import org.nknsd.teamcode.components.handlers.intakeTurret.IntakeHandler;
-import org.nknsd.teamcode.components.handlers.launch.States.StartIntakeState;
-import org.nknsd.teamcode.components.handlers.launch.States.StartLongLaunchState;
+import org.nknsd.teamcode.components.handlers.launch.States.StartPolyLaunchState;
 import org.nknsd.teamcode.components.utility.StateMachine;
 
 public class BallSystem {
@@ -16,7 +15,7 @@ public class BallSystem {
 
     public void longLaunch(){
         if(!intakeHandler.intakeRunning() && StateMachine.INSTANCE.isStateRunning("StartLongLaunchState")) {
-            StateMachine.INSTANCE.startAnonymous(new StartLongLaunchState(conveyorHandler, launchHandler));
+            StateMachine.INSTANCE.startAnonymous(new StartPolyLaunchState(conveyorHandler, launchHandler));
         }
     }
     public void shortLaunch(){

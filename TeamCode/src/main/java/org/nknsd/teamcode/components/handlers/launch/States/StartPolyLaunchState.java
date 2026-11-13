@@ -4,18 +4,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.nknsd.teamcode.components.handlers.intakeTurret.ConveyorHandler;
-import org.nknsd.teamcode.components.handlers.intakeTurret.IntakeHandler;
 import org.nknsd.teamcode.components.handlers.launch.LaunchHandler;
 import org.nknsd.teamcode.components.utility.StateMachine;
 
-public class StartLongLaunchState extends StateMachine.State {
+public class StartPolyLaunchState extends StateMachine.State {
 
     private final ConveyorHandler conveyorHandler;
     private final LaunchHandler launchHandler;
     private final int backwardsTime = 200;
     private final int stopTime = 5000;
 
-    public StartLongLaunchState(ConveyorHandler conveyorHandler, LaunchHandler launchHandler) {
+    public StartPolyLaunchState(ConveyorHandler conveyorHandler, LaunchHandler launchHandler) {
         this.conveyorHandler = conveyorHandler;
         this.launchHandler = launchHandler;
     }

@@ -3,9 +3,6 @@ package org.nknsd.teamcode.programs.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.nknsd.teamcode.autoStates.AutoStupidLaunchState;
-import org.nknsd.teamcode.components.drivers.MixedInputWheelDriver;
-import org.nknsd.teamcode.components.handlers.BallLiftHandler;
-import org.nknsd.teamcode.components.handlers.odometry.AbsolutePosition;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
