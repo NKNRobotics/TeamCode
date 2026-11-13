@@ -79,12 +79,14 @@ public class BasicTeleOp extends NKNProgram {
         //launcher stuff
         LaunchHandler launchHandler = new LaunchHandler(0.9, 1.1);
         components.add(launchHandler);
+
         ConveyorHandler conveyorHandler = new ConveyorHandler();
         components.add(conveyorHandler);
 
         BallSystem ballSystem = new BallSystem();
         ballSystem.link(conveyorHandler, intakeHandler, launchHandler);
         LaunchDriver launchDriver = new LaunchDriver();
+        components.add(launchDriver);
         launchDriver.link(gamePadHandler, launchControlScheme, ballSystem);
 
 //        BallLiftDriver ballLiftDriver = new BallLiftDriver();
