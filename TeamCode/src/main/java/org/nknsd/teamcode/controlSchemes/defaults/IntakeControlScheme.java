@@ -1,5 +1,7 @@
 package org.nknsd.teamcode.controlSchemes.defaults;
 
+import android.provider.ContactsContract;
+
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.frameworks.NKNControlScheme;
 
@@ -15,6 +17,47 @@ public class IntakeControlScheme extends NKNControlScheme {
         return "Default";
     }
 
+
+    boolean intakeBeenStarted = false;
+    public Callable<Boolean> startIntake(){
+        return new Callable<Boolean>(){
+            @Override
+            public Boolean call() throws Exception {
+                boolean button = GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2());
+                if(button) {
+                    intakeBeenStarted = true;
+                }
+                return button;
+            }
+        };
+    }
+
+    public Callable<Boolean> reverseIntake(){
+        return new Callable<Boolean>(){
+            @Override
+            public Boolean call() throws Exception {
+                boolean button = GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2());
+                if(button) {
+                    intakeBeenStarted = true;
+                }
+                return button;
+            }
+        };
+    }
+
+    public Callable<Boolean> stopIntake(){
+        return new Callable<Boolean>(){
+            @Override
+            public Boolean call() throws Exception {
+                if(intakeBeenStarted) {
+                    intakeBeenStarted = false;
+                    return !(GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2()) || GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2()));
+                } else {
+                    return false;
+                }
+            }
+        };
+    }
     public Callable<Boolean> startIntakeToggle(){
         return new Callable<Boolean>() {
 

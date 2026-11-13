@@ -11,7 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class IntakeHandler implements NKNComponent {
 
     private DcMotor intakeMotor;
-    private final double power = .5;
+    private final double power = .7;
 
 
     @Override
@@ -53,6 +53,8 @@ public class IntakeHandler implements NKNComponent {
 
     private boolean intakeForward = true;
 
+    //this is made kinda poorly (start intake and reverse intake).
+    //We should probably just have an startIntake(bool forward) and stopIntake()
     public void startIntake(boolean start) {
         if (start) {
             if (intakeForward) {

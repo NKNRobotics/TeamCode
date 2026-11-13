@@ -19,16 +19,31 @@ public class IntakeDriver implements NKNComponent {
     Runnable startIntake = new Runnable() {
         @Override
         public void run() {
-            intakeHandler.startIntake(true);
+            if(!intakeHandler.intakeRunning()) {
+                intakeHandler.startIntake(true);
+            }
+
         }
     };
 
     Runnable reverseIntake = new Runnable() {
         @Override
         public void run() {
-            intakeHandler.reverseIntake(true);}
+            if(!intakeHandler.intakeRunning()) {
+                intakeHandler.reverseIntake(true);
+            }
+        }
     };
 
+    Runnable stopIntake = new Runnable() {
+        @Override
+        public void run() {
+            if(intakeHandler.intakeRunning()){
+                intakeHandler.startIntake(false);
+            }
+        }
+
+    };
 //    Runnable scanSlots = new Runnable() {
 //        @Override
 //        public void run() {
@@ -48,8 +63,11 @@ public class IntakeDriver implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        gamePadHandler.addListener(controlScheme.startIntakeToggle(), startIntake, "startIntakeSpin");
-        gamePadHandler.addListener(controlScheme.reverseIntakeToggle(), reverseIntake, "reverseIntakeSpin");
+        gamePadHandler.addListener(controlScheme.startIntake(), startIntake, "startIntakeSpin");
+        gamePadHandler.addListener(controlScheme.reverseIntake(), reverseIntake, "reverseIntakeSpin");
+        gamePadHandler.addListener(controlScheme.stopIntake(), stopIntake, "stopIntakeSpin");
+//        gamePadHandler.addListener(controlScheme.startIntakeToggle(), startIntake, "startIntakeSpin");
+//        gamePadHandler.addListener(controlScheme.reverseIntakeToggle(), reverseIntake, "reverseIntakeSpin");
 //        gamePadHandler.addListener(controlScheme.scanSlots(), scanSlots, "scanSlots");
     }
 

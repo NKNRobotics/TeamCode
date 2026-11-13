@@ -4,16 +4,21 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.components.drivers.BallLiftDriver;
 import org.nknsd.teamcode.components.drivers.IntakeDriver;
+import org.nknsd.teamcode.components.drivers.LaunchDriver;
 import org.nknsd.teamcode.components.drivers.MixedInputWheelDriver;
 import org.nknsd.teamcode.components.handlers.BallLiftHandler;
+import org.nknsd.teamcode.components.handlers.intakeTurret.ConveyorHandler;
 import org.nknsd.teamcode.components.handlers.intakeTurret.IntakeHandler;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
+import org.nknsd.teamcode.components.handlers.launch.BallSystem;
+import org.nknsd.teamcode.components.handlers.launch.LaunchHandler;
 import org.nknsd.teamcode.components.motormixers.AbsolutePowerMixer;
 import org.nknsd.teamcode.components.motormixers.MecanumMotorMixer;
 import org.nknsd.teamcode.components.motormixers.PowerInputMixer;
 import org.nknsd.teamcode.components.utility.StateMachine;
 import org.nknsd.teamcode.controlSchemes.defaults.BallLauncherControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.IntakeControlScheme;
+import org.nknsd.teamcode.controlSchemes.defaults.LaunchControlScheme;
 import org.nknsd.teamcode.controlSchemes.defaults.WheelControlScheme;
 import org.nknsd.teamcode.frameworks.NKNComponent;
 import org.nknsd.teamcode.frameworks.NKNProgram;
@@ -43,8 +48,9 @@ public class BasicTeleOp extends NKNProgram {
         IntakeControlScheme intakeControlScheme = new IntakeControlScheme();
         intakeControlScheme.link(gamePadHandler);
 
-        BallLauncherControlScheme ballLauncherControlScheme = new BallLauncherControlScheme();
-        ballLauncherControlScheme.link(gamePadHandler);
+        LaunchControlScheme launchControlScheme = new LaunchControlScheme();
+        launchControlScheme.link(gamePadHandler);
+
 
         //wheels
         AbsolutePowerMixer absolutePowerMixer = new AbsolutePowerMixer();
@@ -71,12 +77,24 @@ public class BasicTeleOp extends NKNProgram {
         telemetryEnabled.add(intakeHandler);
 
         //launcher stuff
-        BallLiftDriver ballLiftDriver = new BallLiftDriver();
-        BallLiftHandler ballLiftHandler = new BallLiftHandler();
-        components.add(ballLiftHandler);
-        components.add(ballLiftDriver);
-        ballLiftDriver.link(gamePadHandler, ballLauncherControlScheme, ballLiftHandler);
-        telemetryEnabled.add(ballLiftHandler);
+        LaunchHandler launchHandler = new LaunchHandler(0.9, 1.1);
+        components.add(launchHandler);
+
+        ConveyorHandler conveyorHandler = new ConveyorHandler();
+        components.add(conveyorHandler);
+
+        BallSystem ballSystem = new BallSystem();
+        ballSystem.link(conveyorHandler, intakeHandler, launchHandler);
+        LaunchDriver launchDriver = new LaunchDriver();
+        components.add(launchDriver);
+        launchDriver.link(gamePadHandler, launchControlScheme, ballSystem);
+
+//        BallLiftDriver ballLiftDriver = new BallLiftDriver();
+//        BallLiftHandler ballLiftHandler = new BallLiftHandler();
+//        components.add(ballLiftHandler);
+//        components.add(ballLiftDriver);
+//        ballLiftDriver.link(gamePadHandler, ballLauncherControlScheme, ballLiftHandler);
+//        telemetryEnabled.add(ballLiftHandler);
 
     }
 }
