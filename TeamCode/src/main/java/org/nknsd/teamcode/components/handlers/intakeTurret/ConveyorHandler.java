@@ -46,7 +46,7 @@ public class ConveyorHandler implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-
+        startUp();
     }
 
     @Override
