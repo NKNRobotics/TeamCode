@@ -17,11 +17,17 @@ public class IntakeControlScheme extends NKNControlScheme {
         return "Default";
     }
 
+
+    boolean intakeBeenStarted = false;
     public Callable<Boolean> startIntake(){
         return new Callable<Boolean>(){
             @Override
             public Boolean call() throws Exception {
-                return GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2());
+                boolean button = GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2());
+                if(button) {
+                    intakeBeenStarted = true;
+                }
+                return button;
             }
         };
     }
@@ -30,7 +36,11 @@ public class IntakeControlScheme extends NKNControlScheme {
         return new Callable<Boolean>(){
             @Override
             public Boolean call() throws Exception {
-                return GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2());
+                boolean button = GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2());
+                if(button) {
+                    intakeBeenStarted = true;
+                }
+                return button;
             }
         };
     }
@@ -39,7 +49,12 @@ public class IntakeControlScheme extends NKNControlScheme {
         return new Callable<Boolean>(){
             @Override
             public Boolean call() throws Exception {
-                return !(GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2()) || GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2()));
+                if(intakeBeenStarted) {
+                    intakeBeenStarted = false;
+                    return !(GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2()) || GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2()));
+                } else {
+                    return false;
+                }
             }
         };
     }
