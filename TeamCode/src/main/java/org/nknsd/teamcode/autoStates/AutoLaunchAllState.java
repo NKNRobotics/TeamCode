@@ -4,8 +4,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.nknsd.teamcode.components.handlers.launch.FiringSystem;
-import org.nknsd.teamcode.components.utility.RobotVersion;
+import org.nknsd.teamcode.components.handlers.launch.old.FiringSystem;
 import org.nknsd.teamcode.components.utility.StateMachine;
 
 public class AutoLaunchAllState extends StateMachine.State {
