@@ -12,7 +12,7 @@ public class MonoLaunchState extends StateMachine.State {
     private final ConveyorHandler conveyorHandler;
     private final LaunchHandler launchHandler;
     private final int backwardsTime = 500;
-    private final int stopTime = 5000;
+    private final int stopTime = 4000;
 
 
     public MonoLaunchState(ConveyorHandler conveyorHandler, LaunchHandler launchHandler) {
@@ -28,8 +28,7 @@ public class MonoLaunchState extends StateMachine.State {
 
         if (runtime.milliseconds() - startTimeMS > backwardsTime && startLaunch) {
             launchHandler.setEnabled(true);
-            launchHandler.setTargetTicks(1000);
-            conveyorHandler.startUp();
+            conveyorHandler.startUp(.5);
             startLaunch = false;
         }
 
@@ -40,13 +39,15 @@ public class MonoLaunchState extends StateMachine.State {
 
     @Override
     protected void started() {
-        conveyorHandler.startDown();
+        conveyorHandler.startDown(.5);
+        launchHandler.setTargetTicks(1000);
         name = "MonoLaunchState";
     }
 
     @Override
     protected void stopped() {
         launchHandler.setTargetTicks(-500);
+        conveyorHandler.startUp(1);
 //        launchHandler.setEnabled(false);
 //        conveyorHandler.stopTransfer();
     }

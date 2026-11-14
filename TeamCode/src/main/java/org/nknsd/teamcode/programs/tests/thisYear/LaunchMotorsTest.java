@@ -32,7 +32,7 @@ public class LaunchMotorsTest extends NKNProgram {
         protected void started() {
             launchHandler.setTargetTicks(1500);
             launchHandler.setEnabled(true);
-            conveyorHandler.startUp();
+            conveyorHandler.startUp(1);
         }
 
         @Override

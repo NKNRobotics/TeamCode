@@ -14,7 +14,7 @@ public class BallSystem {
     private final int confidence = 5;
 
     public void monoLaunch(){
-        if(!intakeHandler.intakeRunning() && !StateMachine.INSTANCE.isStateRunning("MonoLaunchState")) {
+        if(!StateMachine.INSTANCE.isStateRunning("MonoLaunchState")) {
             StateMachine.INSTANCE.startAnonymous(new MonoLaunchState(conveyorHandler, launchHandler));
         }
     }

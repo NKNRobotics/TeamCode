@@ -25,9 +25,9 @@ public class ConveyorHandler implements NKNComponent {
         return true;
     }
 
-    public void startUp() {
-        lServo.setPower(servoPower);
-        rServo.setPower(servoPower);
+    public void startUp(double power) {
+        lServo.setPower(power);
+        rServo.setPower(power);
     }
 
     public void stopTransfer() {
@@ -35,9 +35,9 @@ public class ConveyorHandler implements NKNComponent {
         rServo.setPower(0);
     }
 
-    public void startDown() {
-        lServo.setPower(-servoPower);
-        rServo.setPower(-servoPower);
+    public void startDown(double power) {
+        lServo.setPower(-power);
+        rServo.setPower(-power);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ConveyorHandler implements NKNComponent {
 
     @Override
     public void start(ElapsedTime runtime, Telemetry telemetry) {
-        startUp();
+        startUp(1);
     }
 
     @Override

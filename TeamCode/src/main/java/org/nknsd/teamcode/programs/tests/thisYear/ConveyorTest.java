@@ -32,7 +32,7 @@ public class ConveyorTest extends NKNProgram {
 
         @Override
         protected void started() {
-            conveyorHandler.startUp();
+            conveyorHandler.startUp(1);
             intakeHandler.startIntake(true);
         }
 
