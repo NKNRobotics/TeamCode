@@ -13,8 +13,8 @@ public class BallSystem {
 
     private final int confidence = 5;
 
-    public void longLaunch(){
-        if(!intakeHandler.intakeRunning() && StateMachine.INSTANCE.isStateRunning("StartLongLaunchState")) {
+    public void polyLaunch(){
+        if(!intakeHandler.intakeRunning() && !StateMachine.INSTANCE.isStateRunning("StartPolyLaunchState")) {
             StateMachine.INSTANCE.startAnonymous(new StartPolyLaunchState(conveyorHandler, launchHandler));
         }
     }
@@ -32,8 +32,8 @@ public class BallSystem {
     }
 
     public void link(ConveyorHandler conveyorHandler, IntakeHandler intakeHandler, LaunchHandler launchHandler){
-        conveyorHandler = this.conveyorHandler;
-        intakeHandler = this.intakeHandler;
-        launchHandler = this.launchHandler;
+        this.conveyorHandler = conveyorHandler;
+        this.intakeHandler = intakeHandler;
+        this.launchHandler = launchHandler;
     }
 }

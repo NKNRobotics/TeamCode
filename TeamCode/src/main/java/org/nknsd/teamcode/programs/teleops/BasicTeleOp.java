@@ -85,13 +85,5 @@ public class BasicTeleOp extends NKNProgram {
         LaunchDriver launchDriver = new LaunchDriver();
         components.add(launchDriver);
         launchDriver.link(gamePadHandler, launchControlScheme, ballSystem);
-
-//        BallLiftDriver ballLiftDriver = new BallLiftDriver();
-//        BallLiftHandler ballLiftHandler = new BallLiftHandler();
-//        components.add(ballLiftHandler);
-//        components.add(ballLiftDriver);
-//        ballLiftDriver.link(gamePadHandler, ballLauncherControlScheme, ballLiftHandler);
-//        telemetryEnabled.add(ballLiftHandler);
-
     }
 }

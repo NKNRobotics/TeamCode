@@ -11,6 +11,7 @@ public class IntakeControlScheme extends NKNControlScheme {
 
     boolean startIntakeDelay = false;
     boolean reverseIntakeDelay = false;
+    boolean reversed = false;
 
     @Override
     public String getName() {
@@ -23,7 +24,7 @@ public class IntakeControlScheme extends NKNControlScheme {
         return new Callable<Boolean>(){
             @Override
             public Boolean call() throws Exception {
-                boolean button = GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2());
+                boolean button = GamePadHandler.GamepadButtons.A.detect(gamePadHandler.getGamePad1());
                 if(button) {
                     intakeBeenStarted = true;
                 }
@@ -36,11 +37,15 @@ public class IntakeControlScheme extends NKNControlScheme {
         return new Callable<Boolean>(){
             @Override
             public Boolean call() throws Exception {
-                boolean button = GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2());
-                if(button) {
-                    intakeBeenStarted = true;
+                boolean button = GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad1());
+                if(button && !reversed){
+                    reversed = true;
+                    return true;
+                } else if(!button && reversed){
+                    reversed = false;
+                    return true;
                 }
-                return button;
+                return false;
             }
         };
     }
@@ -49,9 +54,9 @@ public class IntakeControlScheme extends NKNControlScheme {
         return new Callable<Boolean>(){
             @Override
             public Boolean call() throws Exception {
-                if(intakeBeenStarted) {
+                if(intakeBeenStarted && GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad1())) {
                     intakeBeenStarted = false;
-                    return !(GamePadHandler.GamepadButtons.B.detect(gamePadHandler.getGamePad2()) || GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2()));
+                    return true;
                 } else {
                     return false;
                 }
@@ -63,7 +68,7 @@ public class IntakeControlScheme extends NKNControlScheme {
 
             @Override
             public Boolean call() throws Exception {
-                boolean button = GamePadHandler.GamepadButtons.Y.detect(gamePadHandler.getGamePad2());
+                boolean button = GamePadHandler.GamepadButtons.Y.detect(gamePadHandler.getGamePad1());
                 if(button && !startIntakeDelay){
                     startIntakeDelay = true;
                     return true;
@@ -81,7 +86,7 @@ public class IntakeControlScheme extends NKNControlScheme {
 
             @Override
             public Boolean call() throws Exception {
-                boolean button = GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad2());
+                boolean button = GamePadHandler.GamepadButtons.X.detect(gamePadHandler.getGamePad1());
                 if(button && !reverseIntakeDelay){
                     reverseIntakeDelay = true;
                     return true;
@@ -96,7 +101,7 @@ public class IntakeControlScheme extends NKNControlScheme {
 //        return new Callable<Boolean>() {
 //            @Override
 //            public Boolean call() throws Exception {
-//                boolean button = GamePadHandler.GamepadButtons.BACK.detect(gamePadHandler.getGamePad2());
+//                boolean button = GamePadHandler.GamepadButtons.BACK.detect(gamePadHandler.getGamePad1());
 //                if (!scanSlotsDelay && button) {
 //                    scanSlotsDelay = true;
 //                    return true;

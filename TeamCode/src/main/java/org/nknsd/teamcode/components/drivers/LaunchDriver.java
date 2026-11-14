@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.R;
 import org.nknsd.teamcode.components.handlers.gamepad.GamePadHandler;
 import org.nknsd.teamcode.components.handlers.launch.BallSystem;
 import org.nknsd.teamcode.controlSchemes.defaults.LaunchControlScheme;
@@ -21,13 +20,13 @@ public class LaunchDriver implements NKNComponent {
 
         @Override
         public void run() {
-            ballSystem.longLaunch();
+            ballSystem.polyLaunch();
         }
     };
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
-        return false;
+        return true;
     }
 
     @Override
@@ -60,8 +59,8 @@ public class LaunchDriver implements NKNComponent {
 
     }
     public void link(GamePadHandler gamePadHandler, LaunchControlScheme launchControlScheme, BallSystem ballSystem){
-        gamePadHandler = this.gamePadHandler;
-        launchControlScheme = this.launchControlScheme;
-        ballSystem = this.ballSystem;
+        this.gamePadHandler = gamePadHandler;
+        this.launchControlScheme = launchControlScheme;
+        this.ballSystem = ballSystem;
     }
 }

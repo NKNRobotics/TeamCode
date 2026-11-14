@@ -11,7 +11,7 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class IntakeHandler implements NKNComponent {
 
     private DcMotor intakeMotor;
-    private final double power = .7;
+    private final double power = .5;
 
 
     @Override
@@ -74,7 +74,7 @@ public class IntakeHandler implements NKNComponent {
         }
     }
 
-    public boolean getDirection() {
+    public boolean isReversed() {
         return intakeForward;
     }
 

@@ -12,13 +12,14 @@ import org.nknsd.teamcode.frameworks.NKNComponent;
 public class ConveyorHandler implements NKNComponent {
     private CRServo lServo;
     private CRServo rServo;
-    private final double servoPower = 1;
+    private final double servoPower = .9;
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
         lServo = hardwareMap.crservo.get("lLift");
         rServo = hardwareMap.crservo.get("rLift");
         rServo.setDirection(DcMotorSimple.Direction.REVERSE);
+        lServo.setDirection(DcMotorSimple.Direction.REVERSE);
         lServo.setPower(0);
         rServo.setPower(0);
         return true;

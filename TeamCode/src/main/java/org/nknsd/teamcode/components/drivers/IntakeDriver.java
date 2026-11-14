@@ -19,7 +19,7 @@ public class IntakeDriver implements NKNComponent {
     Runnable startIntake = new Runnable() {
         @Override
         public void run() {
-            if(!intakeHandler.intakeRunning()) {
+            if (!intakeHandler.intakeRunning()) {
                 intakeHandler.startIntake(true);
             }
 
@@ -29,27 +29,19 @@ public class IntakeDriver implements NKNComponent {
     Runnable reverseIntake = new Runnable() {
         @Override
         public void run() {
-            if(!intakeHandler.intakeRunning()) {
-                intakeHandler.reverseIntake(true);
-            }
+            intakeHandler.reverseIntake(!intakeHandler.isReversed());
         }
     };
 
     Runnable stopIntake = new Runnable() {
         @Override
         public void run() {
-            if(intakeHandler.intakeRunning()){
+            if (intakeHandler.intakeRunning()) {
                 intakeHandler.startIntake(false);
             }
         }
 
     };
-//    Runnable scanSlots = new Runnable() {
-//        @Override
-//        public void run() {
-//            artifactSystem.scanAll();
-//        }
-//    };
 
     @Override
     public boolean init(Telemetry telemetry, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {

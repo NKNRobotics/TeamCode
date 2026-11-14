@@ -11,7 +11,7 @@ public class StartPolyLaunchState extends StateMachine.State {
 
     private final ConveyorHandler conveyorHandler;
     private final LaunchHandler launchHandler;
-    private final int backwardsTime = 200;
+    private final int backwardsTime = 1000;
     private final int stopTime = 5000;
 
     public StartPolyLaunchState(ConveyorHandler conveyorHandler, LaunchHandler launchHandler) {
@@ -21,16 +21,18 @@ public class StartPolyLaunchState extends StateMachine.State {
 
 
     boolean startLaunch = true;
+
     @Override
     protected void run(ElapsedTime runtime, Telemetry telemetry) {
 
-        if(startTimeMS - runtime.milliseconds() > backwardsTime && startLaunch){
+        if (runtime.milliseconds() - startTimeMS > backwardsTime && startLaunch) {
             launchHandler.setEnabled(true);
+            launchHandler.setTargetTicks(1500);
             conveyorHandler.startUp();
             startLaunch = false;
         }
 
-        if(startTimeMS - runtime.milliseconds() > stopTime){
+        if (runtime.milliseconds() - startTimeMS > stopTime) {
             StateMachine.INSTANCE.stopAnonymous(this);
         }
     }
@@ -42,7 +44,8 @@ public class StartPolyLaunchState extends StateMachine.State {
 
     @Override
     protected void stopped() {
-        launchHandler.setEnabled(false);
+        launchHandler.setTargetTicks(-500);
+//        launchHandler.setEnabled(false);
 //        conveyorHandler.stopTransfer();
     }
 }

@@ -43,6 +43,7 @@ public class LaunchHandler implements NKNComponent {
         rightLaunch.setDirection(DcMotorSimple.Direction.REVERSE);
         leftLaunch.setVelocityPIDFCoefficients(100,2,2,0);
         rightLaunch.setVelocityPIDFCoefficients(100,2,2,0);
+        setTargetTicks(-500);
         return true;
     }
 
