@@ -7,14 +7,14 @@ import org.nknsd.teamcode.components.handlers.intakeTurret.ConveyorHandler;
 import org.nknsd.teamcode.components.handlers.launch.LaunchHandler;
 import org.nknsd.teamcode.components.utility.StateMachine;
 
-public class StartPolyLaunchState extends StateMachine.State {
+public class MonoLaunchState extends StateMachine.State {
 
     private final ConveyorHandler conveyorHandler;
     private final LaunchHandler launchHandler;
     private final int backwardsTime = 1000;
     private final int stopTime = 5000;
 
-    public StartPolyLaunchState(ConveyorHandler conveyorHandler, LaunchHandler launchHandler) {
+    public MonoLaunchState(ConveyorHandler conveyorHandler, LaunchHandler launchHandler) {
         this.conveyorHandler = conveyorHandler;
         this.launchHandler = launchHandler;
     }
@@ -40,6 +40,7 @@ public class StartPolyLaunchState extends StateMachine.State {
     @Override
     protected void started() {
         conveyorHandler.startDown();
+        name = "MonoLaunchState";
     }
 
     @Override

@@ -2,7 +2,7 @@ package org.nknsd.teamcode.components.handlers.launch;
 
 import org.nknsd.teamcode.components.handlers.intakeTurret.ConveyorHandler;
 import org.nknsd.teamcode.components.handlers.intakeTurret.IntakeHandler;
-import org.nknsd.teamcode.components.handlers.launch.States.StartPolyLaunchState;
+import org.nknsd.teamcode.components.handlers.launch.States.MonoLaunchState;
 import org.nknsd.teamcode.components.utility.StateMachine;
 
 public class BallSystem {
@@ -13,12 +13,12 @@ public class BallSystem {
 
     private final int confidence = 5;
 
-    public void polyLaunch(){
-        if(!intakeHandler.intakeRunning() && !StateMachine.INSTANCE.isStateRunning("StartPolyLaunchState")) {
-            StateMachine.INSTANCE.startAnonymous(new StartPolyLaunchState(conveyorHandler, launchHandler));
+    public void monoLaunch(){
+        if(!intakeHandler.intakeRunning() && !StateMachine.INSTANCE.isStateRunning("MonoLaunchState")) {
+            StateMachine.INSTANCE.startAnonymous(new MonoLaunchState(conveyorHandler, launchHandler));
         }
     }
-    public void shortLaunch(){
+    public void polyLaunch(){
     }
 
     public void launchDistance(double dist){

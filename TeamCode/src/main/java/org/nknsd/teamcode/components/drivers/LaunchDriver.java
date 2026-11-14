@@ -20,7 +20,7 @@ public class LaunchDriver implements NKNComponent {
 
         @Override
         public void run() {
-            ballSystem.polyLaunch();
+            ballSystem.monoLaunch();
         }
     };
 
