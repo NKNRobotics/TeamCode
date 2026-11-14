@@ -1,5 +1,7 @@
 package org.nknsd.teamcode.programs.autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.nknsd.teamcode.autoStates.AutoSimpleLaunchState;
 import org.nknsd.teamcode.autoStates.AutoTimedForwardState;
 import org.nknsd.teamcode.components.handlers.intakeTurret.ConveyorHandler;
@@ -15,6 +17,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
+@Autonomous(name = "Meet One Auto")
 public class MeetOneAuto extends NKNProgram {
 
     @Override
