@@ -56,10 +56,10 @@ public class MecanumMotorMixer implements NKNComponent {
         flMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         flMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frMotor = hardwareMap.dcMotor.get("FR");
-        frMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         blMotor = hardwareMap.dcMotor.get("BL");
         blMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        blMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         brMotor = hardwareMap.dcMotor.get("BR");
         //brMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         brMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
