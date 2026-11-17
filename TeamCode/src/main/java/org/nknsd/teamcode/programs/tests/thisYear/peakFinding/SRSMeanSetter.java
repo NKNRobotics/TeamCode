@@ -14,7 +14,7 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name="SRS mean setter", group="Tests")
+@TeleOp(name="SRS mean setter", group="Tests") @Disabled
 public class SRSMeanSetter extends NKNProgram {
     private class MeanSetterState extends StateMachine.State {
         private final SRSHubHandler srsHubHandler;

@@ -24,6 +24,7 @@ public class LaunchHandler implements NKNComponent {
     private int confidenceNum;
     private double previousRunTime;
     private final double sampleInterval = 0.05;
+    private boolean tpsChange = true;
 
 
     public LaunchHandler(double lowerThreshold, double upperThreshold) {
@@ -32,6 +33,7 @@ public class LaunchHandler implements NKNComponent {
     }
 
     public void setTargetTicks(double targetTps) {
+        tpsChange = true;
         this.targetTps = targetTps;
     }
 
@@ -41,8 +43,16 @@ public class LaunchHandler implements NKNComponent {
         leftLaunch = (DcMotorEx) hardwareMap.dcMotor.get("leftLaunch");
         rightLaunch = (DcMotorEx) hardwareMap.dcMotor.get("rightLaunch");
         rightLaunch.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftLaunch.setVelocityPIDFCoefficients(100,2,2,0);
-        rightLaunch.setVelocityPIDFCoefficients(100,2,2,0);
+        double rF = 32767.0 / 2480;
+        double lF = 32767.0 / 2600;
+        double rP = .4 * rF;
+        double lP = .4 * lF;
+        double rI = .05 * rP;
+        double lI = .05 * lP;
+        leftLaunch.setVelocityPIDFCoefficients(rP, rI, 0, rF);
+        rightLaunch.setVelocityPIDFCoefficients(lP, lI, 0, lF);
+        leftLaunch.setPositionPIDFCoefficients(5);
+        rightLaunch.setPositionPIDFCoefficients(5);
         setTargetTicks(-500);
         return true;
     }
@@ -74,8 +84,11 @@ public class LaunchHandler implements NKNComponent {
             return;
         }
 
-        leftLaunch.setVelocity(targetTps);
-        rightLaunch.setVelocity(targetTps);
+        if (tpsChange) {
+            leftLaunch.setVelocity(targetTps);
+            rightLaunch.setVelocity(targetTps);
+            tpsChange = false;
+        }
 //
         double timeElapsed = runtime.seconds() - previousRunTime;
         if (timeElapsed < sampleInterval) {
@@ -89,7 +102,7 @@ public class LaunchHandler implements NKNComponent {
 //        RobotLog.v("current tps " + currentTps);
 
         if ((leftLaunch.getVelocity() > targetTps * lowerThreshold && leftLaunch.getVelocity() < targetTps * upperThreshold) &&
-            (rightLaunch.getVelocity() > targetTps * lowerThreshold && rightLaunch.getVelocity() < targetTps * upperThreshold)) {
+                (rightLaunch.getVelocity() > targetTps * lowerThreshold && rightLaunch.getVelocity() < targetTps * upperThreshold)) {
             confidenceNum++;
         } else {
             confidenceNum = 0;
@@ -125,7 +138,8 @@ public class LaunchHandler implements NKNComponent {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-    public boolean isEnabled(){
+
+    public boolean isEnabled() {
         return enabled;
     }
 

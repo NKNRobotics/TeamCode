@@ -1,5 +1,6 @@
 package org.nknsd.teamcode.programs.tests.thisYear.peakFinding;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.nknsd.teamcode.autoStates.AutoMoveToPosState;
@@ -14,7 +15,7 @@ import org.nknsd.teamcode.programs.parts.Setup;
 
 import java.util.List;
 
-@TeleOp(name = "SRS Eating Test", group = "Tests")
+@TeleOp(name = "SRS Eating Test", group = "Tests") @Disabled
 public class SrsEatingTest extends NKNProgram {
 
     @Override

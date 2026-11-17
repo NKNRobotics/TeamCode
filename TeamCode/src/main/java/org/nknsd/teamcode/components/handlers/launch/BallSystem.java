@@ -15,7 +15,7 @@ public class BallSystem {
 
     public void monoLaunch(){
         if(!StateMachine.INSTANCE.isStateRunning("MonoLaunchState")) {
-            StateMachine.INSTANCE.startAnonymous(new MonoLaunchState(conveyorHandler, launchHandler));
+            StateMachine.INSTANCE.startAnonymous(new MonoLaunchState(conveyorHandler, launchHandler, intakeHandler));
         }
     }
     public void polyLaunch(){

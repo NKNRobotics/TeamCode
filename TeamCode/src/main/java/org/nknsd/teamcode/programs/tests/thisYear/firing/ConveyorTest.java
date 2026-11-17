@@ -1,4 +1,4 @@
-package org.nknsd.teamcode.programs.tests.thisYear;
+package org.nknsd.teamcode.programs.tests.thisYear.firing;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;

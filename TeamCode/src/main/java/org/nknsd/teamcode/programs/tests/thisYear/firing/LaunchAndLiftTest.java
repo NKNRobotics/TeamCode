@@ -1,4 +1,4 @@
-package org.nknsd.teamcode.programs.tests.thisYear;
+package org.nknsd.teamcode.programs.tests.thisYear.firing;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,8 +12,8 @@ import org.nknsd.teamcode.frameworks.NKNProgram;
 
 import java.util.List;
 
-@TeleOp(name = "Launch Motors Test", group = "Tests")
-public class LaunchMotorsTest extends NKNProgram {
+@TeleOp(name = "Launch and Lift Test", group = "Tests")
+public class LaunchAndLiftTest extends NKNProgram {
 
     static class StartLaunchState extends StateMachine.State {
 
@@ -30,7 +30,7 @@ public class LaunchMotorsTest extends NKNProgram {
 
         @Override
         protected void started() {
-            launchHandler.setTargetTicks(1500);
+            launchHandler.setTargetTicks(1300);
             launchHandler.setEnabled(true);
             conveyorHandler.startUp(1);
         }
